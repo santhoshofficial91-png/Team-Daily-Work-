@@ -3,122 +3,141 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Team Task Manager</title>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<title>TaskFlow</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <style>
-  *{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
-  :root{--primary:#4f46e5;--secondary:#7c3aed;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--bg:#f1f5f9;--card:#fff;--text:#1e293b;--muted:#64748b}
-  body{background:var(--bg);color:var(--text);min-height:100vh}
-  .hidden{display:none!important}
-  /* LOGIN */
-  #loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#4f46e5,#7c3aed)}
-  .login-box{background:#fff;border-radius:16px;padding:40px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
-  .login-box h2{text-align:center;margin-bottom:8px;color:var(--primary);font-size:1.6rem}
-  .login-box p{text-align:center;color:var(--muted);margin-bottom:28px;font-size:.9rem}
-  .form-group{margin-bottom:16px}
-  .form-group label{display:block;margin-bottom:6px;font-size:.85rem;font-weight:600;color:var(--text)}
-  .form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.95rem;transition:.2s;outline:none}
-  .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--primary)}
-  .btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:.9rem;font-weight:600;transition:.2s}
-  .btn-primary{background:var(--primary);color:#fff;width:100%}
-  .btn-primary:hover{background:#4338ca}
-  .btn-sm{padding:6px 14px;font-size:.8rem}
-  .btn-success{background:var(--success);color:#fff}
-  .btn-danger{background:var(--danger);color:#fff}
-  .btn-warning{background:var(--warning);color:#fff}
-  .btn-secondary{background:#e2e8f0;color:var(--text)}
-  .btn-purple{background:var(--secondary);color:#fff}
-  /* LAYOUT */
-  #appPage{display:flex;min-height:100vh}
-  .sidebar{width:240px;background:linear-gradient(180deg,#4f46e5,#7c3aed);color:#fff;display:flex;flex-direction:column;padding:20px 0;position:fixed;height:100vh;overflow-y:auto}
-  .sidebar-logo{padding:0 20px 20px;border-bottom:1px solid rgba(255,255,255,.2);margin-bottom:10px}
-  .sidebar-logo h3{font-size:1.1rem}
-  .sidebar-logo p{font-size:.75rem;opacity:.7;margin-top:2px}
-  .nav-item{padding:12px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:.9rem;transition:.2s;border-left:3px solid transparent}
-  .nav-item:hover,.nav-item.active{background:rgba(255,255,255,.15);border-left-color:#fff}
-  .nav-item span.icon{font-size:1.1rem}
-  .main{margin-left:240px;padding:24px;flex:1}
-  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
-  .topbar h1{font-size:1.4rem;font-weight:700}
-  .user-badge{background:#fff;border-radius:20px;padding:6px 14px;font-size:.85rem;color:var(--primary);font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.08)}
-  /* CARDS */
-  .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
-  .stat-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center}
-  .stat-card .num{font-size:2rem;font-weight:700;margin-bottom:4px}
-  .stat-card .lbl{font-size:.8rem;color:var(--muted);font-weight:500}
-  .stat-card.blue .num{color:var(--primary)}
-  .stat-card.orange .num{color:var(--warning)}
-  .stat-card.green .num{color:var(--success)}
-  .stat-card.purple .num{color:var(--secondary)}
-  /* TABLES */
-  .card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
-  .card h3{margin-bottom:16px;font-size:1rem;color:var(--text)}
-  table{width:100%;border-collapse:collapse;font-size:.85rem}
-  th{background:#f8fafc;padding:10px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:2px solid #e2e8f0}
-  td{padding:10px 12px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
-  tr:last-child td{border-bottom:none}
-  tr:hover td{background:#fafafa}
-  .badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600}
-  .badge-low{background:#dcfce7;color:#166534}
-  .badge-medium{background:#fef3c7;color:#92400e}
-  .badge-high{background:#fee2e2;color:#991b1b}
-  .badge-pending{background:#fef3c7;color:#92400e}
-  .badge-progress{background:#dbeafe;color:#1e40af}
-  .badge-complete{background:#dcfce7;color:#166534}
-  .badge-admin{background:#ede9fe;color:#5b21b6}
-  .badge-subadmin{background:#dbeafe;color:#1e40af}
-  .badge-user{background:#f0fdf4;color:#166534}
-  /* MODAL */
-  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000}
-  .modal{background:#fff;border-radius:16px;padding:28px;width:460px;max-width:95vw;max-height:90vh;overflow-y:auto}
-  .modal h3{margin-bottom:20px;font-size:1.1rem}
-  .modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
-  /* PERFORMANCE */
-  .perf-excellent{color:#10b981;font-weight:700}
-  .perf-good{color:#f59e0b;font-weight:700}
-  .perf-better{color:#ef4444;font-weight:700}
-  .section{display:none}
-  .section.active{display:block}
-  .action-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}
-  .logout-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.85rem;margin:auto 20px 20px;width:calc(100% - 40px)}
-  .logout-btn:hover{background:rgba(255,255,255,.25)}
-  select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;font-size:.8rem;cursor:pointer}
-  .tab-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
-  .tab{padding:8px 18px;border-radius:20px;cursor:pointer;font-size:.85rem;font-weight:600;background:#e2e8f0;color:var(--muted);border:none}
-  .tab.active{background:var(--primary);color:#fff}
-  .alert{padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:.85rem}
-  .alert-error{background:#fee2e2;color:#991b1b}
-  .alert-success{background:#dcfce7;color:#166534}
-  .work-hours-bar{background:#e2e8f0;border-radius:4px;height:8px;width:100%;margin-top:4px}
-  .work-hours-fill{background:var(--primary);height:8px;border-radius:4px;transition:.3s}
-  @media(max-width:768px){
-    .sidebar{width:200px}.main{margin-left:200px}
-    .stats-grid{grid-template-columns:repeat(2,1fr)}
-  }
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Segoe UI',sans-serif}
+:root{--primary:#4f46e5;--secondary:#7c3aed;--success:#10b981;--warning:#f59e0b;--danger:#ef4444;--bg:#f1f5f9;--card:#fff;--text:#1e293b;--muted:#64748b}
+body{background:var(--bg);color:var(--text);min-height:100vh}
+.hidden{display:none!important}
+#loginPage{display:flex;align-items:center;justify-content:center;min-height:100vh;background:linear-gradient(135deg,#4f46e5,#7c3aed)}
+.login-box{background:#fff;border-radius:16px;padding:40px;width:380px;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.login-box h2{text-align:center;margin-bottom:8px;color:var(--primary);font-size:1.6rem}
+.login-box p{text-align:center;color:var(--muted);margin-bottom:28px;font-size:.9rem}
+.form-group{margin-bottom:16px}
+.form-group label{display:block;margin-bottom:6px;font-size:.85rem;font-weight:600;color:var(--text)}
+.form-group input,.form-group select,.form-group textarea{width:100%;padding:10px 14px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.95rem;transition:.2s;outline:none}
+.form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--primary)}
+.btn{padding:10px 20px;border:none;border-radius:8px;cursor:pointer;font-size:.9rem;font-weight:600;transition:.2s}
+.btn-primary{background:var(--primary);color:#fff;width:100%}
+.btn-primary:hover{background:#4338ca}
+.btn-sm{padding:6px 14px;font-size:.8rem;width:auto}
+.btn-success{background:var(--success);color:#fff}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-warning{background:var(--warning);color:#fff}
+.btn-secondary{background:#e2e8f0;color:var(--text)}
+.btn-purple{background:var(--secondary);color:#fff}
+.btn-green{background:var(--success);color:#fff}
+#appPage{display:flex;min-height:100vh}
+.sidebar{width:250px;background:linear-gradient(180deg,#4f46e5,#7c3aed);color:#fff;display:flex;flex-direction:column;position:fixed;height:100vh;overflow-y:auto}
+.sidebar-logo{padding:16px 20px;border-bottom:1px solid rgba(255,255,255,.2)}
+.sidebar-logo h3{font-size:1.1rem}
+.sidebar-logo p{font-size:.7rem;opacity:.7;margin-top:2px;text-transform:uppercase;letter-spacing:1px}
+.nav-section-title{padding:12px 20px 4px;font-size:.65rem;text-transform:uppercase;letter-spacing:1.5px;opacity:.5;font-weight:700}
+.nav-item{padding:10px 20px;cursor:pointer;display:flex;align-items:center;gap:10px;font-size:.88rem;transition:.2s;border-left:3px solid transparent}
+.nav-item:hover,.nav-item.active{background:rgba(255,255,255,.15);border-left-color:#fff}
+.nav-item .icon{font-size:1rem;width:20px;text-align:center}
+.team-section{padding:8px 0}
+.team-member-item{padding:8px 20px 8px 32px;cursor:pointer;display:flex;align-items:center;gap:8px;font-size:.82rem;transition:.2s;border-left:3px solid transparent;opacity:.85}
+.team-member-item:hover,.team-member-item.active{background:rgba(255,255,255,.15);border-left-color:#a5b4fc;opacity:1}
+.member-avatar{width:26px;height:26px;border-radius:50%;background:rgba(255,255,255,.25);display:flex;align-items:center;justify-content:center;font-size:.7rem;font-weight:700;flex-shrink:0}
+.member-info{flex:1;min-width:0}
+.member-name{font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.member-role{font-size:.65rem;opacity:.6;text-transform:capitalize}
+.logout-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:10px 20px;cursor:pointer;font-size:.85rem;text-align:left;display:flex;align-items:center;gap:10px;margin-top:auto;border-top:1px solid rgba(255,255,255,.15)}
+.logout-btn:hover{background:rgba(255,255,255,.25)}
+.main{margin-left:250px;padding:24px;flex:1;min-height:100vh}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.topbar h1{font-size:1.4rem;font-weight:700}
+.user-badge{background:#fff;border-radius:20px;padding:6px 14px;font-size:.85rem;color:var(--primary);font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);text-align:center}
+.stat-card .num{font-size:2rem;font-weight:700;margin-bottom:4px}
+.stat-card .lbl{font-size:.8rem;color:var(--muted);font-weight:500}
+.stat-card.blue .num{color:var(--primary)}
+.stat-card.orange .num{color:var(--warning)}
+.stat-card.green .num{color:var(--success)}
+.stat-card.purple .num{color:var(--secondary)}
+.card{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.card h3{margin-bottom:16px;font-size:1rem;color:var(--text);font-weight:700}
+table{width:100%;border-collapse:collapse;font-size:.85rem}
+th{background:#f8fafc;padding:10px 12px;text-align:left;font-weight:600;color:var(--muted);border-bottom:2px solid #e2e8f0}
+td{padding:10px 12px;border-bottom:1px solid #f1f5f9;vertical-align:middle}
+tr:last-child td{border-bottom:none}
+tr:hover td{background:#fafafa}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:.75rem;font-weight:600}
+.badge-low{background:#dcfce7;color:#166534}
+.badge-medium{background:#fef3c7;color:#92400e}
+.badge-high{background:#fee2e2;color:#991b1b}
+.badge-pending{background:#fef3c7;color:#92400e}
+.badge-progress{background:#dbeafe;color:#1e40af}
+.badge-complete{background:#dcfce7;color:#166534}
+.badge-admin{background:#ede9fe;color:#5b21b6}
+.badge-subadmin{background:#dbeafe;color:#1e40af}
+.badge-user{background:#f0fdf4;color:#166534}
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000}
+.modal{background:#fff;border-radius:16px;padding:28px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto}
+.modal h3{margin-bottom:20px;font-size:1.1rem}
+.modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
+.perf-excellent{color:#10b981;font-weight:700}
+.perf-good{color:#f59e0b;font-weight:700}
+.perf-better{color:#ef4444;font-weight:700}
+.section{display:none}
+.section.active{display:block}
+.action-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px}
+select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;font-size:.8rem;cursor:pointer}
+.tab-bar{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap}
+.tab{padding:8px 18px;border-radius:20px;cursor:pointer;font-size:.85rem;font-weight:600;background:#e2e8f0;color:var(--muted);border:none}
+.tab.active{background:var(--primary);color:#fff}
+.alert{padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:.85rem}
+.alert-error{background:#fee2e2;color:#991b1b}
+.alert-success{background:#dcfce7;color:#166534}
+.member-profile-header{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;display:flex;align-items:center;gap:20px}
+.member-profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:#fff;flex-shrink:0}
+.member-profile-info h2{font-size:1.3rem;margin-bottom:4px}
+.member-profile-info p{color:var(--muted);font-size:.85rem}
+.back-btn{background:#f1f5f9;border:none;padding:8px 16px;border-radius:8px;cursor:pointer;font-size:.85rem;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;margin-bottom:16px}
+.back-btn:hover{background:#e2e8f0}
+.member-tabs{display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;border-bottom:2px solid #e2e8f0;padding-bottom:12px}
+.member-tab{padding:8px 20px;border-radius:8px;cursor:pointer;font-size:.88rem;font-weight:600;background:transparent;color:var(--muted);border:none;transition:.2s}
+.member-tab.active{background:var(--primary);color:#fff}
+.member-tab:hover:not(.active){background:#f1f5f9;color:var(--text)}
+.add-row-btn{width:100%;padding:10px;border:2px dashed #cbd5e1;border-radius:8px;background:transparent;color:var(--muted);cursor:pointer;font-size:.85rem;font-weight:600;transition:.2s;margin-bottom:12px}
+.add-row-btn:hover{border-color:var(--primary);color:var(--primary);background:#f0f0ff}
+#screenshotOverlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:2000;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:16px}
+#screenshotOverlay .sc-box{background:#fff;border-radius:16px;padding:20px;max-width:600px;width:95vw;text-align:center}
+#screenshotOverlay h3{margin-bottom:8px;color:var(--primary)}
+#screenshotOverlay p{color:var(--muted);font-size:.85rem;margin-bottom:16px}
+#screenshotPreview{width:100%;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15);max-height:60vh;object-fit:contain}
+.sc-actions{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.matrix-report-table{width:100%;border:1px solid #e2e8f0;margin-top:6px;background:#fff}
+.matrix-report-table th{background:#f8fafc;color:#475569;font-weight:600;border:1px solid #e2e8f0;padding:6px 10px;font-size:.8rem}
+.matrix-report-table td{border:1px solid #e2e8f0;padding:6px 10px;font-size:.8rem;color:#334155}
+/* Date filter bar */
+.date-filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#fff;border-radius:10px;padding:10px 16px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
+.date-filter-bar label{font-size:.82rem;font-weight:600;color:var(--muted)}
+.date-filter-bar input[type=date]{padding:5px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.82rem;outline:none;color:var(--text)}
+.date-filter-bar input[type=date]:focus{border-color:var(--primary)}
+.date-filter-bar .sep{color:var(--muted);font-size:.82rem}
+.active-filter-badge{background:#ede9fe;color:#5b21b6;border-radius:12px;padding:3px 10px;font-size:.75rem;font-weight:700}
 </style>
 </head>
 <body>
 
-<!-- LOGIN PAGE -->
 <div id="loginPage">
   <div class="login-box">
     <h2>🏢 TaskFlow</h2>
     <p>Team Task Management System</p>
     <div id="loginAlert"></div>
-    <div class="form-group"><label>Username</label><input id="loginUser" placeholder="Enter username"/></div>
-    <div class="form-group"><label>Password</label><input id="loginPass" type="password" placeholder="Enter password"/></div>
+    <div class="form-group"><label>Username</label><input id="loginUser" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()"/></div>
+    <div class="form-group"><label>Password</label><input id="loginPass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
     <button class="btn btn-primary" onclick="doLogin()">Login</button>
-    <p style="text-align:center;margin-top:16px;font-size:.8rem;color:var(--muted)">Default admin: admin / admin123</p>
   </div>
 </div>
 
-<!-- APP PAGE -->
 <div id="appPage" class="hidden">
   <div class="sidebar">
-    <div class="sidebar-logo">
-      <h3>🏢 TaskFlow</h3>
-      <p id="sidebarRole">Loading...</p>
-    </div>
+    <div class="sidebar-logo"><h3>🏢 TaskFlow</h3><p id="sidebarRole">Loading...</p></div>
     <div id="sidebarNav"></div>
     <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
   </div>
@@ -134,10 +153,10 @@
       <div id="dashExtra"></div>
     </div>
 
-    <!-- TASKS -->
+    <!-- ALL TASKS -->
     <div id="secTasks" class="section">
       <div class="action-bar">
-        <div class="tab-bar">
+        <div class="tab-bar" style="margin-bottom:0">
           <button class="tab active" onclick="filterTasks('all',this)">All</button>
           <button class="tab" onclick="filterTasks('Pending',this)">Pending</button>
           <button class="tab" onclick="filterTasks('In Progress',this)">In Progress</button>
@@ -148,13 +167,16 @@
       <div class="card"><table><thead><tr><th>Task</th><th>Priority</th><th>Assigned To</th><th>Assigned By</th><th>Due Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="tasksTable"></tbody></table></div>
     </div>
 
-    <!-- MY TASKS (USER) -->
+    <!-- MY TASKS -->
     <div id="secMyTasks" class="section">
-      <div class="tab-bar">
-        <button class="tab active" onclick="filterMyTasks('all',this)">All</button>
-        <button class="tab" onclick="filterMyTasks('Pending',this)">Pending</button>
-        <button class="tab" onclick="filterMyTasks('In Progress',this)">In Progress</button>
-        <button class="tab" onclick="filterMyTasks('Complete',this)">Complete</button>
+      <div class="action-bar">
+        <div class="tab-bar" style="margin-bottom:0">
+          <button class="tab active" onclick="filterMyTasks('all',this)">All</button>
+          <button class="tab" onclick="filterMyTasks('Pending',this)">Pending</button>
+          <button class="tab" onclick="filterMyTasks('In Progress',this)">In Progress</button>
+          <button class="tab" onclick="filterMyTasks('Complete',this)">Complete</button>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openTaskModal()">+ New Task</button>
       </div>
       <div class="card"><table><thead><tr><th>Task</th><th>Priority</th><th>Assigned By</th><th>Due Date</th><th>Status</th><th>Update</th></tr></thead><tbody id="myTasksTable"></tbody></table></div>
     </div>
@@ -168,17 +190,106 @@
       <div class="card"><table><thead><tr><th>Task</th><th>Priority</th><th>Assigned To</th><th>Due Date</th><th>Status</th></tr></thead><tbody id="sentTasksTable"></tbody></table></div>
     </div>
 
-    <!-- WORK LOG -->
-    <div id="secWorkLog" class="section">
+    <!-- DAILY REPORT -->
+    <div id="secDailyReport" class="section">
       <div class="action-bar">
-        <h3>Daily Work Log</h3>
-        <button class="btn btn-primary btn-sm" onclick="openWorkLogModal()">+ Log Work</button>
+        <h3>📝 Daily Report</h3>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <input type="date" id="reportDate" style="padding:6px 12px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:.85rem"/>
+          <button class="btn btn-green btn-sm" onclick="shareReport()">📸 Share & Sync to Admin</button>
+        </div>
       </div>
-      <div class="stats-grid" id="workLogStats"></div>
-      <div class="card"><table><thead><tr><th>Date</th><th>Hours</th><th>Description</th></tr></thead><tbody id="workLogTable"></tbody></table></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <h3 style="margin:0">📋 Today Work</h3>
+            <button class="add-row-btn" style="margin:0;padding:5px 12px;font-size:.78rem;width:auto" onclick="addWorkRow()">+ Add Row</button>
+          </div>
+          <table style="font-size:.82rem">
+            <thead><tr><th>Today Work</th><th style="text-align:center">OP</th><th style="text-align:center">Today</th><th style="text-align:center">Finished</th><th style="text-align:center">Pending</th><th>Perf. Time</th><th></th></tr></thead>
+            <tbody id="workRowsBody"></tbody>
+            <tfoot><tr style="background:#f1f5f9;font-weight:700">
+              <td>Total</td>
+              <td style="text-align:center" id="totOP">0</td>
+              <td style="text-align:center" id="totToday">0</td>
+              <td style="text-align:center" id="totFinished">0</td>
+              <td style="text-align:center" id="totPending">0</td>
+              <td style="text-align:center;color:var(--primary)" id="totCalculatedTime">0 min</td>
+              <td></td>
+            </tr></tfoot>
+          </table>
+        </div>
+        <div class="card">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+            <h3 style="margin:0">📌 Task</h3>
+            <button class="add-row-btn" style="margin:0;padding:5px 12px;font-size:.78rem;width:auto" onclick="addTaskRow()">+ Add Row</button>
+          </div>
+          <table style="font-size:.82rem">
+            <thead><tr><th>Task</th><th style="text-align:center">Total</th><th style="text-align:center">Received</th><th style="text-align:center">Pending</th><th>Status</th><th></th></tr></thead>
+            <tbody id="taskRowsBody"></tbody>
+          </table>
+          <div style="margin-top:16px">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
+              <h3 style="margin:0;font-size:.9rem">🗒️ Other Work</h3>
+              <button class="add-row-btn" style="margin:0;padding:5px 12px;font-size:.78rem;width:auto" onclick="addOtherRow()">+ Add Row</button>
+            </div>
+            <table style="font-size:.82rem">
+              <thead><tr><th>Other Work</th><th>Count/Finished</th><th>Remark</th><th></th></tr></thead>
+              <tbody id="otherRowsBody"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div style="position:fixed;left:-9999px;top:0;z-index:-1" id="reportCardWrapper">
+        <div id="reportCard" style="background:#fff;padding:24px;width:780px;font-family:Arial,sans-serif">
+          <div style="text-align:center;font-weight:700;font-size:1rem;margin-bottom:12px;border-bottom:2px solid #333;padding-bottom:8px" id="rcTitle"></div>
+          <div style="display:flex;gap:16px">
+            <div style="flex:1">
+              <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+                <thead><tr style="background:#e2e8f0">
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Today Work</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">OP</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Today</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Finished</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Pending</th>
+                </tr></thead>
+                <tbody id="rcWorkBody"></tbody>
+                <tfoot><tr style="background:#f1f5f9;font-weight:700">
+                  <td style="border:1px solid #ccc;padding:6px 8px">Total</td>
+                  <td style="border:1px solid #ccc;padding:6px 8px;text-align:center" id="rcTotOP"></td>
+                  <td style="border:1px solid #ccc;padding:6px 8px;text-align:center" id="rcTotToday"></td>
+                  <td style="border:1px solid #ccc;padding:6px 8px;text-align:center" id="rcTotFinished"></td>
+                  <td style="border:1px solid #ccc;padding:6px 8px;text-align:center" id="rcTotPending"></td>
+                </tr></tfoot>
+              </table>
+            </div>
+            <div style="flex:1">
+              <table style="width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:12px">
+                <thead><tr style="background:#e2e8f0">
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Task</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Total Count</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Received</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Pending</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Status</th>
+                </tr></thead>
+                <tbody id="rcTaskBody"></tbody>
+              </table>
+              <table style="width:100%;border-collapse:collapse;font-size:.78rem">
+                <thead><tr style="background:#e2e8f0">
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Other Work</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Remark</th>
+                </tr></thead>
+                <tbody id="rcOtherBody"></tbody>
+              </table>
+            </div>
+          </div>
+          <div style="margin-top:10px;font-size:.72rem;color:#4f46e5;font-weight:700" id="rcTotalPerformanceTime"></div>
+          <div style="margin-top:4px;font-size:.7rem;color:#888;text-align:right">Generated by TaskFlow · <span id="rcGenName"></span></div>
+        </div>
+      </div>
     </div>
 
-    <!-- USERS (ADMIN) -->
+    <!-- USERS -->
     <div id="secUsers" class="section">
       <div class="action-bar">
         <h3>Manage Users</h3>
@@ -187,32 +298,81 @@
       <div class="card"><table><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Tasks</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div>
     </div>
 
-    <!-- TEAM PERFORMANCE (ADMIN) -->
+    <!-- TEAM PERFORMANCE -->
     <div id="secPerformance" class="section">
       <div class="action-bar">
         <h3>Team Performance</h3>
-        <div style="display:flex;gap:8px;align-items:center">
-          <select id="perfWeekSel" onchange="loadPerformance()" style="padding:6px 12px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:.85rem">
-            <option value="this">This Week</option>
-            <option value="last">Last Week</option>
-            <option value="all">All Time</option>
-          </select>
-          <button class="btn btn-purple btn-sm" onclick="generateReport()">📄 Generate Report</button>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="btn btn-purple btn-sm" onclick="generateReport()">📄 Report</button>
         </div>
       </div>
+
+      <!-- DATE FILTER BAR -->
+      <div class="date-filter-bar">
+        <span style="font-size:.85rem;font-weight:700;color:var(--primary)">🗓️ Filter by Date:</span>
+        <label>Quick:</label>
+        <select id="perfQuickSel" onchange="applyQuickFilter()" style="padding:5px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.82rem;outline:none">
+          <option value="all">All Time</option>
+          <option value="today">Today</option>
+          <option value="this">This Week</option>
+          <option value="last">Last Week</option>
+          <option value="thismonth">This Month</option>
+          <option value="lastmonth">Last Month</option>
+          <option value="custom">Custom Range</option>
+        </select>
+        <span class="sep">|</span>
+        <label>From:</label>
+        <input type="date" id="perfFromDate" onchange="onCustomDateChange()" style=""/>
+        <label>To:</label>
+        <input type="date" id="perfToDate" onchange="onCustomDateChange()" style=""/>
+        <button class="btn btn-primary btn-sm" onclick="loadPerformance()">Apply</button>
+        <button class="btn btn-secondary btn-sm" onclick="clearPerfFilter()">Clear</button>
+        <span id="activePerfFilterBadge" class="active-filter-badge hidden"></span>
+      </div>
+
       <div id="perfCards" class="stats-grid"></div>
-      <div class="card"><table><thead><tr><th>User</th><th>Total Tasks</th><th>Completed</th><th>Pending</th><th>Avg Hours/Day</th><th>On-Time %</th><th>Performance</th></tr></thead><tbody id="perfTable"></tbody></table></div>
+      <div class="card">
+        <table>
+          <thead><tr><th>User</th><th>Total Tasks</th><th>Completed</th><th>Pending</th><th>On-Time %</th><th>Avg H/Day</th><th>Performance</th></tr></thead>
+          <tbody id="perfTable"></tbody>
+        </table>
+      </div>
     </div>
 
-    <!-- TEAM WORK LOGS (ADMIN) -->
+    <!-- TEAM LOGS -->
     <div id="secTeamLogs" class="section">
       <div class="action-bar">
-        <h3>Team Work Logs</h3>
+        <h3>Team Daily Reports</h3>
         <select id="teamLogUser" onchange="loadTeamLogs()" style="padding:6px 12px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:.85rem"><option value="">All Users</option></select>
       </div>
-      <div class="card"><table><thead><tr><th>User</th><th>Date</th><th>Hours</th><th>Description</th></tr></thead><tbody id="teamLogsTable"></tbody></table></div>
+      <div class="card">
+        <table>
+          <thead><tr>
+            <th>User</th>
+            <th style="font-weight:bold;background-color:#dbeafe;color:#1e40af">Date / Work Performance Metrics</th>
+            <th>Total Hours</th>
+            <th>Action</th>
+          </tr></thead>
+          <tbody id="teamLogsTable"></tbody>
+        </table>
+      </div>
     </div>
 
+    <!-- MEMBER DETAIL -->
+    <div id="secMemberDetail" class="section">
+      <button class="back-btn" onclick="showSection('secDashboard','Dashboard')">← Back</button>
+      <div class="member-profile-header" id="memberProfileHeader"></div>
+      <div class="stats-grid" id="memberStats"></div>
+      <div class="member-tabs">
+        <button class="member-tab active" onclick="switchMemberTab('all',this)">📋 All Tasks</button>
+        <button class="member-tab" onclick="switchMemberTab('pending',this)">⏳ Pending</button>
+        <button class="member-tab" onclick="switchMemberTab('inprogress',this)">🔄 In Progress</button>
+        <button class="member-tab" onclick="switchMemberTab('complete',this)">✅ Completed</button>
+        <button class="member-tab" onclick="switchMemberTab('performance',this)">🏆 Performance</button>
+        <button class="member-tab" onclick="switchMemberTab('dailyreports',this)">📝 Daily Reports</button>
+      </div>
+      <div id="memberTabContent"></div>
+    </div>
   </div>
 </div>
 
@@ -221,297 +381,186 @@
   <div class="modal" id="modalBox"></div>
 </div>
 
+<!-- SCREENSHOT OVERLAY -->
+<div id="screenshotOverlay" class="hidden">
+  <div class="sc-box">
+    <h3>📸 Daily Report Saved!</h3>
+    <p>Synced to admin. Long press image to copy, then paste in WhatsApp.</p>
+    <img id="screenshotPreview" src="" alt="Report Screenshot"/>
+    <div class="sc-actions">
+      <button class="btn btn-success btn-sm" onclick="downloadReport()">⬇️ Download</button>
+      <button class="btn btn-purple btn-sm" onclick="window.open('https://web.whatsapp.com','_blank')">💬 WhatsApp</button>
+      <button class="btn btn-secondary btn-sm" onclick="closeScreenshot()">✕ Close</button>
+    </div>
+  </div>
+</div>
+
 <script>
-const SB_URL = 'https://qukgbkjnqpmgowmkgtqd.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1a2dia2pucXBtZ293bWtndHFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2MTA2OTEsImV4cCI6MjA5ODE4NjY5MX0.dGQJrW8xHMsbVyOZvhGFLK0ePMvXG3yt1oJaAzjjDVA';
-const H = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+const SB_URL='https://qukgbkjnqpmgowmkgtqd.supabase.co';
+const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InF1a2dia2pucXBtZ293bWtndHFkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODI2MTA2OTEsImV4cCI6MjA5ODE4NjY5MX0.dGQJrW8xHMsbVyOZvhGFLK0ePMvXG3yt1oJaAzjjDVA';
+const H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 
-let currentUser = null;
-let allUsers = [];
-let allTasks = [];
-let currentTaskFilter = 'all';
-let currentMyTaskFilter = 'all';
+let currentUser=null,allUsers=[],allTasks=[],selectedMember=null,memberTasks=[],memberLogs=[];
+let screenshotDataUrl='';
+let workRows=[],taskRows=[],otherRows=[];
 
-async function sb(path, method='GET', body=null){
-  const opts = {method, headers:{...H}};
-  if(method==='GET') opts.headers['Prefer']='';
-  if(body){opts.body=JSON.stringify(body); opts.headers['Prefer']='return=representation';}
-  const r = await fetch(SB_URL+'/rest/v1/'+path, opts);
+const TIME_WEIGHTS={'sales':20,'purchase order':15,'sales order':15,'purchase invoice':15,'credit note':15,'debit note':15,'deliver challan':15,'journal':15,'stock journal':15};
+
+async function sb(path,method='GET',body=null){
+  const opts={method,headers:{...H}};
+  if(body){opts.body=JSON.stringify(body);opts.headers['Prefer']='return=representation';}
+  const r=await fetch(SB_URL+'/rest/v1/'+path,opts);
   if(!r.ok){const e=await r.text();throw new Error(e);}
-  const txt = await r.text();
-  return txt ? JSON.parse(txt) : [];
+  const txt=await r.text();
+  return txt?JSON.parse(txt):[];
 }
 
 async function doLogin(){
-  const u = document.getElementById('loginUser').value.trim();
-  const p = document.getElementById('loginPass').value.trim();
+  const u=document.getElementById('loginUser').value.trim();
+  const p=document.getElementById('loginPass').value.trim();
   if(!u||!p){showLoginAlert('Please enter username and password','error');return;}
   try{
-    const rows = await sb(`users?username=eq.${encodeURIComponent(u)}&password=eq.${encodeURIComponent(p)}&select=*`);
+    const rows=await sb(`users?username=eq.${encodeURIComponent(u)}&password=eq.${encodeURIComponent(p)}&select=*`);
     if(!rows.length){showLoginAlert('Invalid username or password','error');return;}
-    currentUser = rows[0];
+    currentUser=rows[0];
     document.getElementById('loginPage').classList.add('hidden');
     document.getElementById('appPage').classList.remove('hidden');
     await initApp();
   }catch(e){showLoginAlert('Error: '+e.message,'error');}
 }
-
 function showLoginAlert(msg,type){
   document.getElementById('loginAlert').innerHTML=`<div class="alert alert-${type}">${msg}</div>`;
   setTimeout(()=>document.getElementById('loginAlert').innerHTML='',3000);
 }
-
 function doLogout(){
-  currentUser=null; allUsers=[]; allTasks=[];
+  currentUser=null;allUsers=[];allTasks=[];selectedMember=null;workRows=[];taskRows=[];otherRows=[];
   document.getElementById('appPage').classList.add('hidden');
   document.getElementById('loginPage').classList.remove('hidden');
-  document.getElementById('loginUser').value='';
-  document.getElementById('loginPass').value='';
+  document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
 }
-
 async function initApp(){
-  document.getElementById('userBadge').textContent = currentUser.name + ' ('+currentUser.role+')';
-  document.getElementById('sidebarRole').textContent = currentUser.role.toUpperCase();
-  allUsers = await sb('users?select=*&order=name.asc');
-  buildNav();
-  showSection('secDashboard','Dashboard');
+  document.getElementById('userBadge').textContent=currentUser.name+' ('+currentUser.role+')';
+  document.getElementById('sidebarRole').textContent=currentUser.role.toUpperCase();
+  allUsers=await sb('users?select=*&order=name.asc');
+  allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
+  buildNav();showSection('secDashboard','Dashboard');
 }
+function getInitials(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 
 function buildNav(){
-  const r = currentUser.role;
-  const adminNav = r==='admin'||r==='subadmin';
-  let nav = `<div class="nav-item active" onclick="showSection('secDashboard','Dashboard',this)"><span class="icon">📊</span>Dashboard</div>`;
-  if(adminNav){
+  const isAdmin=currentUser.role==='admin'||currentUser.role==='subadmin';
+  const team=allUsers.filter(u=>u.id!==currentUser.id);
+  let nav=`<div class="nav-section-title">Main</div>`;
+  nav+=`<div class="nav-item active" onclick="showSection('secDashboard','Dashboard',this)"><span class="icon">📊</span>Dashboard</div>`;
+  if(isAdmin){
     nav+=`<div class="nav-item" onclick="showSection('secTasks','All Tasks',this)"><span class="icon">📋</span>All Tasks</div>`;
     nav+=`<div class="nav-item" onclick="showSection('secUsers','Manage Users',this)"><span class="icon">👥</span>Users</div>`;
-    nav+=`<div class="nav-item" onclick="showSection('secTeamLogs','Team Work Logs',this)"><span class="icon">📅</span>Team Logs</div>`;
+    nav+=`<div class="nav-item" onclick="showSection('secTeamLogs','Team Daily Reports',this)"><span class="icon">📅</span>Team Reports</div>`;
     nav+=`<div class="nav-item" onclick="showSection('secPerformance','Team Performance',this)"><span class="icon">🏆</span>Performance</div>`;
   }
+  nav+=`<div class="nav-section-title">My Work</div>`;
   nav+=`<div class="nav-item" onclick="showSection('secMyTasks','My Tasks',this)"><span class="icon">✅</span>My Tasks</div>`;
   nav+=`<div class="nav-item" onclick="showSection('secSentTasks','Sent Tasks',this)"><span class="icon">📤</span>Sent Tasks</div>`;
-  nav+=`<div class="nav-item" onclick="showSection('secWorkLog','Work Log',this)"><span class="icon">⏱️</span>Work Log</div>`;
+  if(currentUser.role!=='admin')
+    nav+=`<div class="nav-item" onclick="showSection('secDailyReport','Daily Report',this)"><span class="icon">📝</span>Daily Report</div>`;
+  if(isAdmin&&team.length){
+    nav+=`<div class="nav-section-title">Team Members</div><div class="team-section">`;
+    team.forEach(u=>{
+      const p=allTasks.filter(t=>t.assigned_to===u.id&&(t.status==='Pending'||t.status==='In Progress')).length;
+      nav+=`<div class="team-member-item" id="member-nav-${u.id}" onclick="openMemberDetail('${u.id}')">
+        <div class="member-avatar">${getInitials(u.name)}</div>
+        <div class="member-info"><div class="member-name">${u.name}</div><div class="member-role">${u.role}${p>0?' · '+p+' active':''}</div></div>
+      </div>`;
+    });
+    nav+=`</div>`;
+  }
   document.getElementById('sidebarNav').innerHTML=nav;
 }
 
-async function showSection(id, title, el){
+async function showSection(id,title,el){
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.querySelectorAll('.nav-item,.team-member-item').forEach(n=>n.classList.remove('active'));
   document.getElementById(id).classList.add('active');
   document.getElementById('pageTitle').textContent=title;
   if(el) el.classList.add('active');
-  allUsers = await sb('users?select=*&order=name.asc');
-  allTasks = await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
+  allUsers=await sb('users?select=*&order=name.asc');
+  allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
   if(id==='secDashboard') loadDashboard();
   if(id==='secTasks') loadTasks();
   if(id==='secMyTasks') loadMyTasks();
   if(id==='secSentTasks') loadSentTasks();
+  if(id==='secDailyReport'){if(currentUser.role==='admin'){showSection('secDashboard','Dashboard');return;}initDailyReport();}
   if(id==='secUsers') loadUsers();
-  if(id==='secWorkLog') loadWorkLog();
   if(id==='secPerformance') loadPerformance();
   if(id==='secTeamLogs') loadTeamLogs();
 }
 
-async function loadDashboard(){
-  const myTasks = allTasks.filter(t=>t.assigned_to===currentUser.id);
-  const total=myTasks.length, pending=myTasks.filter(t=>t.status==='Pending').length;
-  const inprog=myTasks.filter(t=>t.status==='In Progress').length, done=myTasks.filter(t=>t.status==='Complete').length;
-  const sent=allTasks.filter(t=>t.created_by===currentUser.id&&t.assigned_to!==currentUser.id).length;
-  document.getElementById('dashStats').innerHTML=`
-    <div class="stat-card blue"><div class="num">${total}</div><div class="lbl">Total Tasks</div></div>
-    <div class="stat-card orange"><div class="num">${pending}</div><div class="lbl">Pending</div></div>
-    <div class="stat-card purple"><div class="num">${inprog}</div><div class="lbl">In Progress</div></div>
-    <div class="stat-card green"><div class="num">${done}</div><div class="lbl">Completed</div></div>
-    <div class="stat-card blue"><div class="num">${sent}</div><div class="lbl">Tasks Sent</div></div>`;
-
-  let extra='';
-  if(currentUser.role==='admin'||currentUser.role==='subadmin'){
-    const totalAll=allTasks.length, pendAll=allTasks.filter(t=>t.status==='Pending').length;
-    const doneAll=allTasks.filter(t=>t.status==='Complete').length;
-    extra+=`<div class="card"><h3>🏢 Team Overview</h3><div class="stats-grid">
-      <div class="stat-card blue"><div class="num">${allUsers.filter(u=>u.role==='user').length}</div><div class="lbl">Team Members</div></div>
-      <div class="stat-card blue"><div class="num">${totalAll}</div><div class="lbl">All Tasks</div></div>
-      <div class="stat-card orange"><div class="num">${pendAll}</div><div class="lbl">Team Pending</div></div>
-      <div class="stat-card green"><div class="num">${doneAll}</div><div class="lbl">Team Completed</div></div>
-    </div></div>`;
+// ---- PERFORMANCE DATE FILTER ----
+function applyQuickFilter(){
+  const v=document.getElementById('perfQuickSel').value;
+  const now=new Date();
+  let from='',to='';
+  const fmt=d=>d.toISOString().slice(0,10);
+  if(v==='today'){from=fmt(now);to=fmt(now);}
+  else if(v==='this'){const s=new Date(now);s.setDate(now.getDate()-now.getDay());from=fmt(s);to=fmt(now);}
+  else if(v==='last'){const e=new Date(now);e.setDate(now.getDate()-now.getDay()-1);const s=new Date(e);s.setDate(e.getDate()-6);from=fmt(s);to=fmt(e);}
+  else if(v==='thismonth'){from=fmt(new Date(now.getFullYear(),now.getMonth(),1));to=fmt(now);}
+  else if(v==='lastmonth'){const s=new Date(now.getFullYear(),now.getMonth()-1,1);const e=new Date(now.getFullYear(),now.getMonth(),0);from=fmt(s);to=fmt(e);}
+  else{from='';to='';}
+  document.getElementById('perfFromDate').value=from;
+  document.getElementById('perfToDate').value=to;
+  if(v!=='custom') loadPerformance();
+}
+function onCustomDateChange(){
+  document.getElementById('perfQuickSel').value='custom';
+}
+function clearPerfFilter(){
+  document.getElementById('perfQuickSel').value='all';
+  document.getElementById('perfFromDate').value='';
+  document.getElementById('perfToDate').value='';
+  document.getElementById('activePerfFilterBadge').classList.add('hidden');
+  loadPerformance();
+}
+function getPerfDateRange(){
+  const from=document.getElementById('perfFromDate').value;
+  const to=document.getElementById('perfToDate').value;
+  return{from,to};
+}
+function updatePerfBadge(from,to){
+  const badge=document.getElementById('activePerfFilterBadge');
+  if(from||to){
+    badge.classList.remove('hidden');
+    badge.textContent=`📅 ${from||'...'} → ${to||'...'}`;
+  } else {
+    badge.classList.add('hidden');
   }
-  // Recent tasks
-  const recent = myTasks.slice(0,5);
-  if(recent.length){
-    extra+=`<div class="card"><h3>📋 Recent Tasks</h3><table><thead><tr><th>Task</th><th>Priority</th><th>Status</th><th>Due</th></tr></thead><tbody>`;
-    recent.forEach(t=>{extra+=`<tr><td>${t.title}</td><td>${priorityBadge(t.priority)}</td><td>${statusBadge(t.status)}</td><td>${t.due_date||'-'}</td></tr>`;});
-    extra+='</tbody></table></div>';
-  }
-  document.getElementById('dashExtra').innerHTML=extra;
-}
-
-function priorityBadge(p){return `<span class="badge badge-${p.toLowerCase()}">${p}</span>`;}
-function statusBadge(s){const m={'Pending':'pending','In Progress':'progress','Complete':'complete'};return `<span class="badge badge-${m[s]||'pending'}">${s}</span>`;}
-function roleBadge(r){return `<span class="badge badge-${r}">${r}</span>`;}
-
-function loadTasks(){
-  renderTasksTable(allTasks, 'tasksTable', true);
-}
-
-function filterTasks(f,el){
-  currentTaskFilter=f;
-  document.querySelectorAll('#secTasks .tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  const filtered = f==='all'?allTasks:allTasks.filter(t=>t.status===f);
-  renderTasksTable(filtered,'tasksTable',true);
-}
-
-function renderTasksTable(tasks, tableId, showAdmin){
-  const tb = document.getElementById(tableId);
-  if(!tasks.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px">No tasks found</td></tr>';return;}
-  tb.innerHTML = tasks.map(t=>`<tr>
-    <td><strong>${t.title}</strong></td>
-    <td>${priorityBadge(t.priority)}</td>
-    <td>${t.assignee?.name||'-'}</td>
-    <td>${t.creator?.name||'-'}</td>
-    <td>${t.due_date||'-'}</td>
-    <td>${statusBadge(t.status)}</td>
-    <td>${showAdmin?`<button class="btn btn-warning btn-sm" onclick="openEditTask('${t.id}')">Edit</button> <button class="btn btn-danger btn-sm" onclick="deleteTask('${t.id}')">Del</button>`:'-'}</td>
-  </tr>`).join('');
-}
-
-function loadMyTasks(){
-  const mine = allTasks.filter(t=>t.assigned_to===currentUser.id);
-  renderMyTasks(mine);
-}
-
-function filterMyTasks(f,el){
-  currentMyTaskFilter=f;
-  document.querySelectorAll('#secMyTasks .tab').forEach(t=>t.classList.remove('active'));
-  el.classList.add('active');
-  const mine = allTasks.filter(t=>t.assigned_to===currentUser.id);
-  const filtered = f==='all'?mine:mine.filter(t=>t.status===f);
-  renderMyTasks(filtered);
-}
-
-function renderMyTasks(tasks){
-  const tb=document.getElementById('myTasksTable');
-  if(!tasks.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">No tasks</td></tr>';return;}
-  tb.innerHTML=tasks.map(t=>`<tr>
-    <td><strong>${t.title}</strong></td>
-    <td>${priorityBadge(t.priority)}</td>
-    <td>${t.creator?.name||'-'}</td>
-    <td>${t.due_date||'-'}</td>
-    <td>${statusBadge(t.status)}</td>
-    <td><select class="status-sel" onchange="updateTaskStatus('${t.id}',this.value)">
-      <option ${t.status==='Pending'?'selected':''}>Pending</option>
-      <option ${t.status==='In Progress'?'selected':''}>In Progress</option>
-      <option ${t.status==='Complete'?'selected':''}>Complete</option>
-    </select></td>
-  </tr>`).join('');
-}
-
-async function updateTaskStatus(id, status){
-  const body = {status};
-  if(status==='Complete') body.completed_at = new Date().toISOString();
-  await sb(`tasks?id=eq.${id}`,'PATCH',body);
-  allTasks = await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
-  loadMyTasks();
-}
-
-function loadSentTasks(){
-  const sent = allTasks.filter(t=>t.created_by===currentUser.id);
-  const tb=document.getElementById('sentTasksTable');
-  if(!sent.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No sent tasks</td></tr>';return;}
-  tb.innerHTML=sent.map(t=>`<tr>
-    <td><strong>${t.title}</strong></td>
-    <td>${priorityBadge(t.priority)}</td>
-    <td>${t.assignee?.name||'-'}</td>
-    <td>${t.due_date||'-'}</td>
-    <td>${statusBadge(t.status)}</td>
-  </tr>`).join('');
-}
-
-function loadUsers(){
-  const tb=document.getElementById('usersTable');
-  const nonAdmin = allUsers.filter(u=>u.id!==currentUser.id);
-  if(!nonAdmin.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No users</td></tr>';return;}
-  tb.innerHTML=nonAdmin.map(u=>{
-    const uTasks=allTasks.filter(t=>t.assigned_to===u.id);
-    const p=uTasks.filter(t=>t.status==='Pending').length;
-    const c=uTasks.filter(t=>t.status==='Complete').length;
-    return `<tr>
-      <td><strong>${u.name}</strong></td>
-      <td>${u.username}</td>
-      <td>${roleBadge(u.role)}</td>
-      <td><span style="color:var(--warning)">${p} pending</span> / <span style="color:var(--success)">${c} done</span></td>
-      <td>
-        <button class="btn btn-secondary btn-sm" onclick="openChangePass('${u.id}','${u.name}')">🔑 Password</button>
-        ${currentUser.role==='admin'?`<button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Del</button>`:''}
-      </td>
-    </tr>`;
-  }).join('');
-}
-
-async function loadWorkLog(){
-  const logs = await sb(`work_logs?user_id=eq.${currentUser.id}&select=*&order=date.desc`);
-  const totalHours = logs.reduce((s,l)=>s+parseFloat(l.hours),0);
-  const todayStr = new Date().toISOString().slice(0,10);
-  const todayHours = logs.filter(l=>l.date===todayStr).reduce((s,l)=>s+parseFloat(l.hours),0);
-  const weekHours = logs.filter(l=>{
-    const d=new Date(l.date), now=new Date();
-    const diff=(now-d)/864e5; return diff<=7;
-  }).reduce((s,l)=>s+parseFloat(l.hours),0);
-  document.getElementById('workLogStats').innerHTML=`
-    <div class="stat-card blue"><div class="num">${todayHours.toFixed(1)}h</div><div class="lbl">Today</div></div>
-    <div class="stat-card purple"><div class="num">${weekHours.toFixed(1)}h</div><div class="lbl">This Week</div></div>
-    <div class="stat-card green"><div class="num">${totalHours.toFixed(1)}h</div><div class="lbl">Total Hours</div></div>`;
-  const tb=document.getElementById('workLogTable');
-  if(!logs.length){tb.innerHTML='<tr><td colspan="3" style="text-align:center;color:var(--muted);padding:20px">No logs yet</td></tr>';return;}
-  tb.innerHTML=logs.map(l=>`<tr><td>${l.date}</td><td><strong>${l.hours}h</strong></td><td>${l.description||'-'}</td></tr>`).join('');
-}
-
-async function loadTeamLogs(){
-  const sel = document.getElementById('teamLogUser');
-  // populate dropdown
-  sel.innerHTML='<option value="">All Users</option>'+allUsers.filter(u=>u.role==='user').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
-  const uid = sel.value;
-  let url = `work_logs?select=*,user:user_id(name)&order=date.desc`;
-  if(uid) url+=`&user_id=eq.${uid}`;
-  const logs = await sb(url);
-  const tb=document.getElementById('teamLogsTable');
-  if(!logs.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No logs</td></tr>';return;}
-  tb.innerHTML=logs.map(l=>`<tr><td>${l.user?.name||'-'}</td><td>${l.date}</td><td><strong>${l.hours}h</strong></td><td>${l.description||'-'}</td></tr>`).join('');
 }
 
 async function loadPerformance(){
-  const period = document.getElementById('perfWeekSel').value;
-  const now = new Date();
-  let startDate = null;
-  if(period==='this'){startDate=new Date(now); startDate.setDate(now.getDate()-now.getDay());}
-  else if(period==='last'){startDate=new Date(now); startDate.setDate(now.getDate()-now.getDay()-7);}
+  const{from,to}=getPerfDateRange();
+  updatePerfBadge(from,to);
+  const users=allUsers.filter(u=>u.role==='user'||u.role==='subadmin');
+  let totalComplete=0,totalPending=0;
 
-  const users = allUsers.filter(u=>u.role==='user'||u.role==='subadmin');
-  let rows='', totalComplete=0, totalPending=0, bestPerf='';
-
-  const perfData = await Promise.all(users.map(async u=>{
-    let taskQ=`tasks?assigned_to=eq.${u.id}&select=*`;
-    const tasks = await sb(taskQ);
-    let filtered = tasks;
-    if(startDate) filtered=tasks.filter(t=>new Date(t.created_at)>=startDate);
-
-    const logs = await sb(`work_logs?user_id=eq.${u.id}&select=*`);
-    let logFiltered = logs;
-    if(startDate) logFiltered=logs.filter(l=>new Date(l.date)>=startDate);
-
-    const total=filtered.length, done=filtered.filter(t=>t.status==='Complete').length;
-    const pending=filtered.filter(t=>t.status==='Pending').length;
-    const onTime=filtered.filter(t=>t.status==='Complete'&&t.due_date&&new Date(t.completed_at)<=new Date(t.due_date)).length;
-    const onTimePct = done>0?Math.round((onTime/done)*100):0;
-    const totalH=logFiltered.reduce((s,l)=>s+parseFloat(l.hours),0);
+  const perfData=await Promise.all(users.map(async u=>{
+    let tasks=await sb(`tasks?assigned_to=eq.${u.id}&select=*`);
+    if(from) tasks=tasks.filter(t=>t.created_at&&t.created_at.slice(0,10)>=from);
+    if(to) tasks=tasks.filter(t=>t.created_at&&t.created_at.slice(0,10)<=to);
+    const logs=await sb(`work_logs?user_id=eq.${u.id}&select=*`);
+    let logFiltered=logs;
+    if(from) logFiltered=logFiltered.filter(l=>l.date>=from);
+    if(to) logFiltered=logFiltered.filter(l=>l.date<=to);
+    const total=tasks.length,done=tasks.filter(t=>t.status==='Complete').length,pending=tasks.filter(t=>t.status==='Pending').length;
+    const onTime=tasks.filter(t=>t.status==='Complete'&&t.due_date&&new Date(t.completed_at)<=new Date(t.due_date)).length;
+    const onTimePct=done>0?Math.round((onTime/done)*100):0;
+    const totalH=logFiltered.reduce((s,l)=>s+parseFloat(l.hours||0),0);
     const days=[...new Set(logFiltered.map(l=>l.date))].length||1;
     const avgH=(totalH/days).toFixed(1);
-
-    let perf='Better', perfClass='perf-better';
+    let perf='Better',perfClass='perf-better';
     if(onTimePct>=85&&done>=3){perf='Excellent';perfClass='perf-excellent';}
     else if(onTimePct>=60&&done>=1){perf='Good';perfClass='perf-good';}
-
-    totalComplete+=done; totalPending+=pending;
-    return {u,total,done,pending,avgH,onTimePct,perf,perfClass};
+    totalComplete+=done;totalPending+=pending;
+    return{u,total,done,pending,onTimePct,avgH,perf,perfClass};
   }));
 
   document.getElementById('perfCards').innerHTML=`
@@ -520,43 +569,392 @@ async function loadPerformance(){
     <div class="stat-card orange"><div class="num">${totalPending}</div><div class="lbl">Pending</div></div>`;
 
   document.getElementById('perfTable').innerHTML=perfData.map(d=>`<tr>
-    <td><strong>${d.u.name}</strong></td>
-    <td>${d.total}</td>
-    <td>${d.done}</td>
-    <td>${d.pending}</td>
-    <td>${d.avgH}h</td>
-    <td>${d.onTimePct}%</td>
+    <td><strong style="cursor:pointer;color:var(--primary)" onclick="openMemberDetail('${d.u.id}')">${d.u.name}</strong></td>
+    <td>${d.total}</td><td>${d.done}</td><td>${d.pending}</td>
+    <td>${d.onTimePct}%</td><td>${d.avgH}h</td>
     <td><span class="${d.perfClass}">${d.perf}</span></td>
   </tr>`).join('');
 }
 
 function generateReport(){
-  const rows = document.querySelectorAll('#perfTable tr');
-  let reportHTML = `<div style="font-family:Arial;padding:20px;max-width:800px;margin:0 auto">
-    <h2 style="color:#4f46e5;text-align:center">📊 Weekly Performance Report</h2>
-    <p style="text-align:center;color:#64748b">Generated: ${new Date().toLocaleDateString()} | Period: ${document.getElementById('perfWeekSel').value==='this'?'This Week':document.getElementById('perfWeekSel').value==='last'?'Last Week':'All Time'}</p>
-    <hr style="margin:20px 0">
-    <table style="width:100%;border-collapse:collapse">
-      <thead><tr style="background:#4f46e5;color:#fff">
-        <th style="padding:10px;text-align:left">Name</th><th style="padding:10px">Total</th><th style="padding:10px">Done</th><th style="padding:10px">Pending</th><th style="padding:10px">Avg H/Day</th><th style="padding:10px">On-Time%</th><th style="padding:10px">Rating</th>
-      </tr></thead><tbody>`;
+  const{from,to}=getPerfDateRange();
+  const rows=document.querySelectorAll('#perfTable tr');
+  let html=`<div style="font-family:Arial;padding:20px;max-width:860px;margin:0 auto">
+    <h2 style="color:#4f46e5;text-align:center">📊 Team Performance Report</h2>
+    <p style="text-align:center;color:#64748b">Generated: ${new Date().toLocaleDateString()} ${from||to?'| Period: '+(from||'...')+' → '+(to||'...'):'| All Time'}</p>
+    <hr style="margin:16px 0">
+    <table style="width:100%;border-collapse:collapse"><thead><tr style="background:#4f46e5;color:#fff">
+      <th style="padding:10px;text-align:left">Name</th><th style="padding:10px">Total</th><th style="padding:10px">Done</th><th style="padding:10px">Pending</th><th style="padding:10px">On-Time%</th><th style="padding:10px">Avg H/Day</th><th style="padding:10px">Rating</th>
+    </tr></thead><tbody>`;
   rows.forEach((r,i)=>{
     const cells=[...r.querySelectorAll('td')].map(c=>c.textContent.trim());
-    if(cells.length) reportHTML+=`<tr style="background:${i%2?'#f8fafc':'#fff'}">
-      ${cells.map((c,ci)=>`<td style="padding:10px;text-align:${ci===0?'left':'center'}">${c}</td>`).join('')}
-    </tr>`;
+    if(cells.length) html+=`<tr style="background:${i%2?'#f8fafc':'#fff'}">${cells.map((c,ci)=>`<td style="padding:10px;text-align:${ci===0?'left':'center'}">${c}</td>`).join('')}</tr>`;
   });
-  reportHTML+=`</tbody></table><hr style="margin:20px 0">
-    <p style="font-size:.8rem;color:#94a3b8;text-align:center">Performance: Excellent (≥85% on-time, ≥3 tasks) | Good (≥60% on-time) | Better (needs improvement)</p>
-  </div>`;
+  html+=`</tbody></table><hr style="margin:16px 0"><p style="font-size:.75rem;color:#94a3b8;text-align:center">Excellent ≥85% on-time & ≥3 tasks | Good ≥60% | Better = needs improvement</p></div>`;
   const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html><head><title>Performance Report</title></head><body>${reportHTML}<br><button onclick="window.print()" style="display:block;margin:0 auto;padding:10px 24px;background:#4f46e5;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem">🖨️ Print / Save PDF</button></body></html>`);
+  w.document.write(`<!DOCTYPE html><html><head><title>Performance Report</title></head><body>${html}<br><button onclick="window.print()" style="display:block;margin:0 auto;padding:10px 24px;background:#4f46e5;color:#fff;border:none;border-radius:8px;cursor:pointer">🖨️ Print / Save PDF</button></body></html>`);
   w.document.close();
 }
 
-// ---- MODALS ----
+// ---- DAILY REPORT ----
+function initDailyReport(){
+  const today=new Date().toISOString().slice(0,10);
+  document.getElementById('reportDate').value=today;
+  if(!workRows.length) workRows=[
+    {id:1,label:'Credit Note',op:'',today:'',finished:'',pending:''},
+    {id:2,label:'Debit Note',op:'',today:'',finished:'',pending:''},
+    {id:3,label:'Deliver Challan',op:'',today:'',finished:'',pending:''},
+    {id:4,label:'Journal',op:'',today:'',finished:'',pending:''},
+    {id:5,label:'Purchase Order',op:'',today:'',finished:'',pending:''},
+    {id:6,label:'Purchase Invoice',op:'',today:'',finished:'',pending:''},
+    {id:7,label:'Sales',op:'',today:'',finished:'',pending:''},
+    {id:8,label:'Sales Order',op:'',today:'',finished:'',pending:''},
+    {id:9,label:'Stock Journal',op:'',today:'',finished:'',pending:''},
+  ];
+  if(!taskRows.length) taskRows=[{id:1,task:'',total:'',received:'',pending:'',status:''}];
+  if(!otherRows.length) otherRows=[{id:1,work:'',count:'',remark:''}];
+  renderWorkRows();renderTaskRows();renderOtherRows();
+}
+
+function inp(val,onchange,w='60px',ph='0'){
+  return`<input type="number" min="0" value="${val}" placeholder="${ph}" oninput="${onchange}" style="width:${w};padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none;text-align:center"/>`;
+}
+function calculateRowMinutes(label,finished){
+  const k=(label||'').trim().toLowerCase();
+  const n=parseInt(finished)||0;
+  if(n<=0) return 0;
+  return(TIME_WEIGHTS[k]||10)*n;
+}
+function renderWorkRows(){
+  document.getElementById('workRowsBody').innerHTML=workRows.map(r=>`<tr>
+    <td><input value="${r.label}" oninput="updateWR(${r.id},'label',this.value)" style="width:120px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td>${inp(r.op,`updateWR(${r.id},'op',this.value)`)}</td>
+    <td>${inp(r.today,`updateWR(${r.id},'today',this.value)`)}</td>
+    <td>${inp(r.finished,`updateWR(${r.id},'finished',this.value)`)}</td>
+    <td>${inp(r.pending,`updateWR(${r.id},'pending',this.value)`)}</td>
+    <td style="text-align:center;font-weight:600;color:var(--muted)">${calculateRowMinutes(r.label,r.finished)} min</td>
+    <td><button onclick="removeWR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85rem">✕</button></td>
+  </tr>`).join('');
+  updateTotals();
+}
+function updateWR(id,f,v){const r=workRows.find(x=>x.id===id);if(r){r[f]=v;renderWorkRows();}}
+function removeWR(id){workRows=workRows.filter(x=>x.id!==id);renderWorkRows();}
+function addWorkRow(){workRows.push({id:Date.now(),label:'',op:'',today:'',finished:'',pending:''});renderWorkRows();}
+function updateTotals(){
+  const sum=f=>workRows.reduce((s,r)=>s+(parseInt(r[f])||0),0);
+  document.getElementById('totOP').textContent=sum('op')||'';
+  document.getElementById('totToday').textContent=sum('today')||'';
+  document.getElementById('totFinished').textContent=sum('finished')||'';
+  document.getElementById('totPending').textContent=sum('pending')||'';
+  let m=0;
+  workRows.forEach(r=>{m+=calculateRowMinutes(r.label,r.finished);});
+  otherRows.forEach(r=>{m+=(parseInt(r.count)||0)*10;});
+  document.getElementById('totCalculatedTime').textContent=m+' min';
+}
+function renderTaskRows(){
+  document.getElementById('taskRowsBody').innerHTML=taskRows.map(r=>`<tr>
+    <td><input value="${r.task}" oninput="updateTR(${r.id},'task',this.value)" placeholder="Task name" style="width:120px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td>${inp(r.total,`updateTR(${r.id},'total',this.value)`)}</td>
+    <td>${inp(r.received,`updateTR(${r.id},'received',this.value)`)}</td>
+    <td>${inp(r.pending,`updateTR(${r.id},'pending',this.value)`)}</td>
+    <td><input value="${r.status}" oninput="updateTR(${r.id},'status',this.value)" placeholder="Status" style="width:80px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td><button onclick="removeTR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85rem">✕</button></td>
+  </tr>`).join('');
+}
+function updateTR(id,f,v){const r=taskRows.find(x=>x.id===id);if(r)r[f]=v;}
+function removeTR(id){taskRows=taskRows.filter(x=>x.id!==id);renderTaskRows();}
+function addTaskRow(){taskRows.push({id:Date.now(),task:'',total:'',received:'',pending:'',status:''});renderTaskRows();}
+function renderOtherRows(){
+  document.getElementById('otherRowsBody').innerHTML=otherRows.map(r=>`<tr>
+    <td><input value="${r.work}" oninput="updateOR(${r.id},'work',this.value)" placeholder="Other work..." style="width:100%;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td>${inp(r.count,`updateOR(${r.id},'count',this.value)`,'70px','Qty')}</td>
+    <td><input value="${r.remark}" oninput="updateOR(${r.id},'remark',this.value)" placeholder="Remark..." style="width:100%;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td><button onclick="removeOR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85rem">✕</button></td>
+  </tr>`).join('');
+}
+function updateOR(id,f,v){const r=otherRows.find(x=>x.id===id);if(r){r[f]=v;if(f==='count')updateTotals();}}
+function removeOR(id){otherRows=otherRows.filter(x=>x.id!==id);renderOtherRows();updateTotals();}
+function addOtherRow(){otherRows.push({id:Date.now(),work:'',count:'',remark:''});renderOtherRows();}
+
+async function shareReport(){
+  const date=document.getElementById('reportDate').value;
+  if(!date){alert('Please select a date');return;}
+  const fmt=new Date(date+'T12:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric'});
+  document.getElementById('rcTitle').textContent=`${currentUser.name} | Daily Report (${fmt})`;
+  document.getElementById('rcGenName').textContent=currentUser.name;
+  const sum=f=>workRows.reduce((s,r)=>s+(parseInt(r[f])||0),0);
+  const activeW=workRows.filter(r=>(parseInt(r.finished)||0)>0);
+  const activeT=taskRows.filter(r=>r.task.trim());
+  const activeO=otherRows.filter(r=>(parseInt(r.count)||0)>0||r.work.trim());
+  document.getElementById('rcWorkBody').innerHTML=activeW.map(r=>`<tr>
+    <td style="border:1px solid #ddd;padding:5px 7px">${r.label}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.op||0}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.today||0}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.finished||0}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.pending||0}</td>
+  </tr>`).join('');
+  document.getElementById('rcTotOP').textContent=sum('op')||0;
+  document.getElementById('rcTotToday').textContent=sum('today')||0;
+  document.getElementById('rcTotFinished').textContent=sum('finished')||0;
+  document.getElementById('rcTotPending').textContent=sum('pending')||0;
+  document.getElementById('rcTaskBody').innerHTML=activeT.map(r=>`<tr>
+    <td style="border:1px solid #ddd;padding:5px 7px">${r.task}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.total||0}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.received||0}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.pending||0}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px">${r.status||'-'}</td>
+  </tr>`).join('');
+  document.getElementById('rcOtherBody').innerHTML=activeO.map(r=>`<tr>
+    <td style="border:1px solid #ddd;padding:5px 7px">${r.work||'-'} (Qty:${r.count||0})</td>
+    <td style="border:1px solid #ddd;padding:5px 7px">${r.remark||'-'}</td>
+  </tr>`).join('');
+  let totalMins=0;const wArr=[];
+  activeW.forEach(r=>{const m=calculateRowMinutes(r.label,r.finished);totalMins+=m;wArr.push(`${r.label}:${r.finished} Nos=${m} min`);});
+  activeO.forEach(r=>{const q=parseInt(r.count)||0;const m=q*10;totalMins+=m;wArr.push(`${r.work||'Other'}:${q} Nos=${m} min`);});
+  document.getElementById('rcTotalPerformanceTime').textContent=`Total Performance Focus: ${totalMins} min (${(totalMins/60).toFixed(2)} hrs)`;
+  try{await sb('work_logs','POST',{user_id:currentUser.id,date,hours:parseFloat((totalMins/60).toFixed(2)),description:wArr.join(' | ')||'No active entries'});}catch(e){console.log(e);}
+  const wrapper=document.getElementById('reportCardWrapper');
+  wrapper.style.cssText='position:fixed;left:0;top:0;z-index:-1;opacity:0';
+  await new Promise(r=>setTimeout(r,200));
+  try{
+    const canvas=await html2canvas(document.getElementById('reportCard'),{scale:2,backgroundColor:'#ffffff',useCORS:true,logging:false});
+    screenshotDataUrl=canvas.toDataURL('image/png');
+    document.getElementById('screenshotPreview').src=screenshotDataUrl;
+    document.getElementById('screenshotOverlay').classList.remove('hidden');
+  }catch(e){alert('Screenshot error: '+e.message);}
+  wrapper.style.cssText='position:absolute;left:-9999px;top:0';
+}
+function downloadReport(){
+  const a=document.createElement('a');a.href=screenshotDataUrl;
+  a.download=`Report_${currentUser.name.replace(/\s/g,'_')}_${document.getElementById('reportDate').value}.png`;a.click();
+}
+function closeScreenshot(){document.getElementById('screenshotOverlay').classList.add('hidden');}
+
+// ---- TEAM LOGS ----
+async function loadTeamLogs(){
+  const sel=document.getElementById('teamLogUser');
+  sel.innerHTML='<option value="">All Users</option>'+allUsers.filter(u=>u.role!=='admin').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  const uid=sel.value;
+  let url=`work_logs?select=*,user:user_id(name)&order=date.desc`;
+  if(uid) url+=`&user_id=eq.${uid}`;
+  const logs=await sb(url);
+  const tb=document.getElementById('teamLogsTable');
+  if(!logs.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No synced reports</td></tr>';return;}
+  tb.innerHTML=logs.map(l=>{
+    const chunks=(l.description||'').split(' | ').filter(Boolean);
+    const rows=chunks.map(c=>{
+      const m=c.match(/^(.*?):\s*(\d+)\s*Nos\s*=\s*(\d+)\s*min/);
+      if(m) return`<tr><td>${l.date}</td><td><strong>${m[1]}</strong></td><td style="text-align:center;font-weight:700">${m[2]}</td><td><span class="badge badge-progress">${m[3]} min</span></td></tr>`;
+      return`<tr><td>${l.date}</td><td colspan="3">${c}</td></tr>`;
+    }).join('');
+    return`<tr style="border-top:3px solid #cbd5e1;background:#fdfdfd">
+      <td style="vertical-align:top;padding-top:14px"><strong style="color:var(--secondary)">${l.user?.name||'-'}</strong></td>
+      <td style="padding:10px 0">
+        <table class="matrix-report-table">
+          <thead><tr><th>Date</th><th>Work</th><th>Finished</th><th>Time</th></tr></thead>
+          <tbody>${rows||`<tr><td colspan="4" style="text-align:center;color:var(--muted)">No data</td></tr>`}</tbody>
+        </table>
+      </td>
+      <td style="vertical-align:middle;text-align:center"><strong style="color:var(--primary);font-size:1.1rem">${l.hours}h</strong><br><small style="color:var(--muted)">${Math.round(l.hours*60)} mins</small></td>
+      <td style="vertical-align:middle;text-align:center"><button class="btn btn-secondary btn-sm" onclick="alert('Details:\\n\\n${(l.description||'-').replace(/\|/g,'\\n')}')">🔍 View</button></td>
+    </tr>`;
+  }).join('');
+}
+
+// ---- MEMBER DETAIL ----
+async function openMemberDetail(uid){
+  document.querySelectorAll('.nav-item,.team-member-item').forEach(n=>n.classList.remove('active'));
+  const navEl=document.getElementById('member-nav-'+uid);if(navEl) navEl.classList.add('active');
+  selectedMember=allUsers.find(u=>u.id===uid);
+  memberTasks=allTasks.filter(t=>t.assigned_to===uid);
+  memberLogs=await sb(`work_logs?user_id=eq.${uid}&select=*&order=date.desc`);
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('secMemberDetail').classList.add('active');
+  document.getElementById('pageTitle').textContent=selectedMember.name+"'s Profile";
+  const total=memberTasks.length,done=memberTasks.filter(t=>t.status==='Complete').length;
+  const pending=memberTasks.filter(t=>t.status==='Pending').length,inprog=memberTasks.filter(t=>t.status==='In Progress').length;
+  const totalH=memberLogs.reduce((s,l)=>s+parseFloat(l.hours||0),0);
+  document.getElementById('memberProfileHeader').innerHTML=`
+    <div class="member-profile-avatar">${getInitials(selectedMember.name)}</div>
+    <div class="member-profile-info"><h2>${selectedMember.name}</h2>
+    <p>@${selectedMember.username} &nbsp;·&nbsp; <span class="badge badge-${selectedMember.role}">${selectedMember.role}</span></p></div>`;
+  document.getElementById('memberStats').innerHTML=`
+    <div class="stat-card blue"><div class="num">${total}</div><div class="lbl">Total Tasks</div></div>
+    <div class="stat-card orange"><div class="num">${pending}</div><div class="lbl">Pending</div></div>
+    <div class="stat-card purple"><div class="num">${inprog}</div><div class="lbl">In Progress</div></div>
+    <div class="stat-card green"><div class="num">${done}</div><div class="lbl">Completed</div></div>
+    <div class="stat-card blue"><div class="num">${totalH.toFixed(1)}h</div><div class="lbl">Total Hours</div></div>`;
+  document.querySelectorAll('.member-tab').forEach(t=>t.classList.remove('active'));
+  document.querySelector('.member-tab').classList.add('active');
+  renderMemberTab('all');
+}
+function switchMemberTab(tab,el){
+  document.querySelectorAll('.member-tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');renderMemberTab(tab);
+}
+function memberTaskTable(tasks,title){
+  if(!tasks.length) return`<div class="card"><h3>${title}</h3><p style="color:var(--muted);text-align:center;padding:20px">No tasks</p></div>`;
+  return`<div class="card"><h3>${title} (${tasks.length})</h3><table>
+    <thead><tr><th>Task</th><th>Priority</th><th>Assigned By</th><th>Due Date</th><th>Status</th><th>Completed At</th></tr></thead>
+    <tbody>${tasks.map(t=>`<tr>
+      <td><strong>${t.title}</strong></td><td>${priorityBadge(t.priority)}</td>
+      <td>${t.creator?.name||'-'}</td><td>${t.due_date||'-'}</td><td>${statusBadge(t.status)}</td>
+      <td>${t.completed_at?new Date(t.completed_at).toLocaleDateString():'-'}</td>
+    </tr>`).join('')}</tbody></table></div>`;
+}
+function renderMemberPerformance(c){
+  const total=memberTasks.length,done=memberTasks.filter(t=>t.status==='Complete').length,pending=memberTasks.filter(t=>t.status==='Pending').length;
+  const onTime=memberTasks.filter(t=>t.status==='Complete'&&t.due_date&&new Date(t.completed_at)<=new Date(t.due_date)).length;
+  const onTimePct=done>0?Math.round((onTime/done)*100):0;
+  const totalH=memberLogs.reduce((s,l)=>s+parseFloat(l.hours||0),0);
+  const days=[...new Set(memberLogs.map(l=>l.date))].length||1;
+  const avgH=(totalH/days).toFixed(1);
+  let perf='Better',perfClass='perf-better',perfDesc='Needs improvement.';
+  if(avgH>=6){perf='Excellent';perfClass='perf-excellent';perfDesc='Outstanding daily output!';}
+  else if(avgH>=3){perf='Good';perfClass='perf-good';perfDesc='Solid performance trend.';}
+  c.innerHTML=`<div class="stats-grid">
+    <div class="stat-card green"><div class="num">${done}</div><div class="lbl">Completed</div></div>
+    <div class="stat-card orange"><div class="num">${pending}</div><div class="lbl">Pending</div></div>
+    <div class="stat-card blue"><div class="num">${onTimePct}%</div><div class="lbl">On-Time Rate</div></div>
+    <div class="stat-card purple"><div class="num">${avgH}h</div><div class="lbl">Avg H/Day</div></div>
+  </div>
+  <div class="card"><h3>🏆 Performance Rating</h3><div style="text-align:center;padding:30px 0">
+    <div style="font-size:3rem;margin-bottom:8px">${perf==='Excellent'?'🌟':perf==='Good'?'👍':'💪'}</div>
+    <div class="${perfClass}" style="font-size:2rem;margin-bottom:8px">${perf}</div>
+    <p style="color:var(--muted);font-size:.9rem">${perfDesc}</p>
+  </div></div>`;
+}
+function renderMemberDailyReports(c){
+  const totalH=memberLogs.reduce((s,l)=>s+parseFloat(l.hours||0),0);
+  if(!memberLogs.length){c.innerHTML=`<div class="card"><h3>Daily Reports</h3><p style="color:var(--muted);text-align:center;padding:20px">No entries yet</p></div>`;return;}
+  let rows='';
+  memberLogs.forEach(l=>{
+    const chunks=(l.description||'').split(' | ').filter(Boolean);
+    chunks.forEach(ch=>{
+      const m=ch.match(/^(.*?):\s*(\d+)\s*Nos\s*=\s*(\d+)\s*min/);
+      if(m) rows+=`<tr><td>${l.date}</td><td><strong>${m[1]}</strong></td><td style="text-align:center;font-weight:700">${m[2]}</td><td><span class="badge badge-progress">${m[3]} min</span></td></tr>`;
+      else rows+=`<tr><td>${l.date}</td><td colspan="3">${ch}</td></tr>`;
+    });
+  });
+  c.innerHTML=`<div class="stats-grid">
+    <div class="stat-card blue"><div class="num">${memberLogs.length}</div><div class="lbl">Submissions</div></div>
+    <div class="stat-card green"><div class="num">${totalH.toFixed(2)}h</div><div class="lbl">Total Hours</div></div>
+    <div class="stat-card purple"><div class="num">${[...new Set(memberLogs.map(l=>l.date))].length}</div><div class="lbl">Days Logged</div></div>
+  </div>
+  <div class="card"><h3>Report History</h3>
+    <table class="matrix-report-table" style="margin-top:14px">
+      <thead><tr><th>Date</th><th>Work</th><th>Finished</th><th>Time</th></tr></thead>
+      <tbody>${rows||'<tr><td colspan="4" style="text-align:center;color:var(--muted)">No data</td></tr>'}</tbody>
+    </table></div>`;
+}
+function renderMemberTab(tab){
+  const c=document.getElementById('memberTabContent');
+  if(tab==='all') c.innerHTML=memberTaskTable(memberTasks,'All Tasks');
+  else if(tab==='pending') c.innerHTML=memberTaskTable(memberTasks.filter(t=>t.status==='Pending'),'Pending Tasks');
+  else if(tab==='inprogress') c.innerHTML=memberTaskTable(memberTasks.filter(t=>t.status==='In Progress'),'In Progress');
+  else if(tab==='complete') c.innerHTML=memberTaskTable(memberTasks.filter(t=>t.status==='Complete'),'Completed');
+  else if(tab==='performance') renderMemberPerformance(c);
+  else if(tab==='dailyreports') renderMemberDailyReports(c);
+}
+
+// ---- HELPERS ----
+function priorityBadge(p){return`<span class="badge badge-${(p||'').toLowerCase()}">${p}</span>`;}
+function statusBadge(s){const m={'Pending':'pending','In Progress':'progress','Complete':'complete'};return`<span class="badge badge-${m[s]||'pending'}">${s}</span>`;}
+function roleBadge(r){return`<span class="badge badge-${r}">${r}</span>`;}
+
+async function loadDashboard(){
+  const my=allTasks.filter(t=>t.assigned_to===currentUser.id);
+  const total=my.length,pending=my.filter(t=>t.status==='Pending').length,inprog=my.filter(t=>t.status==='In Progress').length,done=my.filter(t=>t.status==='Complete').length;
+  const sent=allTasks.filter(t=>t.created_by===currentUser.id&&t.assigned_to!==currentUser.id).length;
+  document.getElementById('dashStats').innerHTML=`
+    <div class="stat-card blue"><div class="num">${total}</div><div class="lbl">My Total Tasks</div></div>
+    <div class="stat-card orange"><div class="num">${pending}</div><div class="lbl">Pending</div></div>
+    <div class="stat-card purple"><div class="num">${inprog}</div><div class="lbl">In Progress</div></div>
+    <div class="stat-card green"><div class="num">${done}</div><div class="lbl">Completed</div></div>
+    <div class="stat-card blue"><div class="num">${sent}</div><div class="lbl">Tasks Sent</div></div>`;
+  let extra='';
+  if(currentUser.role==='admin'||currentUser.role==='subadmin'){
+    extra+=`<div class="card"><h3>🏢 Team Overview</h3><div class="stats-grid">
+      <div class="stat-card blue"><div class="num">${allUsers.filter(u=>u.role!=='admin').length}</div><div class="lbl">Team Members</div></div>
+      <div class="stat-card blue"><div class="num">${allTasks.length}</div><div class="lbl">All Tasks</div></div>
+      <div class="stat-card orange"><div class="num">${allTasks.filter(t=>t.status==='Pending').length}</div><div class="lbl">Team Pending</div></div>
+      <div class="stat-card green"><div class="num">${allTasks.filter(t=>t.status==='Complete').length}</div><div class="lbl">Team Completed</div></div>
+    </div></div>`;
+  }
+  const recent=my.slice(0,5);
+  if(recent.length){
+    extra+=`<div class="card"><h3>📋 Recent Tasks</h3><table><thead><tr><th>Task</th><th>Priority</th><th>Status</th><th>Due</th></tr></thead><tbody>`;
+    recent.forEach(t=>{extra+=`<tr><td>${t.title}</td><td>${priorityBadge(t.priority)}</td><td>${statusBadge(t.status)}</td><td>${t.due_date||'-'}</td></tr>`;});
+    extra+='</tbody></table></div>';
+  }
+  document.getElementById('dashExtra').innerHTML=extra;
+}
+function loadTasks(){renderTasksTable(allTasks,'tasksTable',true);}
+function filterTasks(f,el){
+  document.querySelectorAll('#secTasks .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  renderTasksTable(f==='all'?allTasks:allTasks.filter(t=>t.status===f),'tasksTable',true);
+}
+function renderTasksTable(tasks,tableId,showAdmin){
+  const tb=document.getElementById(tableId);
+  if(!tasks.length){tb.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px">No tasks</td></tr>';return;}
+  tb.innerHTML=tasks.map(t=>`<tr>
+    <td><strong>${t.title}</strong></td><td>${priorityBadge(t.priority)}</td>
+    <td>${t.assignee?.name||'-'}</td><td>${t.creator?.name||'-'}</td>
+    <td>${t.due_date||'-'}</td><td>${statusBadge(t.status)}</td>
+    <td>${showAdmin?`<button class="btn btn-warning btn-sm" onclick="openEditTask('${t.id}')">Edit</button> <button class="btn btn-danger btn-sm" onclick="deleteTask('${t.id}')">Del</button>`:'-'}</td>
+  </tr>`).join('');
+}
+function loadMyTasks(){renderMyTasks(allTasks.filter(t=>t.assigned_to===currentUser.id));}
+function filterMyTasks(f,el){
+  document.querySelectorAll('#secMyTasks .tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');
+  const mine=allTasks.filter(t=>t.assigned_to===currentUser.id);
+  renderMyTasks(f==='all'?mine:mine.filter(t=>t.status===f));
+}
+function renderMyTasks(tasks){
+  const tb=document.getElementById('myTasksTable');
+  if(!tasks.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">No tasks</td></tr>';return;}
+  tb.innerHTML=tasks.map(t=>`<tr>
+    <td><strong>${t.title}</strong></td><td>${priorityBadge(t.priority)}</td>
+    <td>${t.creator?.name||'-'}</td><td>${t.due_date||'-'}</td><td>${statusBadge(t.status)}</td>
+    <td>${t.status==='Complete'
+      ?'<span class="badge badge-complete">✅ Complete</span>'
+      :`<select class="status-sel" onchange="updateTaskStatus('${t.id}',this.value)">
+        <option ${t.status==='Pending'?'selected':''}>Pending</option>
+        <option ${t.status==='In Progress'?'selected':''}>In Progress</option>
+        <option>Complete</option>
+      </select>`}
+    </td>
+  </tr>`).join('');
+}
+async function updateTaskStatus(id,status){
+  const body={status};if(status==='Complete') body.completed_at=new Date().toISOString();
+  await sb(`tasks?id=eq.${id}`,'PATCH',body);
+  allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
+  loadMyTasks();
+}
+function loadSentTasks(){
+  const sent=allTasks.filter(t=>t.created_by===currentUser.id);
+  const tb=document.getElementById('sentTasksTable');
+  if(!sent.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No sent tasks</td></tr>';return;}
+  tb.innerHTML=sent.map(t=>`<tr>
+    <td><strong>${t.title}</strong></td><td>${priorityBadge(t.priority)}</td>
+    <td>${t.assignee?.name||'-'}</td><td>${t.due_date||'-'}</td><td>${statusBadge(t.status)}</td>
+  </tr>`).join('');
+}
+function loadUsers(){
+  const tb=document.getElementById('usersTable');
+  const others=allUsers.filter(u=>u.id!==currentUser.id);
+  if(!others.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No users</td></tr>';return;}
+  tb.innerHTML=others.map(u=>{
+    const uT=allTasks.filter(t=>t.assigned_to===u.id);
+    return`<tr><td><strong>${u.name}</strong></td><td>${u.username}</td><td>${roleBadge(u.role)}</td>
+      <td><span style="color:var(--warning)">${uT.filter(t=>t.status==='Pending').length} pending</span> / <span style="color:var(--success)">${uT.filter(t=>t.status==='Complete').length} done</span></td>
+      <td><button class="btn btn-secondary btn-sm" onclick="openChangePass('${u.id}','${u.name}')">🔑 Password</button>
+      ${currentUser.role==='admin'?`<button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Del</button>`:''}</td></tr>`;
+  }).join('');
+}
+// MODALS
 function openTaskModal(task=null){
-  const userOpts = allUsers.filter(u=>u.id!==currentUser.id||!task).map(u=>`<option value="${u.id}" ${task&&task.assigned_to===u.id?'selected':''}>${u.name} (${u.role})</option>`).join('');
+  const userOpts=allUsers.map(u=>`<option value="${u.id}" ${task&&task.assigned_to===u.id?'selected':''}>${u.name} (${u.role})</option>`).join('');
   document.getElementById('modalBox').innerHTML=`
     <h3>${task?'Edit Task':'Create New Task'}</h3>
     <div class="form-group"><label>Task Title</label><input id="mTaskTitle" value="${task?task.title:''}" placeholder="Enter task description"/></div>
@@ -574,11 +972,10 @@ function openTaskModal(task=null){
     </select></div>`:''}
     <div class="modal-footer">
       <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="${task?`saveTask('${task.id}')`:'createTask()'}">${task?'Save':'Create Task'}</button>
+      <button class="btn btn-primary" onclick="${task?`saveTask('${task.id}')`:'createTask()'}">${task?'Save Changes':'Create Task'}</button>
     </div>`;
   document.getElementById('modalOverlay').classList.remove('hidden');
 }
-
 async function createTask(){
   const title=document.getElementById('mTaskTitle').value.trim();
   const priority=document.getElementById('mTaskPriority').value;
@@ -586,11 +983,8 @@ async function createTask(){
   const due_date=document.getElementById('mTaskDue').value||null;
   if(!title){alert('Enter task title');return;}
   await sb('tasks','POST',{title,priority,assigned_to,created_by:currentUser.id,due_date,status:'Pending'});
-  closeModal();
-  allTasks = await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
-  loadTasks();
+  closeModal();allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');buildNav();loadTasks();
 }
-
 async function saveTask(id){
   const title=document.getElementById('mTaskTitle').value.trim();
   const priority=document.getElementById('mTaskPriority').value;
@@ -599,26 +993,16 @@ async function saveTask(id){
   const status=document.getElementById('mTaskStatus').value;
   const body={title,priority,assigned_to,due_date,status};
   if(status==='Complete') body.completed_at=new Date().toISOString();
-  await sb(`tasks?id=eq.${id}`,'PATCH',body);
-  closeModal();
-  allTasks = await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
-  loadTasks();
+  await sb(`tasks?id=eq.${id}`,'PATCH',body);closeModal();
+  allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');loadTasks();
 }
-
-async function openEditTask(id){
-  const task = allTasks.find(t=>t.id===id);
-  if(task) openTaskModal(task);
-}
-
+async function openEditTask(id){const task=allTasks.find(t=>t.id===id);if(task)openTaskModal(task);}
 async function deleteTask(id){
-  if(!confirm('Delete this task?')) return;
-  await sb(`tasks?id=eq.${id}`,'DELETE');
-  allTasks=allTasks.filter(t=>t.id!==id);
-  loadTasks();
+  if(!confirm('Delete this task?'))return;
+  await sb(`tasks?id=eq.${id}`,'DELETE');allTasks=allTasks.filter(t=>t.id!==id);loadTasks();
 }
-
 function openUserModal(){
-  const isAdmin = currentUser.role==='admin';
+  const isAdmin=currentUser.role==='admin';
   document.getElementById('modalBox').innerHTML=`
     <h3>Add New User</h3>
     <div class="form-group"><label>Full Name</label><input id="mUserName" placeholder="Full name"/></div>
@@ -634,22 +1018,16 @@ function openUserModal(){
     </div>`;
   document.getElementById('modalOverlay').classList.remove('hidden');
 }
-
 async function createUser(){
   const name=document.getElementById('mUserName').value.trim();
   const username=document.getElementById('mUserUsername').value.trim();
   const password=document.getElementById('mUserPass').value.trim();
   const role=document.getElementById('mUserRole').value;
   if(!name||!username||!password){alert('Fill all fields');return;}
-  try{
-    await sb('users','POST',{name,username,password,role});
-    closeModal();
-    allUsers=await sb('users?select=*&order=name.asc');
-    loadUsers();
-  }catch(e){alert('Username already exists or error: '+e.message);}
+  try{await sb('users','POST',{name,username,password,role});closeModal();allUsers=await sb('users?select=*&order=name.asc');buildNav();loadUsers();}
+  catch(e){alert('Error: '+e.message);}
 }
-
-function openChangePass(uid, name){
+function openChangePass(uid,name){
   document.getElementById('modalBox').innerHTML=`
     <h3>Change Password — ${name}</h3>
     <div class="form-group"><label>New Password</label><input id="mNewPass" type="password" placeholder="Enter new password"/></div>
@@ -659,49 +1037,17 @@ function openChangePass(uid, name){
     </div>`;
   document.getElementById('modalOverlay').classList.remove('hidden');
 }
-
 async function changePass(uid){
   const pass=document.getElementById('mNewPass').value.trim();
   if(!pass){alert('Enter password');return;}
-  await sb(`users?id=eq.${uid}`,'PATCH',{password:pass});
-  closeModal();
-  alert('Password updated!');
+  await sb(`users?id=eq.${uid}`,'PATCH',{password:pass});closeModal();alert('Password updated!');
 }
-
 async function deleteUser(uid){
-  if(!confirm('Delete this user? Their tasks will remain.')) return;
-  await sb(`users?id=eq.${uid}`,'DELETE');
-  allUsers=allUsers.filter(u=>u.id!==uid);
-  loadUsers();
+  if(!confirm('Delete this user?'))return;
+  await sb(`users?id=eq.${uid}`,'DELETE');allUsers=allUsers.filter(u=>u.id!==uid);buildNav();loadUsers();
 }
-
-function openWorkLogModal(){
-  const today=new Date().toISOString().slice(0,10);
-  document.getElementById('modalBox').innerHTML=`
-    <h3>Log Daily Work</h3>
-    <div class="form-group"><label>Date</label><input type="date" id="mLogDate" value="${today}"/></div>
-    <div class="form-group"><label>Hours Worked</label><input type="number" id="mLogHours" min="0.5" max="24" step="0.5" placeholder="e.g. 8"/></div>
-    <div class="form-group"><label>What did you work on?</label><textarea id="mLogDesc" rows="3" placeholder="Describe your work today..."></textarea></div>
-    <div class="modal-footer">
-      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-primary" onclick="saveWorkLog()">Save Log</button>
-    </div>`;
-  document.getElementById('modalOverlay').classList.remove('hidden');
-}
-
-async function saveWorkLog(){
-  const date=document.getElementById('mLogDate').value;
-  const hours=parseFloat(document.getElementById('mLogHours').value);
-  const description=document.getElementById('mLogDesc').value.trim();
-  if(!date||isNaN(hours)){alert('Fill date and hours');return;}
-  await sb('work_logs','POST',{user_id:currentUser.id,date,hours,description});
-  closeModal();
-  loadWorkLog();
-}
-
 function closeModal(){document.getElementById('modalOverlay').classList.add('hidden');}
 document.getElementById('modalOverlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.addEventListener('keydown',e=>{if(e.key==='Enter'){const btn=document.querySelector('.modal .btn-primary');if(btn)btn.click();}});
 </script>
 </body>
 </html>
