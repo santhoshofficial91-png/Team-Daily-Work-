@@ -47,7 +47,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh}
 .logout-btn{background:rgba(255,255,255,.15);border:none;color:#fff;padding:10px 20px;cursor:pointer;font-size:.85rem;text-align:left;display:flex;align-items:center;gap:10px;margin-top:auto;border-top:1px solid rgba(255,255,255,.15)}
 .logout-btn:hover{background:rgba(255,255,255,.25)}
 .main{margin-left:250px;padding:24px;flex:1;min-height:100vh}
-.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;flex-wrap:wrap;gap:10px}
 .topbar h1{font-size:1.4rem;font-weight:700}
 .user-badge{background:#fff;border-radius:20px;padding:6px 14px;font-size:.85rem;color:var(--primary);font-weight:600;box-shadow:0 2px 8px rgba(0,0,0,.08)}
 .stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:16px;margin-bottom:24px}
@@ -76,7 +76,7 @@ tr:hover td{background:#fafafa}
 .badge-subadmin{background:#dbeafe;color:#1e40af}
 .badge-user{background:#f0fdf4;color:#166534}
 .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:flex;align-items:center;justify-content:center;z-index:1000}
-.modal{background:#fff;border-radius:16px;padding:28px;width:500px;max-width:95vw;max-height:90vh;overflow-y:auto}
+.modal{background:#fff;border-radius:16px;padding:28px;width:520px;max-width:95vw;max-height:90vh;overflow-y:auto}
 .modal h3{margin-bottom:20px;font-size:1.1rem}
 .modal-footer{display:flex;gap:10px;justify-content:flex-end;margin-top:20px}
 .perf-excellent{color:#10b981;font-weight:700}
@@ -92,7 +92,7 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
 .alert{padding:10px 16px;border-radius:8px;margin-bottom:16px;font-size:.85rem}
 .alert-error{background:#fee2e2;color:#991b1b}
 .alert-success{background:#dcfce7;color:#166534}
-.member-profile-header{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;display:flex;align-items:center;gap:20px}
+.member-profile-header{background:#fff;border-radius:12px;padding:24px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
 .member-profile-avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#4f46e5,#7c3aed);display:flex;align-items:center;justify-content:center;font-size:1.6rem;font-weight:700;color:#fff;flex-shrink:0}
 .member-profile-info h2{font-size:1.3rem;margin-bottom:4px}
 .member-profile-info p{color:var(--muted);font-size:.85rem}
@@ -108,22 +108,54 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
 #screenshotOverlay .sc-box{background:#fff;border-radius:16px;padding:20px;max-width:600px;width:95vw;text-align:center}
 #screenshotOverlay h3{margin-bottom:8px;color:var(--primary)}
 #screenshotOverlay p{color:var(--muted);font-size:.85rem;margin-bottom:16px}
-#screenshotPreview{width:100%;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.15);max-height:60vh;object-fit:contain}
+#screenshotPreview{width:100%;border-radius:8px;max-height:60vh;object-fit:contain}
 .sc-actions{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
 .matrix-report-table{width:100%;border:1px solid #e2e8f0;margin-top:6px;background:#fff}
 .matrix-report-table th{background:#f8fafc;color:#475569;font-weight:600;border:1px solid #e2e8f0;padding:6px 10px;font-size:.8rem}
 .matrix-report-table td{border:1px solid #e2e8f0;padding:6px 10px;font-size:.8rem;color:#334155}
-/* Date filter bar */
 .date-filter-bar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#fff;border-radius:10px;padding:10px 16px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:16px}
 .date-filter-bar label{font-size:.82rem;font-weight:600;color:var(--muted)}
 .date-filter-bar input[type=date]{padding:5px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.82rem;outline:none;color:var(--text)}
-.date-filter-bar input[type=date]:focus{border-color:var(--primary)}
-.date-filter-bar .sep{color:var(--muted);font-size:.82rem}
 .active-filter-badge{background:#ede9fe;color:#5b21b6;border-radius:12px;padding:3px 10px;font-size:.75rem;font-weight:700}
+/* CRICKET */
+.cricket-scoreboard{background:linear-gradient(135deg,#1a1a2e,#16213e,#0f3460);border-radius:14px;padding:10px 14px;display:flex;align-items:center;gap:10px;box-shadow:0 4px 20px rgba(0,0,0,.2);border:2px solid rgba(255,255,255,.1);position:relative;overflow:hidden}
+.cricket-scoreboard::before{content:'🏏';position:absolute;right:8px;top:4px;font-size:1.6rem;opacity:.12}
+.cs-runs{font-size:1.6rem;font-weight:900;color:#fbbf24;line-height:1;text-shadow:0 0 10px rgba(251,191,36,.5)}
+.cs-label{font-size:.6rem;color:#94a3b8;text-transform:uppercase;letter-spacing:1px;font-weight:600}
+.cs-divider{width:1px;height:36px;background:rgba(255,255,255,.15)}
+.cs-stat{font-size:.68rem;color:#cbd5e1}
+.cs-stat span{color:#fbbf24;font-weight:700}
+.cs-milestone{font-size:.65rem;background:rgba(251,191,36,.15);color:#fbbf24;padding:2px 6px;border-radius:8px;font-weight:700;border:1px solid rgba(251,191,36,.3)}
+.sidebar-cricket{padding:10px 14px;margin:6px 12px;background:rgba(0,0,0,.3);border-radius:10px;border:1px solid rgba(255,255,255,.1)}
+.sidebar-cricket .sc-title{font-size:.6rem;text-transform:uppercase;letter-spacing:1px;opacity:.6;margin-bottom:4px}
+.sidebar-cricket .sc-runs{font-size:1.3rem;font-weight:900;color:#fbbf24}
+.sidebar-cricket .sc-info{font-size:.62rem;color:rgba(255,255,255,.6);margin-top:2px}
+#celebrationOverlay{position:fixed;inset:0;z-index:9999;pointer-events:none;display:flex;align-items:center;justify-content:center;flex-direction:column}
+.celebration-text{font-size:3rem;font-weight:900;color:#fff;text-shadow:0 0 30px #fbbf24,0 0 60px #f59e0b;animation:celebPop .6s ease-out forwards;text-align:center;line-height:1.2}
+.celebration-sub{font-size:1.1rem;color:#fbbf24;font-weight:700;margin-top:8px;text-align:center}
+@keyframes celebPop{0%{transform:scale(0);opacity:0}60%{transform:scale(1.2)}100%{transform:scale(1);opacity:1}}
+.confetti-piece{position:absolute;width:10px;height:10px;border-radius:2px;animation:confettiFall 3s ease-in forwards}
+@keyframes confettiFall{0%{transform:translateY(-100vh) rotate(0deg);opacity:1}100%{transform:translateY(100vh) rotate(720deg);opacity:0}}
+.cricket-leaderboard{background:#fff;border-radius:12px;padding:20px;box-shadow:0 2px 8px rgba(0,0,0,.06);margin-bottom:20px}
+.lb-row{display:flex;align-items:center;gap:12px;padding:10px 14px;border-radius:10px;margin-bottom:8px;background:#f8fafc;border-left:4px solid #e2e8f0;transition:.2s}
+.lb-row:hover{background:#f1f5f9}
+.lb-row.gold{border-left-color:#fbbf24;background:linear-gradient(90deg,#fffbeb,#f8fafc)}
+.lb-row.silver{border-left-color:#94a3b8}
+.lb-row.bronze{border-left-color:#d97706;background:linear-gradient(90deg,#fef3c7,#f8fafc)}
+.lb-rank{font-size:1.1rem;width:28px;text-align:center}
+.lb-name{min-width:100px;font-weight:700;font-size:.88rem}
+.lb-runs{font-size:1.2rem;font-weight:900;color:#fbbf24}
+.lb-badge{font-size:.72rem;background:#ede9fe;color:#5b21b6;padding:2px 8px;border-radius:10px;font-weight:600}
+.progress-bar-wrap{background:#e2e8f0;border-radius:20px;height:6px;flex:1}
+.progress-bar-fill{height:6px;border-radius:20px;background:linear-gradient(90deg,#fbbf24,#f59e0b);transition:.5s}
+.test-match-badge{background:linear-gradient(135deg,#1a1a2e,#0f3460);color:#fbbf24;padding:4px 12px;border-radius:10px;font-size:.72rem;font-weight:700;border:1px solid rgba(251,191,36,.3)}
+/* REPORT TABLE */
+.report-perf-excellent{background:#dcfce7;color:#166534;padding:3px 10px;border-radius:12px;font-weight:700;font-size:.78rem}
+.report-perf-good{background:#fef3c7;color:#92400e;padding:3px 10px;border-radius:12px;font-weight:700;font-size:.78rem}
+.report-perf-better{background:#fee2e2;color:#991b1b;padding:3px 10px;border-radius:12px;font-weight:700;font-size:.78rem}
 </style>
 </head>
 <body>
-
 <div id="loginPage">
   <div class="login-box">
     <h2>🏢 TaskFlow</h2>
@@ -139,21 +171,36 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
   <div class="sidebar">
     <div class="sidebar-logo"><h3>🏢 TaskFlow</h3><p id="sidebarRole">Loading...</p></div>
     <div id="sidebarNav"></div>
+    <div id="sidebarCricket" class="sidebar-cricket hidden">
+      <div class="sc-title">🏏 My Score</div>
+      <div class="sc-runs" id="scSidebarRuns">0</div>
+      <div class="sc-info" id="scSidebarInfo">Test Match</div>
+    </div>
     <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
   </div>
   <div class="main">
     <div class="topbar">
       <h1 id="pageTitle">Dashboard</h1>
-      <div class="user-badge" id="userBadge">User</div>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+        <div id="cricketScoreboard" class="cricket-scoreboard hidden">
+          <div style="display:flex;flex-direction:column;align-items:center">
+            <div class="cs-runs" id="csRuns">0</div>
+            <div class="cs-label">Runs</div>
+          </div>
+          <div class="cs-divider"></div>
+          <div style="display:flex;flex-direction:column;gap:2px">
+            <div class="cs-stat">Balls: <span id="csBalls">0</span></div>
+            <div class="cs-stat">4s: <span id="cs4s">0</span> &nbsp;6s: <span id="cs6s">0</span></div>
+            <div class="cs-stat">SR: <span id="csSR">0.0</span> · Day <span id="csDay">1</span>/5</div>
+            <div id="csMilestone" class="cs-milestone hidden"></div>
+          </div>
+        </div>
+        <div class="user-badge" id="userBadge">User</div>
+      </div>
     </div>
 
-    <!-- DASHBOARD -->
-    <div id="secDashboard" class="section">
-      <div class="stats-grid" id="dashStats"></div>
-      <div id="dashExtra"></div>
-    </div>
+    <div id="secDashboard" class="section"><div class="stats-grid" id="dashStats"></div><div id="dashExtra"></div></div>
 
-    <!-- ALL TASKS -->
     <div id="secTasks" class="section">
       <div class="action-bar">
         <div class="tab-bar" style="margin-bottom:0">
@@ -167,7 +214,6 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
       <div class="card"><table><thead><tr><th>Task</th><th>Priority</th><th>Assigned To</th><th>Assigned By</th><th>Due Date</th><th>Status</th><th>Action</th></tr></thead><tbody id="tasksTable"></tbody></table></div>
     </div>
 
-    <!-- MY TASKS -->
     <div id="secMyTasks" class="section">
       <div class="action-bar">
         <div class="tab-bar" style="margin-bottom:0">
@@ -178,10 +224,9 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
         </div>
         <button class="btn btn-primary btn-sm" onclick="openTaskModal()">+ New Task</button>
       </div>
-      <div class="card"><table><thead><tr><th>Task</th><th>Priority</th><th>Assigned By</th><th>Due Date</th><th>Status</th><th>Update</th></tr></thead><tbody id="myTasksTable"></tbody></table></div>
+      <div class="card"><table><thead><tr><th>Created</th><th>Task</th><th>Priority</th><th>Assigned By</th><th>Status</th><th>Completed</th><th>🏏 Runs</th><th>Update</th></tr></thead><tbody id="myTasksTable"></tbody></table></div>
     </div>
 
-    <!-- SENT TASKS -->
     <div id="secSentTasks" class="section">
       <div class="action-bar">
         <h3 style="color:var(--muted);font-size:.9rem">Tasks you created & assigned to others</h3>
@@ -190,13 +235,50 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
       <div class="card"><table><thead><tr><th>Task</th><th>Priority</th><th>Assigned To</th><th>Due Date</th><th>Status</th></tr></thead><tbody id="sentTasksTable"></tbody></table></div>
     </div>
 
+    <!-- MY SCORE -->
+    <div id="secCricket" class="section">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;flex-wrap:wrap;gap:12px">
+        <div><h2 style="font-size:1.3rem;margin-bottom:4px">🏏 Cricket Leaderboard</h2>
+          <p style="color:var(--muted);font-size:.85rem">Test Match · Mon–Fri · Score runs by completing tasks!</p></div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap">
+          <span class="test-match-badge" id="currentMatchBadge">🏆 MATCH 1</span>
+          <button class="btn btn-danger btn-sm" id="endMatchBtn" onclick="endCurrentMatch()" style="display:none">🏁 End Match & Save</button>
+        </div>
+      </div>
+      <div class="stats-grid" id="cricketStats"></div>
+      <div class="cricket-leaderboard">
+        <h3>🏆 Current Match Scoreboard</h3>
+        <div id="leaderboardRows"></div>
+      </div>
+      <div id="matchHistorySection"></div>
+      <div class="card">
+        <h3>📋 Run Scoring Rules</h3>
+        <table style="font-size:.82rem">
+          <thead><tr><th>Condition</th><th>Runs</th><th>Shot</th></tr></thead>
+          <tbody>
+            <tr><td>Complete 0–1 hr before due</td><td><strong style="color:#10b981">6 runs</strong></td><td>🏏 SIX!</td></tr>
+            <tr><td>Complete 1–3 hr before due</td><td><strong style="color:#10b981">5 runs</strong></td><td>🔥 Five!</td></tr>
+            <tr><td>Complete 3–5 hr before due</td><td><strong style="color:#3b82f6">4 runs</strong></td><td>💥 FOUR!</td></tr>
+            <tr><td>Complete 5–6 hr before due</td><td><strong style="color:#3b82f6">3 runs</strong></td><td>✅ Three</td></tr>
+            <tr><td>Complete 6–7 hr before due</td><td><strong style="color:#f59e0b">2 runs</strong></td><td>👍 Two</td></tr>
+            <tr><td>Complete 7–8 hr before due</td><td><strong style="color:#f59e0b">1 run</strong></td><td>🏃 One</td></tr>
+            <tr><td>After due date (per day late)</td><td><strong style="color:#ef4444">-1/day</strong></td><td>⏰ Penalty</td></tr>
+            <tr><td>Own self-assigned task</td><td><strong style="color:#8b5cf6">1 run</strong></td><td>🙋 Self</td></tr>
+            <tr><td>Each task = 1 ball faced</td><td>—</td><td>🎾 Ball</td></tr>
+            <tr><td>4 runs on a task = boundary (4)</td><td>counts as 4s</td><td>💥</td></tr>
+            <tr><td>6 runs on a task = six (6)</td><td>counts as 6s</td><td>🏏</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
     <!-- DAILY REPORT -->
     <div id="secDailyReport" class="section">
       <div class="action-bar">
         <h3>📝 Daily Report</h3>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
           <input type="date" id="reportDate" style="padding:6px 12px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:.85rem"/>
-          <button class="btn btn-green btn-sm" onclick="shareReport()">📸 Share & Sync to Admin</button>
+          <button class="btn btn-green btn-sm" onclick="shareReport()">📸 Share & Sync</button>
         </div>
       </div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
@@ -209,35 +291,21 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
             <thead><tr><th>Today Work</th><th style="text-align:center">OP</th><th style="text-align:center">Today</th><th style="text-align:center">Finished</th><th style="text-align:center">Pending</th><th>Perf. Time</th><th></th></tr></thead>
             <tbody id="workRowsBody"></tbody>
             <tfoot><tr style="background:#f1f5f9;font-weight:700">
-              <td>Total</td>
-              <td style="text-align:center" id="totOP">0</td>
-              <td style="text-align:center" id="totToday">0</td>
-              <td style="text-align:center" id="totFinished">0</td>
-              <td style="text-align:center" id="totPending">0</td>
-              <td style="text-align:center;color:var(--primary)" id="totCalculatedTime">0 min</td>
-              <td></td>
+              <td>Total</td><td style="text-align:center" id="totOP">0</td><td style="text-align:center" id="totToday">0</td>
+              <td style="text-align:center" id="totFinished">0</td><td style="text-align:center" id="totPending">0</td>
+              <td style="text-align:center;color:var(--primary)" id="totCalculatedTime">0 min</td><td></td>
             </tr></tfoot>
           </table>
         </div>
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-            <h3 style="margin:0">📌 Task</h3>
+            <h3 style="margin:0">🗒️ Other Work</h3>
             <button class="add-row-btn" style="margin:0;padding:5px 12px;font-size:.78rem;width:auto" onclick="addTaskRow()">+ Add Row</button>
           </div>
           <table style="font-size:.82rem">
-            <thead><tr><th>Task</th><th style="text-align:center">Total</th><th style="text-align:center">Received</th><th style="text-align:center">Pending</th><th>Status</th><th></th></tr></thead>
+            <thead><tr><th>Other Work</th><th style="text-align:center">Total</th><th style="text-align:center">Received</th><th style="text-align:center">Pending</th><th>Status</th><th>Remark</th><th></th></tr></thead>
             <tbody id="taskRowsBody"></tbody>
           </table>
-          <div style="margin-top:16px">
-            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px">
-              <h3 style="margin:0;font-size:.9rem">🗒️ Other Work</h3>
-              <button class="add-row-btn" style="margin:0;padding:5px 12px;font-size:.78rem;width:auto" onclick="addOtherRow()">+ Add Row</button>
-            </div>
-            <table style="font-size:.82rem">
-              <thead><tr><th>Other Work</th><th>Count/Finished</th><th>Remark</th><th></th></tr></thead>
-              <tbody id="otherRowsBody"></tbody>
-            </table>
-          </div>
         </div>
       </div>
       <div style="position:fixed;left:-9999px;top:0;z-index:-1" id="reportCardWrapper">
@@ -264,22 +332,15 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
               </table>
             </div>
             <div style="flex:1">
-              <table style="width:100%;border-collapse:collapse;font-size:.78rem;margin-bottom:12px">
+              <table style="width:100%;border-collapse:collapse;font-size:.78rem">
                 <thead><tr style="background:#e2e8f0">
-                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Task</th>
-                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Total Count</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Other Work</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Total</th>
                   <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Received</th>
                   <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Pending</th>
                   <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Status</th>
                 </tr></thead>
                 <tbody id="rcTaskBody"></tbody>
-              </table>
-              <table style="width:100%;border-collapse:collapse;font-size:.78rem">
-                <thead><tr style="background:#e2e8f0">
-                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Other Work</th>
-                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Remark</th>
-                </tr></thead>
-                <tbody id="rcOtherBody"></tbody>
               </table>
             </div>
           </div>
@@ -291,10 +352,7 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
 
     <!-- USERS -->
     <div id="secUsers" class="section">
-      <div class="action-bar">
-        <h3>Manage Users</h3>
-        <button class="btn btn-primary btn-sm" onclick="openUserModal()">+ Add User</button>
-      </div>
+      <div class="action-bar"><h3>Manage Users</h3><button class="btn btn-primary btn-sm" onclick="openUserModal()">+ Add User</button></div>
       <div class="card"><table><thead><tr><th>Name</th><th>Username</th><th>Role</th><th>Tasks</th><th>Actions</th></tr></thead><tbody id="usersTable"></tbody></table></div>
     </div>
 
@@ -302,14 +360,10 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
     <div id="secPerformance" class="section">
       <div class="action-bar">
         <h3>Team Performance</h3>
-        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-          <button class="btn btn-purple btn-sm" onclick="generateReport()">📄 Report</button>
-        </div>
+        <button class="btn btn-purple btn-sm" onclick="generateReport()">📄 Export Report</button>
       </div>
-
-      <!-- DATE FILTER BAR -->
       <div class="date-filter-bar">
-        <span style="font-size:.85rem;font-weight:700;color:var(--primary)">🗓️ Filter by Date:</span>
+        <span style="font-size:.85rem;font-weight:700;color:var(--primary)">🗓️ Filter:</span>
         <label>Quick:</label>
         <select id="perfQuickSel" onchange="applyQuickFilter()" style="padding:5px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.82rem;outline:none">
           <option value="all">All Time</option>
@@ -320,20 +374,27 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
           <option value="lastmonth">Last Month</option>
           <option value="custom">Custom Range</option>
         </select>
-        <span class="sep">|</span>
-        <label>From:</label>
-        <input type="date" id="perfFromDate" onchange="onCustomDateChange()" style=""/>
-        <label>To:</label>
-        <input type="date" id="perfToDate" onchange="onCustomDateChange()" style=""/>
+        <label>From:</label><input type="date" id="perfFromDate" onchange="onCustomDateChange()"/>
+        <label>To:</label><input type="date" id="perfToDate" onchange="onCustomDateChange()"/>
         <button class="btn btn-primary btn-sm" onclick="loadPerformance()">Apply</button>
         <button class="btn btn-secondary btn-sm" onclick="clearPerfFilter()">Clear</button>
         <span id="activePerfFilterBadge" class="active-filter-badge hidden"></span>
       </div>
-
-      <div id="perfCards" class="stats-grid"></div>
+      <!-- Performance Summary Cards -->
+      <div id="perfSummaryCards" class="stats-grid"></div>
+      <!-- Performance Table -->
       <div class="card">
+        <h3 id="perfTableTitle">📊 Team Performance Report</h3>
         <table>
-          <thead><tr><th>User</th><th>Total Tasks</th><th>Completed</th><th>Pending</th><th>On-Time %</th><th>Avg H/Day</th><th>Performance</th></tr></thead>
+          <thead><tr>
+            <th>User</th>
+            <th>Total Tasks</th>
+            <th>✅ On-Time</th>
+            <th>⏰ Delayed</th>
+            <th>📊 On-Time %</th>
+            <th>🏏 Runs</th>
+            <th>Performance</th>
+          </tr></thead>
           <tbody id="perfTable"></tbody>
         </table>
       </div>
@@ -345,17 +406,7 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
         <h3>Team Daily Reports</h3>
         <select id="teamLogUser" onchange="loadTeamLogs()" style="padding:6px 12px;border-radius:8px;border:1.5px solid #e2e8f0;font-size:.85rem"><option value="">All Users</option></select>
       </div>
-      <div class="card">
-        <table>
-          <thead><tr>
-            <th>User</th>
-            <th style="font-weight:bold;background-color:#dbeafe;color:#1e40af">Date / Work Performance Metrics</th>
-            <th>Total Hours</th>
-            <th>Action</th>
-          </tr></thead>
-          <tbody id="teamLogsTable"></tbody>
-        </table>
-      </div>
+      <div class="card"><table><thead><tr><th>User</th><th style="background:#dbeafe;color:#1e40af">Work Performance Metrics</th><th>Hours</th><th>Action</th></tr></thead><tbody id="teamLogsTable"></tbody></table></div>
     </div>
 
     <!-- MEMBER DETAIL -->
@@ -376,17 +427,12 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
   </div>
 </div>
 
-<!-- MODALS -->
-<div id="modalOverlay" class="modal-overlay hidden">
-  <div class="modal" id="modalBox"></div>
-</div>
-
-<!-- SCREENSHOT OVERLAY -->
+<div id="modalOverlay" class="modal-overlay hidden"><div class="modal" id="modalBox"></div></div>
 <div id="screenshotOverlay" class="hidden">
   <div class="sc-box">
     <h3>📸 Daily Report Saved!</h3>
     <p>Synced to admin. Long press image to copy, then paste in WhatsApp.</p>
-    <img id="screenshotPreview" src="" alt="Report Screenshot"/>
+    <img id="screenshotPreview" src="" alt="Report"/>
     <div class="sc-actions">
       <button class="btn btn-success btn-sm" onclick="downloadReport()">⬇️ Download</button>
       <button class="btn btn-purple btn-sm" onclick="window.open('https://web.whatsapp.com','_blank')">💬 WhatsApp</button>
@@ -394,6 +440,7 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
     </div>
   </div>
 </div>
+<div id="celebrationOverlay" class="hidden"></div>
 
 <script>
 const SB_URL='https://qukgbkjnqpmgowmkgtqd.supabase.co';
@@ -401,10 +448,19 @@ const SB_KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZ
 const H={'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 
 let currentUser=null,allUsers=[],allTasks=[],selectedMember=null,memberTasks=[],memberLogs=[];
-let screenshotDataUrl='';
-let workRows=[],taskRows=[],otherRows=[];
+let screenshotDataUrl='',workRows=[],taskRows=[],userCricketRuns=0;
 
-const TIME_WEIGHTS={'sales':20,'purchase order':15,'sales order':15,'purchase invoice':15,'credit note':15,'debit note':15,'deliver challan':15,'journal':15,'stock journal':15};
+const TIME_RULES={
+  'credit note':{base:10,threshold:null,aboveMin:null},
+  'debit note':{base:10,threshold:null,aboveMin:null},
+  'deliver challan':{base:10,threshold:5,aboveMin:10},
+  'journal':{base:5,threshold:null,aboveMin:null},
+  'purchase order':{base:10,threshold:5,aboveMin:5},
+  'purchase invoice':{base:5,threshold:null,aboveMin:null},
+  'sales':{base:15,threshold:5,aboveMin:10},
+  'sales order':{base:15,threshold:5,aboveMin:10},
+  'stock journal':{base:10,threshold:null,aboveMin:null},
+};
 
 async function sb(path,method='GET',body=null){
   const opts={method,headers:{...H}};
@@ -415,6 +471,340 @@ async function sb(path,method='GET',body=null){
   return txt?JSON.parse(txt):[];
 }
 
+// ===== CRICKET =====
+function calcTaskRuns(task){
+  if(task.status!=='Complete') return 0;
+  const isSelf=task.created_by===task.assigned_to;
+  // Use time from created_at → completed_at (hours taken to complete)
+  if(!task.completed_at||!task.created_at) return isSelf?1:3;
+  const created=new Date(task.created_at);
+  const done=new Date(task.completed_at);
+  const hoursToComplete=(done-created)/3600000; // hours elapsed
+  // Faster completion = more runs
+  if(hoursToComplete<=1)  return 6; // within 1 hour
+  if(hoursToComplete<=3)  return 5; // 1–3 hours
+  if(hoursToComplete<=5)  return 4; // 3–5 hours
+  if(hoursToComplete<=6)  return 3; // 5–6 hours
+  if(hoursToComplete<=7)  return 2; // 6–7 hours
+  if(hoursToComplete<=8)  return 1; // 7–8 hours
+  // After 8 hours: reduce by 1 per extra day, min 0
+  const extraDays=Math.floor((hoursToComplete-8)/24);
+  return Math.max(0,1-extraDays);
+}
+function calcStats(tasks){
+  const completed=tasks.filter(t=>t.status==='Complete');
+  const runs=completed.reduce((s,t)=>s+calcTaskRuns(t),0);
+  const balls=tasks.length;
+  const fours=completed.filter(t=>calcTaskRuns(t)===4).length;
+  const sixes=completed.filter(t=>calcTaskRuns(t)===6).length;
+  const sr=balls>0?((runs/balls)*100).toFixed(1):'0.0';
+  return{runs,balls,fours,sixes,sr,completed:completed.length};
+}
+function getRunLabel(r){
+  if(r===6) return{emoji:'🏏',label:'SIX!',color:'#10b981'};
+  if(r===5) return{emoji:'🔥',label:'FIVE!',color:'#10b981'};
+  if(r===4) return{emoji:'💥',label:'FOUR!',color:'#3b82f6'};
+  if(r===3) return{emoji:'✅',label:'3 Runs',color:'#3b82f6'};
+  if(r===2) return{emoji:'👍',label:'2 Runs',color:'#f59e0b'};
+  if(r===1) return{emoji:'🏃',label:'1 Run',color:'#f59e0b'};
+  return{emoji:'⏰',label:'Late',color:'#ef4444'};
+}
+function getMilestoneLabel(runs){
+  if(runs>0&&runs%100===0) return{text:`${runs} RUNS — CENTURY!`,emoji:'🎉🏆🎉',big:true};
+  if(runs>0&&runs%50===0) return{text:`${runs} RUNS — HALF CENTURY!`,emoji:'🎊⭐🎊',big:false};
+  return null;
+}
+
+// Match week detection — match = Mon-Fri week
+function getMatchWeekKey(date){
+  const d=date?new Date(date):new Date();
+  const mon=new Date(d);
+  mon.setDate(d.getDate()-((d.getDay()+6)%7));
+  return mon.toISOString().slice(0,10);
+}
+function getCurrentMatchKey(){ return getMatchWeekKey(); }
+
+async function loadCricketScore(){
+  if(!currentUser||currentUser.role==='admin'){
+    document.getElementById('cricketScoreboard').classList.add('hidden');
+    document.getElementById('sidebarCricket').classList.add('hidden');
+    return;
+  }
+  const myTasks=allTasks.filter(t=>t.assigned_to===currentUser.id);
+  // Filter only current match week tasks
+  const matchKey=getCurrentMatchKey();
+  const matchTasks=myTasks.filter(t=>{
+    if(!t.completed_at) return t.status!=='Complete'; // pending tasks count as balls
+    return getMatchWeekKey(t.completed_at)===matchKey||getMatchWeekKey(t.created_at)===matchKey;
+  });
+  const s=calcStats(myTasks.filter(t=>getMatchWeekKey(t.created_at)===matchKey||getMatchWeekKey(t.completed_at||t.created_at)===matchKey));
+  const prev=userCricketRuns;
+  userCricketRuns=s.runs;
+  // Day = current weekday (Mon=1..Fri=5)
+  const dow=new Date().getDay();
+  const day=dow>=1&&dow<=5?dow:dow===0?5:5;
+
+  document.getElementById('cricketScoreboard').classList.remove('hidden');
+  document.getElementById('csRuns').textContent=s.runs;
+  document.getElementById('csBalls').textContent=s.balls;
+  document.getElementById('cs4s').textContent=s.fours;
+  document.getElementById('cs6s').textContent=s.sixes;
+  document.getElementById('csSR').textContent=s.sr;
+  document.getElementById('csDay').textContent=day;
+
+  document.getElementById('sidebarCricket').classList.remove('hidden');
+  document.getElementById('scSidebarRuns').textContent=`${s.runs}(${s.balls}b)`;
+  document.getElementById('scSidebarInfo').textContent=`4s:${s.fours} 6s:${s.sixes} SR:${s.sr}`;
+
+  const ms=getMilestoneLabel(s.runs);
+  const msel=document.getElementById('csMilestone');
+  if(ms){msel.classList.remove('hidden');msel.textContent=ms.emoji+' '+ms.text;}
+  else msel.classList.add('hidden');
+  if(s.runs>prev){const nm=getMilestoneLabel(s.runs);if(nm)showCelebration(nm,s.runs);}
+}
+
+async function endCurrentMatch(){
+  if(!confirm('End this match and save the scoreboard? A new match will start next Monday.')) return;
+  const matchKey=getCurrentMatchKey();
+  // Build scorecard for all users
+  const scores=await Promise.all(allUsers.filter(u=>u.role!=='admin').map(async u=>{
+    const tasks=await sb(`tasks?assigned_to=eq.${u.id}&select=*`);
+    const matchTasks=tasks.filter(t=>getMatchWeekKey(t.created_at)===matchKey||getMatchWeekKey(t.completed_at||t.created_at)===matchKey);
+    const s=calcStats(matchTasks);
+    return{name:u.name,username:u.username,...s};
+  }));
+  scores.sort((a,b)=>b.runs-a.runs);
+  // Save to work_logs as match record
+  const summary=JSON.stringify({matchKey,scores,savedAt:new Date().toISOString()});
+  try{
+    await sb('work_logs','POST',{user_id:currentUser.id,date:new Date().toISOString().slice(0,10),hours:0,description:`MATCH_REPORT:${summary}`});
+    alert('Match saved! New match starts next Monday.');
+    loadLeaderboard();
+  }catch(e){alert('Error saving match: '+e.message);}
+}
+
+function showCelebration(ms,runs){
+  const overlay=document.getElementById('celebrationOverlay');
+  overlay.classList.remove('hidden');overlay.innerHTML='';
+  const colors=['#fbbf24','#10b981','#3b82f6','#ef4444','#8b5cf6','#f59e0b','#fff'];
+  for(let i=0;i<60;i++){
+    const c=document.createElement('div');c.className='confetti-piece';
+    c.style.cssText=`left:${Math.random()*100}%;top:${Math.random()*-20}%;background:${colors[Math.floor(Math.random()*colors.length)]};transform:rotate(${Math.random()*360}deg);animation-delay:${Math.random()*2}s;animation-duration:${2+Math.random()*2}s`;
+    overlay.appendChild(c);
+  }
+  const box=document.createElement('div');
+  box.style.cssText='position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;z-index:10';
+  box.innerHTML=`<div class="celebration-text">${ms.emoji}<br>${ms.text}</div><div class="celebration-sub">🏏 ${runs} RUNS! Keep going champion!</div>`;
+  overlay.appendChild(box);
+  setTimeout(()=>{overlay.classList.add('hidden');overlay.innerHTML='';},4000);
+}
+
+async function loadLeaderboard(){
+  const matchKey=getCurrentMatchKey();
+  const isAdmin=currentUser.role==='admin'||currentUser.role==='subadmin';
+  if(isAdmin) document.getElementById('endMatchBtn').style.display='inline-block';
+
+  const allUserStats=await Promise.all(allUsers.filter(u=>u.role!=='admin').map(async u=>{
+    const tasks=await sb(`tasks?assigned_to=eq.${u.id}&select=*`);
+    const matchTasks=tasks.filter(t=>getMatchWeekKey(t.created_at)===matchKey||getMatchWeekKey(t.completed_at||t.created_at)===matchKey);
+    const s=calcStats(matchTasks);
+    const day=new Date().getDay();const dayNum=day>=1&&day<=5?day:5;
+    return{u,matchKey,...s,day:dayNum};
+  }));
+  allUserStats.sort((a,b)=>b.runs-a.runs);
+
+  const totalRuns=allUserStats.reduce((s,x)=>s+x.runs,0);
+  const totalBalls=allUserStats.reduce((s,x)=>s+x.balls,0);
+  const topRuns=allUserStats[0]?.runs||0;
+  const total4s=allUserStats.reduce((s,x)=>s+x.fours,0);
+  const total6s=allUserStats.reduce((s,x)=>s+x.sixes,0);
+
+  document.getElementById('cricketStats').innerHTML=`
+    <div class="stat-card blue"><div class="num">${allUserStats.length}</div><div class="lbl">Players</div></div>
+    <div class="stat-card" style="background:linear-gradient(135deg,#1a1a2e,#0f3460)"><div class="num" style="color:#fbbf24">${totalRuns}</div><div class="lbl" style="color:#94a3b8">Team Runs</div></div>
+    <div class="stat-card" style="background:linear-gradient(135deg,#1a1a2e,#0f3460)"><div class="num" style="color:#fbbf24">${totalBalls}</div><div class="lbl" style="color:#94a3b8">Total Balls</div></div>
+    <div class="stat-card orange"><div class="num">${total4s}</div><div class="lbl">💥 4s</div></div>
+    <div class="stat-card green"><div class="num">${total6s}</div><div class="lbl">🏏 6s</div></div>
+    <div class="stat-card" style="background:linear-gradient(135deg,#1a1a2e,#0f3460)"><div class="num" style="color:#fbbf24">${topRuns}</div><div class="lbl" style="color:#94a3b8">Top Score</div></div>`;
+
+  const medals=['🥇','🥈','🥉'];
+  const rowClasses=['gold','silver','bronze'];
+  document.getElementById('leaderboardRows').innerHTML=allUserStats.map((x,i)=>{
+    const prog=Math.min(100,(x.runs%50)/50*100);
+    const nextMs=x.runs<50?50:x.runs<100?100:Math.ceil(x.runs/50)*50;
+    const ms=getMilestoneLabel(x.runs);
+    return`<div class="lb-row ${rowClasses[i]||''}">
+      <div class="lb-rank">${medals[i]||`#${i+1}`}</div>
+      <div class="lb-name">${x.u.name}<br><span style="font-size:.65rem;color:var(--muted);font-weight:400">Day ${x.day}/5 · ${x.completed} done · 4s:${x.fours} 6s:${x.sixes}</span></div>
+      <div style="flex:1;padding:0 8px">
+        <div style="display:flex;justify-content:space-between;font-size:.68rem;color:var(--muted);margin-bottom:3px"><span>${x.runs}(${x.balls}b) SR:${x.sr}</span><span>→${nextMs}</span></div>
+        <div class="progress-bar-wrap"><div class="progress-bar-fill" style="width:${prog}%"></div></div>
+      </div>
+      <div style="text-align:right">
+        <div class="lb-runs">${x.runs}</div>
+        <span class="lb-badge">${x.runs>=100?'💯 Century':x.runs>=50?'⭐ Fifty':'🏏 Batting'}</span>
+        ${ms?`<div style="font-size:.7rem;color:#fbbf24;margin-top:2px">${ms.emoji}</div>`:''}
+      </div>
+    </div>`;
+  }).join('')||'<p style="color:var(--muted);text-align:center;padding:20px">No players yet</p>';
+
+  // Match History
+  const matchLogs=await sb(`work_logs?description=like.MATCH_REPORT%3A%25&select=*&order=created_at.desc`);
+  if(matchLogs.length){
+    let histHtml=`<div class="card"><h3>📚 Match History</h3>`;
+    matchLogs.forEach((l,idx)=>{
+      try{
+        const data=JSON.parse(l.description.replace('MATCH_REPORT:',''));
+        const wk=new Date(data.matchKey);
+        const fri=new Date(wk);fri.setDate(wk.getDate()+4);
+        histHtml+=`<details style="margin-bottom:10px;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden">
+          <summary style="padding:10px 14px;cursor:pointer;background:#f8fafc;font-weight:600;font-size:.88rem">
+            🏆 Match ${matchLogs.length-idx} &nbsp;·&nbsp; ${wk.toLocaleDateString('en-IN')} – ${fri.toLocaleDateString('en-IN')}
+            &nbsp;<span style="color:var(--muted);font-weight:400">(${data.scores.length} players)</span>
+          </summary>
+          <table style="font-size:.82rem;width:100%">
+            <thead><tr><th>#</th><th>Player</th><th>Runs</th><th>Balls</th><th>4s</th><th>6s</th><th>SR</th></tr></thead>
+            <tbody>${data.scores.map((s,i)=>`<tr>
+              <td>${['🥇','🥈','🥉'][i]||i+1}</td>
+              <td><strong>${s.name}</strong></td>
+              <td><strong style="color:#fbbf24">${s.runs}</strong></td>
+              <td>${s.balls}</td><td>${s.fours}</td><td>${s.sixes}</td><td>${s.sr}</td>
+            </tr>`).join('')}</tbody>
+          </table></details>`;
+      }catch(e){}
+    });
+    histHtml+=`</div>`;
+    document.getElementById('matchHistorySection').innerHTML=histHtml;
+  } else {
+    document.getElementById('matchHistorySection').innerHTML='';
+  }
+
+  document.getElementById('currentMatchBadge').textContent=`🏆 Match ${matchLogs.length+1} · Week of ${new Date(matchKey).toLocaleDateString('en-IN')}`;
+}
+
+// ===== PERFORMANCE REPORT =====
+function applyQuickFilter(){
+  const v=document.getElementById('perfQuickSel').value;
+  const now=new Date();let from='',to='';
+  const fmt=d=>d.toISOString().slice(0,10);
+  if(v==='today'){from=fmt(now);to=fmt(now);}
+  else if(v==='this'){const s=new Date(now);s.setDate(now.getDate()-now.getDay());from=fmt(s);to=fmt(now);}
+  else if(v==='last'){const e=new Date(now);e.setDate(now.getDate()-now.getDay()-1);const s=new Date(e);s.setDate(e.getDate()-6);from=fmt(s);to=fmt(e);}
+  else if(v==='thismonth'){from=fmt(new Date(now.getFullYear(),now.getMonth(),1));to=fmt(now);}
+  else if(v==='lastmonth'){const s=new Date(now.getFullYear(),now.getMonth()-1,1);const e=new Date(now.getFullYear(),now.getMonth(),0);from=fmt(s);to=fmt(e);}
+  else{from='';to='';}
+  document.getElementById('perfFromDate').value=from;
+  document.getElementById('perfToDate').value=to;
+  if(v!=='custom') loadPerformance();
+}
+function onCustomDateChange(){document.getElementById('perfQuickSel').value='custom';}
+function clearPerfFilter(){
+  document.getElementById('perfQuickSel').value='all';
+  document.getElementById('perfFromDate').value='';
+  document.getElementById('perfToDate').value='';
+  document.getElementById('activePerfFilterBadge').classList.add('hidden');
+  loadPerformance();
+}
+function getPerfDateRange(){return{from:document.getElementById('perfFromDate').value,to:document.getElementById('perfToDate').value};}
+function updatePerfBadge(from,to){
+  const b=document.getElementById('activePerfFilterBadge');
+  if(from||to){b.classList.remove('hidden');b.textContent=`📅 ${from||'...'} → ${to||'...'}`;}
+  else b.classList.add('hidden');
+}
+
+async function loadPerformance(){
+  const{from,to}=getPerfDateRange();updatePerfBadge(from,to);
+  const users=allUsers.filter(u=>u.role==='user'||u.role==='subadmin');
+  const perfData=await Promise.all(users.map(async u=>{
+    let tasks=await sb(`tasks?assigned_to=eq.${u.id}&select=*`);
+    // Filter by date range using completed_at or created_at
+    if(from||to){
+      tasks=tasks.filter(t=>{
+        const d=(t.completed_at||t.created_at||'').slice(0,10);
+        if(from&&d<from) return false;
+        if(to&&d>to) return false;
+        return true;
+      });
+    }
+    const total=tasks.length;
+    const completed=tasks.filter(t=>t.status==='Complete');
+    const done=completed.length;
+    const pending=tasks.filter(t=>t.status==='Pending'||t.status==='In Progress').length;
+    // On-time = completed before or on due date
+    const onTime=completed.filter(t=>t.due_date&&t.completed_at&&new Date(t.completed_at)<=new Date(t.due_date+'T23:59:59')).length;
+    // Delayed = completed after due date or still pending/in-progress past due
+    const delayed=completed.filter(t=>t.due_date&&t.completed_at&&new Date(t.completed_at)>new Date(t.due_date+'T23:59:59')).length
+      + tasks.filter(t=>t.status!=='Complete'&&t.due_date&&new Date(t.due_date+'T23:59:59')<new Date()).length;
+    const onTimePct=done>0?Math.round((onTime/done)*100):0;
+    const runs=calcStats(completed).runs;
+    // Performance based on ontime %
+    let perf='Better',perfClass='report-perf-better';
+    if(onTimePct>=85){perf='Excellent';perfClass='report-perf-excellent';}
+    else if(onTimePct>=60){perf='Good';perfClass='report-perf-good';}
+    return{u,total,done,pending,onTime,delayed,onTimePct,runs,perf,perfClass};
+  }));
+
+  // Summary cards
+  const totalTasks=perfData.reduce((s,d)=>s+d.total,0);
+  const totalOnTime=perfData.reduce((s,d)=>s+d.onTime,0);
+  const totalDelayed=perfData.reduce((s,d)=>s+d.delayed,0);
+  const excellent=perfData.filter(d=>d.perf==='Excellent').length;
+  const good=perfData.filter(d=>d.perf==='Good').length;
+  const better=perfData.filter(d=>d.perf==='Better').length;
+
+  document.getElementById('perfSummaryCards').innerHTML=`
+    <div class="stat-card blue"><div class="num">${totalTasks}</div><div class="lbl">Total Tasks</div></div>
+    <div class="stat-card green"><div class="num">${totalOnTime}</div><div class="lbl">✅ On-Time</div></div>
+    <div class="stat-card orange"><div class="num">${totalDelayed}</div><div class="lbl">⏰ Delayed</div></div>
+    <div class="stat-card green"><div class="num">${excellent}</div><div class="lbl">🌟 Excellent</div></div>
+    <div class="stat-card blue"><div class="num">${good}</div><div class="lbl">👍 Good</div></div>
+    <div class="stat-card orange"><div class="num">${better}</div><div class="lbl">💪 Better</div></div>`;
+
+  const label=from||to?`(${from||'...'} → ${to||'...'})`: '(All Time)';
+  document.getElementById('perfTableTitle').textContent=`📊 Team Performance Report ${label}`;
+
+  document.getElementById('perfTable').innerHTML=perfData.map(d=>`<tr>
+    <td><strong style="cursor:pointer;color:var(--primary)" onclick="openMemberDetail('${d.u.id}')">${d.u.name}</strong></td>
+    <td>${d.total}</td>
+    <td><strong style="color:#10b981">${d.onTime}</strong></td>
+    <td><strong style="color:#ef4444">${d.delayed}</strong></td>
+    <td>${d.onTimePct}%</td>
+    <td><strong style="color:#fbbf24">🏏 ${d.runs}</strong></td>
+    <td><span class="${d.perfClass}">${d.perf==='Excellent'?'🌟':d.perf==='Good'?'👍':'💪'} ${d.perf}</span></td>
+  </tr>`).join('');
+}
+
+function generateReport(){
+  const{from,to}=getPerfDateRange();
+  const rows=document.querySelectorAll('#perfTable tr');
+  let html=`<div style="font-family:Arial;padding:24px;max-width:900px;margin:0 auto">
+    <h2 style="color:#4f46e5;text-align:center">📊 Team Performance Report</h2>
+    <p style="text-align:center;color:#64748b">Generated: ${new Date().toLocaleDateString()} ${from||to?'| Period: '+(from||'...')+' → '+(to||'...'):'| All Time'}</p>
+    <hr style="margin:16px 0">
+    <table style="width:100%;border-collapse:collapse">
+      <thead><tr style="background:#4f46e5;color:#fff">
+        <th style="padding:10px;text-align:left">Name</th>
+        <th style="padding:10px;text-align:center">Total</th>
+        <th style="padding:10px;text-align:center">✅ On-Time</th>
+        <th style="padding:10px;text-align:center">⏰ Delayed</th>
+        <th style="padding:10px;text-align:center">On-Time%</th>
+        <th style="padding:10px;text-align:center">🏏 Runs</th>
+        <th style="padding:10px;text-align:center">Performance</th>
+      </tr></thead><tbody>`;
+  rows.forEach((r,i)=>{
+    const cells=[...r.querySelectorAll('td')].map(c=>c.textContent.trim());
+    if(cells.length) html+=`<tr style="background:${i%2?'#f8fafc':'#fff'}">${cells.map((c,ci)=>`<td style="padding:10px;text-align:${ci===0?'left':'center'};border-bottom:1px solid #f1f5f9">${c}</td>`).join('')}</tr>`;
+  });
+  html+=`</tbody></table>
+    <hr style="margin:16px 0">
+    <p style="font-size:.75rem;color:#94a3b8;text-align:center">🌟 Excellent: ≥85% on-time | 👍 Good: ≥60% | 💪 Better: needs improvement</p>
+  </div>`;
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><title>Performance Report</title></head><body>${html}<br><button onclick="window.print()" style="display:block;margin:0 auto;padding:10px 24px;background:#4f46e5;color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:1rem">🖨️ Print / Save PDF</button></body></html>`);
+  w.document.close();
+}
+
+// ===== AUTH =====
 async function doLogin(){
   const u=document.getElementById('loginUser').value.trim();
   const p=document.getElementById('loginPass').value.trim();
@@ -433,7 +823,7 @@ function showLoginAlert(msg,type){
   setTimeout(()=>document.getElementById('loginAlert').innerHTML='',3000);
 }
 function doLogout(){
-  currentUser=null;allUsers=[];allTasks=[];selectedMember=null;workRows=[];taskRows=[];otherRows=[];
+  currentUser=null;allUsers=[];allTasks=[];selectedMember=null;workRows=[];taskRows=[];userCricketRuns=0;
   document.getElementById('appPage').classList.add('hidden');
   document.getElementById('loginPage').classList.remove('hidden');
   document.getElementById('loginUser').value='';document.getElementById('loginPass').value='';
@@ -443,7 +833,7 @@ async function initApp(){
   document.getElementById('sidebarRole').textContent=currentUser.role.toUpperCase();
   allUsers=await sb('users?select=*&order=name.asc');
   allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
-  buildNav();showSection('secDashboard','Dashboard');
+  buildNav();await loadCricketScore();showSection('secDashboard','Dashboard');
 }
 function getInitials(n){return n.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,2);}
 
@@ -457,10 +847,12 @@ function buildNav(){
     nav+=`<div class="nav-item" onclick="showSection('secUsers','Manage Users',this)"><span class="icon">👥</span>Users</div>`;
     nav+=`<div class="nav-item" onclick="showSection('secTeamLogs','Team Daily Reports',this)"><span class="icon">📅</span>Team Reports</div>`;
     nav+=`<div class="nav-item" onclick="showSection('secPerformance','Team Performance',this)"><span class="icon">🏆</span>Performance</div>`;
+    nav+=`<div class="nav-item" onclick="showSection('secCricket','Performance Board',this)"><span class="icon">🏏</span>Performance Board</div>`;
   }
   nav+=`<div class="nav-section-title">My Work</div>`;
   nav+=`<div class="nav-item" onclick="showSection('secMyTasks','My Tasks',this)"><span class="icon">✅</span>My Tasks</div>`;
   nav+=`<div class="nav-item" onclick="showSection('secSentTasks','Sent Tasks',this)"><span class="icon">📤</span>Sent Tasks</div>`;
+  nav+=`<div class="nav-item" onclick="showSection('secCricket','My Score',this)"><span class="icon">🏏</span>My Score</div>`;
   if(currentUser.role!=='admin')
     nav+=`<div class="nav-item" onclick="showSection('secDailyReport','Daily Report',this)"><span class="icon">📝</span>Daily Report</div>`;
   if(isAdmin&&team.length){
@@ -485,6 +877,7 @@ async function showSection(id,title,el){
   if(el) el.classList.add('active');
   allUsers=await sb('users?select=*&order=name.asc');
   allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
+  await loadCricketScore();
   if(id==='secDashboard') loadDashboard();
   if(id==='secTasks') loadTasks();
   if(id==='secMyTasks') loadMyTasks();
@@ -493,110 +886,10 @@ async function showSection(id,title,el){
   if(id==='secUsers') loadUsers();
   if(id==='secPerformance') loadPerformance();
   if(id==='secTeamLogs') loadTeamLogs();
+  if(id==='secCricket') loadLeaderboard();
 }
 
-// ---- PERFORMANCE DATE FILTER ----
-function applyQuickFilter(){
-  const v=document.getElementById('perfQuickSel').value;
-  const now=new Date();
-  let from='',to='';
-  const fmt=d=>d.toISOString().slice(0,10);
-  if(v==='today'){from=fmt(now);to=fmt(now);}
-  else if(v==='this'){const s=new Date(now);s.setDate(now.getDate()-now.getDay());from=fmt(s);to=fmt(now);}
-  else if(v==='last'){const e=new Date(now);e.setDate(now.getDate()-now.getDay()-1);const s=new Date(e);s.setDate(e.getDate()-6);from=fmt(s);to=fmt(e);}
-  else if(v==='thismonth'){from=fmt(new Date(now.getFullYear(),now.getMonth(),1));to=fmt(now);}
-  else if(v==='lastmonth'){const s=new Date(now.getFullYear(),now.getMonth()-1,1);const e=new Date(now.getFullYear(),now.getMonth(),0);from=fmt(s);to=fmt(e);}
-  else{from='';to='';}
-  document.getElementById('perfFromDate').value=from;
-  document.getElementById('perfToDate').value=to;
-  if(v!=='custom') loadPerformance();
-}
-function onCustomDateChange(){
-  document.getElementById('perfQuickSel').value='custom';
-}
-function clearPerfFilter(){
-  document.getElementById('perfQuickSel').value='all';
-  document.getElementById('perfFromDate').value='';
-  document.getElementById('perfToDate').value='';
-  document.getElementById('activePerfFilterBadge').classList.add('hidden');
-  loadPerformance();
-}
-function getPerfDateRange(){
-  const from=document.getElementById('perfFromDate').value;
-  const to=document.getElementById('perfToDate').value;
-  return{from,to};
-}
-function updatePerfBadge(from,to){
-  const badge=document.getElementById('activePerfFilterBadge');
-  if(from||to){
-    badge.classList.remove('hidden');
-    badge.textContent=`📅 ${from||'...'} → ${to||'...'}`;
-  } else {
-    badge.classList.add('hidden');
-  }
-}
-
-async function loadPerformance(){
-  const{from,to}=getPerfDateRange();
-  updatePerfBadge(from,to);
-  const users=allUsers.filter(u=>u.role==='user'||u.role==='subadmin');
-  let totalComplete=0,totalPending=0;
-
-  const perfData=await Promise.all(users.map(async u=>{
-    let tasks=await sb(`tasks?assigned_to=eq.${u.id}&select=*`);
-    if(from) tasks=tasks.filter(t=>t.created_at&&t.created_at.slice(0,10)>=from);
-    if(to) tasks=tasks.filter(t=>t.created_at&&t.created_at.slice(0,10)<=to);
-    const logs=await sb(`work_logs?user_id=eq.${u.id}&select=*`);
-    let logFiltered=logs;
-    if(from) logFiltered=logFiltered.filter(l=>l.date>=from);
-    if(to) logFiltered=logFiltered.filter(l=>l.date<=to);
-    const total=tasks.length,done=tasks.filter(t=>t.status==='Complete').length,pending=tasks.filter(t=>t.status==='Pending').length;
-    const onTime=tasks.filter(t=>t.status==='Complete'&&t.due_date&&new Date(t.completed_at)<=new Date(t.due_date)).length;
-    const onTimePct=done>0?Math.round((onTime/done)*100):0;
-    const totalH=logFiltered.reduce((s,l)=>s+parseFloat(l.hours||0),0);
-    const days=[...new Set(logFiltered.map(l=>l.date))].length||1;
-    const avgH=(totalH/days).toFixed(1);
-    let perf='Better',perfClass='perf-better';
-    if(onTimePct>=85&&done>=3){perf='Excellent';perfClass='perf-excellent';}
-    else if(onTimePct>=60&&done>=1){perf='Good';perfClass='perf-good';}
-    totalComplete+=done;totalPending+=pending;
-    return{u,total,done,pending,onTimePct,avgH,perf,perfClass};
-  }));
-
-  document.getElementById('perfCards').innerHTML=`
-    <div class="stat-card blue"><div class="num">${users.length}</div><div class="lbl">Team Members</div></div>
-    <div class="stat-card green"><div class="num">${totalComplete}</div><div class="lbl">Completed</div></div>
-    <div class="stat-card orange"><div class="num">${totalPending}</div><div class="lbl">Pending</div></div>`;
-
-  document.getElementById('perfTable').innerHTML=perfData.map(d=>`<tr>
-    <td><strong style="cursor:pointer;color:var(--primary)" onclick="openMemberDetail('${d.u.id}')">${d.u.name}</strong></td>
-    <td>${d.total}</td><td>${d.done}</td><td>${d.pending}</td>
-    <td>${d.onTimePct}%</td><td>${d.avgH}h</td>
-    <td><span class="${d.perfClass}">${d.perf}</span></td>
-  </tr>`).join('');
-}
-
-function generateReport(){
-  const{from,to}=getPerfDateRange();
-  const rows=document.querySelectorAll('#perfTable tr');
-  let html=`<div style="font-family:Arial;padding:20px;max-width:860px;margin:0 auto">
-    <h2 style="color:#4f46e5;text-align:center">📊 Team Performance Report</h2>
-    <p style="text-align:center;color:#64748b">Generated: ${new Date().toLocaleDateString()} ${from||to?'| Period: '+(from||'...')+' → '+(to||'...'):'| All Time'}</p>
-    <hr style="margin:16px 0">
-    <table style="width:100%;border-collapse:collapse"><thead><tr style="background:#4f46e5;color:#fff">
-      <th style="padding:10px;text-align:left">Name</th><th style="padding:10px">Total</th><th style="padding:10px">Done</th><th style="padding:10px">Pending</th><th style="padding:10px">On-Time%</th><th style="padding:10px">Avg H/Day</th><th style="padding:10px">Rating</th>
-    </tr></thead><tbody>`;
-  rows.forEach((r,i)=>{
-    const cells=[...r.querySelectorAll('td')].map(c=>c.textContent.trim());
-    if(cells.length) html+=`<tr style="background:${i%2?'#f8fafc':'#fff'}">${cells.map((c,ci)=>`<td style="padding:10px;text-align:${ci===0?'left':'center'}">${c}</td>`).join('')}</tr>`;
-  });
-  html+=`</tbody></table><hr style="margin:16px 0"><p style="font-size:.75rem;color:#94a3b8;text-align:center">Excellent ≥85% on-time & ≥3 tasks | Good ≥60% | Better = needs improvement</p></div>`;
-  const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html><head><title>Performance Report</title></head><body>${html}<br><button onclick="window.print()" style="display:block;margin:0 auto;padding:10px 24px;background:#4f46e5;color:#fff;border:none;border-radius:8px;cursor:pointer">🖨️ Print / Save PDF</button></body></html>`);
-  w.document.close();
-}
-
-// ---- DAILY REPORT ----
+// ===== DAILY REPORT =====
 function initDailyReport(){
   const today=new Date().toISOString().slice(0,10);
   document.getElementById('reportDate').value=today;
@@ -611,19 +904,26 @@ function initDailyReport(){
     {id:8,label:'Sales Order',op:'',today:'',finished:'',pending:''},
     {id:9,label:'Stock Journal',op:'',today:'',finished:'',pending:''},
   ];
-  if(!taskRows.length) taskRows=[{id:1,task:'',total:'',received:'',pending:'',status:''}];
-  if(!otherRows.length) otherRows=[{id:1,work:'',count:'',remark:''}];
-  renderWorkRows();renderTaskRows();renderOtherRows();
+  if(!taskRows.length) taskRows=[{id:1,task:'',total:'',received:'',pending:'',status:'',remark:''}];
+  renderWorkRows();renderTaskRows();
 }
-
 function inp(val,onchange,w='60px',ph='0'){
   return`<input type="number" min="0" value="${val}" placeholder="${ph}" oninput="${onchange}" style="width:${w};padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none;text-align:center"/>`;
 }
 function calculateRowMinutes(label,finished){
-  const k=(label||'').trim().toLowerCase();
-  const n=parseInt(finished)||0;
+  const k=(label||'').trim().toLowerCase(),n=parseInt(finished)||0;
   if(n<=0) return 0;
-  return(TIME_WEIGHTS[k]||10)*n;
+  const rule=TIME_RULES[k];
+  if(!rule) return 10*n;
+  if(rule.threshold!==null&&n>rule.threshold) return rule.aboveMin*n;
+  return rule.base*n;
+}
+function getTimeLabel(label,finished){
+  const k=(label||'').trim().toLowerCase(),n=parseInt(finished)||0;
+  const rule=TIME_RULES[k];
+  if(!rule) return`10/nos`;
+  if(rule.threshold!==null&&n>rule.threshold) return`${rule.aboveMin}/nos (>${rule.threshold})`;
+  return`${rule.base}/nos`;
 }
 function renderWorkRows(){
   document.getElementById('workRowsBody').innerHTML=workRows.map(r=>`<tr>
@@ -632,8 +932,8 @@ function renderWorkRows(){
     <td>${inp(r.today,`updateWR(${r.id},'today',this.value)`)}</td>
     <td>${inp(r.finished,`updateWR(${r.id},'finished',this.value)`)}</td>
     <td>${inp(r.pending,`updateWR(${r.id},'pending',this.value)`)}</td>
-    <td style="text-align:center;font-weight:600;color:var(--muted)">${calculateRowMinutes(r.label,r.finished)} min</td>
-    <td><button onclick="removeWR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85rem">✕</button></td>
+    <td style="text-align:center;font-weight:600;color:var(--primary);font-size:.75rem">${calculateRowMinutes(r.label,r.finished)} min<br><span style="color:var(--muted);font-size:.68rem">${getTimeLabel(r.label,r.finished)}</span></td>
+    <td><button onclick="removeWR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer">✕</button></td>
   </tr>`).join('');
   updateTotals();
 }
@@ -646,35 +946,23 @@ function updateTotals(){
   document.getElementById('totToday').textContent=sum('today')||'';
   document.getElementById('totFinished').textContent=sum('finished')||'';
   document.getElementById('totPending').textContent=sum('pending')||'';
-  let m=0;
-  workRows.forEach(r=>{m+=calculateRowMinutes(r.label,r.finished);});
-  otherRows.forEach(r=>{m+=(parseInt(r.count)||0)*10;});
+  let m=0;workRows.forEach(r=>{m+=calculateRowMinutes(r.label,r.finished);});
   document.getElementById('totCalculatedTime').textContent=m+' min';
 }
 function renderTaskRows(){
   document.getElementById('taskRowsBody').innerHTML=taskRows.map(r=>`<tr>
-    <td><input value="${r.task}" oninput="updateTR(${r.id},'task',this.value)" placeholder="Task name" style="width:120px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td><input value="${r.task}" oninput="updateTR(${r.id},'task',this.value)" placeholder="Other work..." style="width:110px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
     <td>${inp(r.total,`updateTR(${r.id},'total',this.value)`)}</td>
     <td>${inp(r.received,`updateTR(${r.id},'received',this.value)`)}</td>
     <td>${inp(r.pending,`updateTR(${r.id},'pending',this.value)`)}</td>
-    <td><input value="${r.status}" oninput="updateTR(${r.id},'status',this.value)" placeholder="Status" style="width:80px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
-    <td><button onclick="removeTR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85rem">✕</button></td>
+    <td><input value="${r.status}" oninput="updateTR(${r.id},'status',this.value)" placeholder="Status" style="width:70px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td><input value="${r.remark||''}" oninput="updateTR(${r.id},'remark',this.value)" placeholder="Remark..." style="width:100px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td><button onclick="removeTR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer">✕</button></td>
   </tr>`).join('');
 }
 function updateTR(id,f,v){const r=taskRows.find(x=>x.id===id);if(r)r[f]=v;}
 function removeTR(id){taskRows=taskRows.filter(x=>x.id!==id);renderTaskRows();}
-function addTaskRow(){taskRows.push({id:Date.now(),task:'',total:'',received:'',pending:'',status:''});renderTaskRows();}
-function renderOtherRows(){
-  document.getElementById('otherRowsBody').innerHTML=otherRows.map(r=>`<tr>
-    <td><input value="${r.work}" oninput="updateOR(${r.id},'work',this.value)" placeholder="Other work..." style="width:100%;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
-    <td>${inp(r.count,`updateOR(${r.id},'count',this.value)`,'70px','Qty')}</td>
-    <td><input value="${r.remark}" oninput="updateOR(${r.id},'remark',this.value)" placeholder="Remark..." style="width:100%;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
-    <td><button onclick="removeOR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer;font-size:.85rem">✕</button></td>
-  </tr>`).join('');
-}
-function updateOR(id,f,v){const r=otherRows.find(x=>x.id===id);if(r){r[f]=v;if(f==='count')updateTotals();}}
-function removeOR(id){otherRows=otherRows.filter(x=>x.id!==id);renderOtherRows();updateTotals();}
-function addOtherRow(){otherRows.push({id:Date.now(),work:'',count:'',remark:''});renderOtherRows();}
+function addTaskRow(){taskRows.push({id:Date.now(),task:'',total:'',received:'',pending:'',status:'',remark:''});renderTaskRows();}
 
 async function shareReport(){
   const date=document.getElementById('reportDate').value;
@@ -685,7 +973,6 @@ async function shareReport(){
   const sum=f=>workRows.reduce((s,r)=>s+(parseInt(r[f])||0),0);
   const activeW=workRows.filter(r=>(parseInt(r.finished)||0)>0);
   const activeT=taskRows.filter(r=>r.task.trim());
-  const activeO=otherRows.filter(r=>(parseInt(r.count)||0)>0||r.work.trim());
   document.getElementById('rcWorkBody').innerHTML=activeW.map(r=>`<tr>
     <td style="border:1px solid #ddd;padding:5px 7px">${r.label}</td>
     <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.op||0}</td>
@@ -704,13 +991,8 @@ async function shareReport(){
     <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.pending||0}</td>
     <td style="border:1px solid #ddd;padding:5px 7px">${r.status||'-'}</td>
   </tr>`).join('');
-  document.getElementById('rcOtherBody').innerHTML=activeO.map(r=>`<tr>
-    <td style="border:1px solid #ddd;padding:5px 7px">${r.work||'-'} (Qty:${r.count||0})</td>
-    <td style="border:1px solid #ddd;padding:5px 7px">${r.remark||'-'}</td>
-  </tr>`).join('');
   let totalMins=0;const wArr=[];
   activeW.forEach(r=>{const m=calculateRowMinutes(r.label,r.finished);totalMins+=m;wArr.push(`${r.label}:${r.finished} Nos=${m} min`);});
-  activeO.forEach(r=>{const q=parseInt(r.count)||0;const m=q*10;totalMins+=m;wArr.push(`${r.work||'Other'}:${q} Nos=${m} min`);});
   document.getElementById('rcTotalPerformanceTime').textContent=`Total Performance Focus: ${totalMins} min (${(totalMins/60).toFixed(2)} hrs)`;
   try{await sb('work_logs','POST',{user_id:currentUser.id,date,hours:parseFloat((totalMins/60).toFixed(2)),description:wArr.join(' | ')||'No active entries'});}catch(e){console.log(e);}
   const wrapper=document.getElementById('reportCardWrapper');
@@ -730,16 +1012,16 @@ function downloadReport(){
 }
 function closeScreenshot(){document.getElementById('screenshotOverlay').classList.add('hidden');}
 
-// ---- TEAM LOGS ----
+// ===== TEAM LOGS =====
 async function loadTeamLogs(){
   const sel=document.getElementById('teamLogUser');
   sel.innerHTML='<option value="">All Users</option>'+allUsers.filter(u=>u.role!=='admin').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
   const uid=sel.value;
-  let url=`work_logs?select=*,user:user_id(name)&order=date.desc`;
+  let url=`work_logs?select=*,user:user_id(name)&order=date.desc&description=not.like.MATCH_REPORT%3A%25`;
   if(uid) url+=`&user_id=eq.${uid}`;
   const logs=await sb(url);
   const tb=document.getElementById('teamLogsTable');
-  if(!logs.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No synced reports</td></tr>';return;}
+  if(!logs.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No reports</td></tr>';return;}
   tb.innerHTML=logs.map(l=>{
     const chunks=(l.description||'').split(' | ').filter(Boolean);
     const rows=chunks.map(c=>{
@@ -749,35 +1031,38 @@ async function loadTeamLogs(){
     }).join('');
     return`<tr style="border-top:3px solid #cbd5e1;background:#fdfdfd">
       <td style="vertical-align:top;padding-top:14px"><strong style="color:var(--secondary)">${l.user?.name||'-'}</strong></td>
-      <td style="padding:10px 0">
-        <table class="matrix-report-table">
-          <thead><tr><th>Date</th><th>Work</th><th>Finished</th><th>Time</th></tr></thead>
-          <tbody>${rows||`<tr><td colspan="4" style="text-align:center;color:var(--muted)">No data</td></tr>`}</tbody>
-        </table>
-      </td>
-      <td style="vertical-align:middle;text-align:center"><strong style="color:var(--primary);font-size:1.1rem">${l.hours}h</strong><br><small style="color:var(--muted)">${Math.round(l.hours*60)} mins</small></td>
+      <td style="padding:10px 0"><table class="matrix-report-table"><thead><tr><th>Date</th><th>Work</th><th>Finished</th><th>Time</th></tr></thead>
+        <tbody>${rows||`<tr><td colspan="4" style="text-align:center;color:var(--muted)">No data</td></tr>`}</tbody></table></td>
+      <td style="vertical-align:middle;text-align:center"><strong style="color:var(--primary)">${l.hours}h</strong><br><small style="color:var(--muted)">${Math.round(l.hours*60)} mins</small></td>
       <td style="vertical-align:middle;text-align:center"><button class="btn btn-secondary btn-sm" onclick="alert('Details:\\n\\n${(l.description||'-').replace(/\|/g,'\\n')}')">🔍 View</button></td>
     </tr>`;
   }).join('');
 }
 
-// ---- MEMBER DETAIL ----
+// ===== MEMBER DETAIL =====
 async function openMemberDetail(uid){
   document.querySelectorAll('.nav-item,.team-member-item').forEach(n=>n.classList.remove('active'));
-  const navEl=document.getElementById('member-nav-'+uid);if(navEl) navEl.classList.add('active');
+  const navEl=document.getElementById('member-nav-'+uid);if(navEl)navEl.classList.add('active');
   selectedMember=allUsers.find(u=>u.id===uid);
   memberTasks=allTasks.filter(t=>t.assigned_to===uid);
-  memberLogs=await sb(`work_logs?user_id=eq.${uid}&select=*&order=date.desc`);
+  memberLogs=await sb(`work_logs?user_id=eq.${uid}&select=*&order=date.desc&description=not.like.MATCH_REPORT%3A%25`);
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.getElementById('secMemberDetail').classList.add('active');
   document.getElementById('pageTitle').textContent=selectedMember.name+"'s Profile";
   const total=memberTasks.length,done=memberTasks.filter(t=>t.status==='Complete').length;
   const pending=memberTasks.filter(t=>t.status==='Pending').length,inprog=memberTasks.filter(t=>t.status==='In Progress').length;
   const totalH=memberLogs.reduce((s,l)=>s+parseFloat(l.hours||0),0);
+  const s=calcStats(memberTasks);
   document.getElementById('memberProfileHeader').innerHTML=`
     <div class="member-profile-avatar">${getInitials(selectedMember.name)}</div>
     <div class="member-profile-info"><h2>${selectedMember.name}</h2>
-    <p>@${selectedMember.username} &nbsp;·&nbsp; <span class="badge badge-${selectedMember.role}">${selectedMember.role}</span></p></div>`;
+    <p>@${selectedMember.username} &nbsp;·&nbsp; <span class="badge badge-${selectedMember.role}">${selectedMember.role}</span></p></div>
+    <div style="margin-left:auto;text-align:center;background:linear-gradient(135deg,#1a1a2e,#0f3460);padding:12px 18px;border-radius:12px;border:2px solid rgba(251,191,36,.3)">
+      <div style="font-size:1.8rem;font-weight:900;color:#fbbf24">${s.runs}</div>
+      <div style="font-size:.65rem;color:#94a3b8;letter-spacing:1px">🏏 RUNS</div>
+      <div style="font-size:.7rem;color:#fbbf24;margin-top:2px">(${s.balls}b) 4s:${s.fours} 6s:${s.sixes}</div>
+      <div style="font-size:.65rem;color:#94a3b8">SR: ${s.sr}</div>
+    </div>`;
   document.getElementById('memberStats').innerHTML=`
     <div class="stat-card blue"><div class="num">${total}</div><div class="lbl">Total Tasks</div></div>
     <div class="stat-card orange"><div class="num">${pending}</div><div class="lbl">Pending</div></div>
@@ -794,33 +1079,38 @@ function switchMemberTab(tab,el){
 function memberTaskTable(tasks,title){
   if(!tasks.length) return`<div class="card"><h3>${title}</h3><p style="color:var(--muted);text-align:center;padding:20px">No tasks</p></div>`;
   return`<div class="card"><h3>${title} (${tasks.length})</h3><table>
-    <thead><tr><th>Task</th><th>Priority</th><th>Assigned By</th><th>Due Date</th><th>Status</th><th>Completed At</th></tr></thead>
-    <tbody>${tasks.map(t=>`<tr>
+    <thead><tr><th>Task</th><th>Priority</th><th>Assigned By</th><th>Due Date</th><th>Status</th><th>🏏 Runs</th><th>Completed At</th></tr></thead>
+    <tbody>${tasks.map(t=>{const r=calcTaskRuns(t);const rl=getRunLabel(r);return`<tr>
       <td><strong>${t.title}</strong></td><td>${priorityBadge(t.priority)}</td>
       <td>${t.creator?.name||'-'}</td><td>${t.due_date||'-'}</td><td>${statusBadge(t.status)}</td>
+      <td>${t.status==='Complete'?`<strong style="color:${rl.color}">${rl.emoji} ${r}</strong>`:'-'}</td>
       <td>${t.completed_at?new Date(t.completed_at).toLocaleDateString():'-'}</td>
-    </tr>`).join('')}</tbody></table></div>`;
+    </tr>`}).join('')}</tbody></table></div>`;
 }
 function renderMemberPerformance(c){
   const total=memberTasks.length,done=memberTasks.filter(t=>t.status==='Complete').length,pending=memberTasks.filter(t=>t.status==='Pending').length;
-  const onTime=memberTasks.filter(t=>t.status==='Complete'&&t.due_date&&new Date(t.completed_at)<=new Date(t.due_date)).length;
+  const onTime=memberTasks.filter(t=>t.status==='Complete'&&t.due_date&&new Date(t.completed_at)<=new Date(t.due_date+'T23:59:59')).length;
+  const delayed=memberTasks.filter(t=>t.status==='Complete'&&t.due_date&&new Date(t.completed_at)>new Date(t.due_date+'T23:59:59')).length;
   const onTimePct=done>0?Math.round((onTime/done)*100):0;
   const totalH=memberLogs.reduce((s,l)=>s+parseFloat(l.hours||0),0);
   const days=[...new Set(memberLogs.map(l=>l.date))].length||1;
   const avgH=(totalH/days).toFixed(1);
+  const s=calcStats(memberTasks);
   let perf='Better',perfClass='perf-better',perfDesc='Needs improvement.';
-  if(avgH>=6){perf='Excellent';perfClass='perf-excellent';perfDesc='Outstanding daily output!';}
-  else if(avgH>=3){perf='Good';perfClass='perf-good';perfDesc='Solid performance trend.';}
+  if(onTimePct>=85){perf='Excellent';perfClass='perf-excellent';perfDesc='Outstanding on-time delivery!';}
+  else if(onTimePct>=60){perf='Good';perfClass='perf-good';perfDesc='Good performance trend.';}
   c.innerHTML=`<div class="stats-grid">
     <div class="stat-card green"><div class="num">${done}</div><div class="lbl">Completed</div></div>
     <div class="stat-card orange"><div class="num">${pending}</div><div class="lbl">Pending</div></div>
+    <div class="stat-card green"><div class="num">${onTime}</div><div class="lbl">✅ On-Time</div></div>
+    <div class="stat-card orange"><div class="num">${delayed}</div><div class="lbl">⏰ Delayed</div></div>
     <div class="stat-card blue"><div class="num">${onTimePct}%</div><div class="lbl">On-Time Rate</div></div>
-    <div class="stat-card purple"><div class="num">${avgH}h</div><div class="lbl">Avg H/Day</div></div>
+    <div class="stat-card" style="background:linear-gradient(135deg,#1a1a2e,#0f3460)"><div class="num" style="color:#fbbf24">${s.runs}</div><div class="lbl" style="color:#94a3b8">🏏 Runs</div></div>
   </div>
   <div class="card"><h3>🏆 Performance Rating</h3><div style="text-align:center;padding:30px 0">
     <div style="font-size:3rem;margin-bottom:8px">${perf==='Excellent'?'🌟':perf==='Good'?'👍':'💪'}</div>
     <div class="${perfClass}" style="font-size:2rem;margin-bottom:8px">${perf}</div>
-    <p style="color:var(--muted);font-size:.9rem">${perfDesc}</p>
+    <p style="color:var(--muted)">${perfDesc}</p>
   </div></div>`;
 }
 function renderMemberDailyReports(c){
@@ -841,22 +1131,20 @@ function renderMemberDailyReports(c){
     <div class="stat-card purple"><div class="num">${[...new Set(memberLogs.map(l=>l.date))].length}</div><div class="lbl">Days Logged</div></div>
   </div>
   <div class="card"><h3>Report History</h3>
-    <table class="matrix-report-table" style="margin-top:14px">
-      <thead><tr><th>Date</th><th>Work</th><th>Finished</th><th>Time</th></tr></thead>
-      <tbody>${rows||'<tr><td colspan="4" style="text-align:center;color:var(--muted)">No data</td></tr>'}</tbody>
-    </table></div>`;
+    <table class="matrix-report-table"><thead><tr><th>Date</th><th>Work</th><th>Finished</th><th>Time</th></tr></thead>
+    <tbody>${rows||'<tr><td colspan="4" style="text-align:center;color:var(--muted)">No data</td></tr>'}</tbody></table></div>`;
 }
 function renderMemberTab(tab){
   const c=document.getElementById('memberTabContent');
   if(tab==='all') c.innerHTML=memberTaskTable(memberTasks,'All Tasks');
-  else if(tab==='pending') c.innerHTML=memberTaskTable(memberTasks.filter(t=>t.status==='Pending'),'Pending Tasks');
+  else if(tab==='pending') c.innerHTML=memberTaskTable(memberTasks.filter(t=>t.status==='Pending'),'Pending');
   else if(tab==='inprogress') c.innerHTML=memberTaskTable(memberTasks.filter(t=>t.status==='In Progress'),'In Progress');
   else if(tab==='complete') c.innerHTML=memberTaskTable(memberTasks.filter(t=>t.status==='Complete'),'Completed');
   else if(tab==='performance') renderMemberPerformance(c);
   else if(tab==='dailyreports') renderMemberDailyReports(c);
 }
 
-// ---- HELPERS ----
+// ===== HELPERS =====
 function priorityBadge(p){return`<span class="badge badge-${(p||'').toLowerCase()}">${p}</span>`;}
 function statusBadge(s){const m={'Pending':'pending','In Progress':'progress','Complete':'complete'};return`<span class="badge badge-${m[s]||'pending'}">${s}</span>`;}
 function roleBadge(r){return`<span class="badge badge-${r}">${r}</span>`;}
@@ -909,27 +1197,42 @@ function filterMyTasks(f,el){
   const mine=allTasks.filter(t=>t.assigned_to===currentUser.id);
   renderMyTasks(f==='all'?mine:mine.filter(t=>t.status===f));
 }
+function fmtDT(iso){
+  if(!iso) return'-';
+  const d=new Date(iso);
+  const date=d.toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric'});
+  const time=d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+  return`<span style="font-size:.8rem">${date}</span><br><span style="font-size:.72rem;color:var(--muted)">${time}</span>`;
+}
 function renderMyTasks(tasks){
   const tb=document.getElementById('myTasksTable');
-  if(!tasks.length){tb.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px">No tasks</td></tr>';return;}
-  tb.innerHTML=tasks.map(t=>`<tr>
-    <td><strong>${t.title}</strong></td><td>${priorityBadge(t.priority)}</td>
-    <td>${t.creator?.name||'-'}</td><td>${t.due_date||'-'}</td><td>${statusBadge(t.status)}</td>
-    <td>${t.status==='Complete'
-      ?'<span class="badge badge-complete">✅ Complete</span>'
-      :`<select class="status-sel" onchange="updateTaskStatus('${t.id}',this.value)">
-        <option ${t.status==='Pending'?'selected':''}>Pending</option>
-        <option ${t.status==='In Progress'?'selected':''}>In Progress</option>
-        <option>Complete</option>
-      </select>`}
-    </td>
-  </tr>`).join('');
+  if(!tasks.length){tb.innerHTML='<tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px">No tasks</td></tr>';return;}
+  tb.innerHTML=tasks.map(t=>{
+    const r=calcTaskRuns(t);const rl=getRunLabel(r);
+    return`<tr>
+      <td>${fmtDT(t.created_at)}</td>
+      <td><strong>${t.title}</strong></td>
+      <td>${priorityBadge(t.priority)}</td>
+      <td>${t.creator?.name||'-'}</td>
+      <td>${statusBadge(t.status)}</td>
+      <td>${t.completed_at?fmtDT(t.completed_at):'<span style="color:var(--muted);font-size:.75rem">-</span>'}</td>
+      <td>${t.status==='Complete'?`<strong style="color:${rl.color}">${rl.emoji} ${r}</strong>`:`<span style="color:var(--muted);font-size:.75rem">-</span>`}</td>
+      <td>${t.status==='Complete'
+        ?'<span class="badge badge-complete">✅ Complete</span>'
+        :`<select class="status-sel" onchange="updateTaskStatus('${t.id}',this.value)">
+          <option ${t.status==='Pending'?'selected':''}>Pending</option>
+          <option ${t.status==='In Progress'?'selected':''}>In Progress</option>
+          <option>Complete</option>
+        </select>`}
+      </td>
+    </tr>`;
+  }).join('');
 }
 async function updateTaskStatus(id,status){
   const body={status};if(status==='Complete') body.completed_at=new Date().toISOString();
   await sb(`tasks?id=eq.${id}`,'PATCH',body);
   allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
-  loadMyTasks();
+  await loadCricketScore();loadMyTasks();
 }
 function loadSentTasks(){
   const sent=allTasks.filter(t=>t.created_by===currentUser.id);
@@ -940,19 +1243,17 @@ function loadSentTasks(){
     <td>${t.assignee?.name||'-'}</td><td>${t.due_date||'-'}</td><td>${statusBadge(t.status)}</td>
   </tr>`).join('');
 }
-function loadUsers(){
+async function loadUsers(){
   const tb=document.getElementById('usersTable');
   const others=allUsers.filter(u=>u.id!==currentUser.id);
   if(!others.length){tb.innerHTML='<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px">No users</td></tr>';return;}
-  tb.innerHTML=others.map(u=>{
-    const uT=allTasks.filter(t=>t.assigned_to===u.id);
-    return`<tr><td><strong>${u.name}</strong></td><td>${u.username}</td><td>${roleBadge(u.role)}</td>
-      <td><span style="color:var(--warning)">${uT.filter(t=>t.status==='Pending').length} pending</span> / <span style="color:var(--success)">${uT.filter(t=>t.status==='Complete').length} done</span></td>
-      <td><button class="btn btn-secondary btn-sm" onclick="openChangePass('${u.id}','${u.name}')">🔑 Password</button>
-      ${currentUser.role==='admin'?`<button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Del</button>`:''}</td></tr>`;
-  }).join('');
+  tb.innerHTML=others.map(u=>`<tr>
+    <td><strong>${u.name}</strong></td><td>${u.username}</td><td>${roleBadge(u.role)}</td>
+    <td><span style="color:var(--warning)">${allTasks.filter(t=>t.assigned_to===u.id&&t.status==='Pending').length} pending</span> / <span style="color:var(--success)">${allTasks.filter(t=>t.assigned_to===u.id&&t.status==='Complete').length} done</span></td>
+    <td><button class="btn btn-secondary btn-sm" onclick="openChangePass('${u.id}','${u.name}')">🔑 Password</button>
+    ${currentUser.role==='admin'?`<button class="btn btn-danger btn-sm" onclick="deleteUser('${u.id}')">Del</button>`:''}</td>
+  </tr>`).join('');
 }
-// MODALS
 function openTaskModal(task=null){
   const userOpts=allUsers.map(u=>`<option value="${u.id}" ${task&&task.assigned_to===u.id?'selected':''}>${u.name} (${u.role})</option>`).join('');
   document.getElementById('modalBox').innerHTML=`
@@ -964,7 +1265,6 @@ function openTaskModal(task=null){
       <option ${task&&task.priority==='High'?'selected':''}>High</option>
     </select></div>
     <div class="form-group"><label>Assign To</label><select id="mTaskAssign"><option value="${currentUser.id}">Myself</option>${userOpts}</select></div>
-    <div class="form-group"><label>Due Date</label><input type="date" id="mTaskDue" value="${task&&task.due_date?task.due_date:''}"/></div>
     ${task?`<div class="form-group"><label>Status</label><select id="mTaskStatus">
       <option ${task.status==='Pending'?'selected':''}>Pending</option>
       <option ${task.status==='In Progress'?'selected':''}>In Progress</option>
@@ -980,18 +1280,16 @@ async function createTask(){
   const title=document.getElementById('mTaskTitle').value.trim();
   const priority=document.getElementById('mTaskPriority').value;
   const assigned_to=document.getElementById('mTaskAssign').value;
-  const due_date=document.getElementById('mTaskDue').value||null;
   if(!title){alert('Enter task title');return;}
-  await sb('tasks','POST',{title,priority,assigned_to,created_by:currentUser.id,due_date,status:'Pending'});
+  await sb('tasks','POST',{title,priority,assigned_to,created_by:currentUser.id,status:'Pending'});
   closeModal();allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');buildNav();loadTasks();
 }
 async function saveTask(id){
   const title=document.getElementById('mTaskTitle').value.trim();
   const priority=document.getElementById('mTaskPriority').value;
   const assigned_to=document.getElementById('mTaskAssign').value;
-  const due_date=document.getElementById('mTaskDue').value||null;
   const status=document.getElementById('mTaskStatus').value;
-  const body={title,priority,assigned_to,due_date,status};
+  const body={title,priority,assigned_to,status};
   if(status==='Complete') body.completed_at=new Date().toISOString();
   await sb(`tasks?id=eq.${id}`,'PATCH',body);closeModal();
   allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');loadTasks();
