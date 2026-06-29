@@ -158,8 +158,14 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
 <body>
 <div id="loginPage">
   <div class="login-box">
-    <h2>🏢 TaskFlow</h2>
-    <p>Team Task Management System</p>
+    <div style="text-align:center;margin-bottom:6px">
+      <div style="display:inline-flex;align-items:baseline;line-height:1">
+        <span style="font-family:Arial Black,Arial,sans-serif;font-weight:900;font-size:2.8rem;color:#e8440a;letter-spacing:-1px">E</span>
+        <span style="font-family:Arial Black,Arial,sans-serif;font-weight:900;font-size:2.8rem;color:#e8440a;letter-spacing:-1px">X</span>
+        <span style="font-family:Arial Black,Arial,sans-serif;font-weight:900;font-size:2.8rem;color:#e8440a;letter-spacing:-1px">PERT</span>
+      </div>
+    </div>
+    <p style="text-align:center;color:var(--muted);margin-bottom:28px;font-size:.85rem">Team Task Management System</p>
     <div id="loginAlert"></div>
     <div class="form-group"><label>Username</label><input id="loginUser" placeholder="Enter username" onkeydown="if(event.key==='Enter')doLogin()"/></div>
     <div class="form-group"><label>Password</label><input id="loginPass" type="password" placeholder="Enter password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
@@ -169,7 +175,13 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
 
 <div id="appPage" class="hidden">
   <div class="sidebar">
-    <div class="sidebar-logo"><h3>🏢 TaskFlow</h3><p id="sidebarRole">Loading...</p></div>
+    <div class="sidebar-logo">
+      <div style="display:inline-flex;align-items:baseline;line-height:1">
+        <span style="font-family:Arial Black,Arial,sans-serif;font-weight:900;font-size:1.5rem;color:#fff;letter-spacing:-1px">E</span>
+        <span style="font-family:Arial Black,Arial,sans-serif;font-weight:900;font-size:1.5rem;color:#fff;letter-spacing:-1px">XPERT</span>
+      </div>
+      <p id="sidebarRole" style="margin-top:4px">Loading...</p>
+    </div>
     <div id="sidebarNav"></div>
     <div id="sidebarCricket" class="sidebar-cricket hidden">
       <div class="sc-title">🏏 My Score</div>
@@ -309,11 +321,11 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
         </div>
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-            <h3 style="margin:0">🗒️ Other Work</h3>
+            <h3 style="margin:0">🗒️ Other Task</h3>
             <button class="add-row-btn" style="margin:0;padding:5px 12px;font-size:.78rem;width:auto" onclick="addTaskRow()">+ Add Row</button>
           </div>
           <table style="font-size:.82rem">
-            <thead><tr><th>Other Work</th><th style="text-align:center">Total</th><th style="text-align:center">Received</th><th style="text-align:center">Pending</th><th>Status</th><th>Remark</th><th></th></tr></thead>
+            <thead><tr><th style="text-align:center;width:40px">S.No</th><th>Work</th><th style="text-align:center">Count</th><th>Status</th><th>Remark</th><th></th></tr></thead>
             <tbody id="taskRowsBody"></tbody>
           </table>
         </div>
@@ -344,11 +356,11 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
             <div style="flex:1">
               <table style="width:100%;border-collapse:collapse;font-size:.78rem">
                 <thead><tr style="background:#e2e8f0">
-                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Other Work</th>
-                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Total</th>
-                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Received</th>
-                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Pending</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">S.No</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Work</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:center">Count</th>
                   <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Status</th>
+                  <th style="border:1px solid #ccc;padding:6px 8px;text-align:left">Remark</th>
                 </tr></thead>
                 <tbody id="rcTaskBody"></tbody>
               </table>
@@ -410,7 +422,35 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
       </div>
     </div>
 
-    <!-- TEAM LOGS -->
+    <!-- SUMMARY REPORT -->
+    <div id="secSummaryReport" class="section">
+      <div class="action-bar">
+        <h3>📊 Summary Report</h3>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+          <select id="srUser" style="padding:6px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.82rem;outline:none"><option value="">All Users</option></select>
+          <select id="srPeriod" onchange="srApplyPeriod()" style="padding:6px 10px;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.82rem;outline:none">
+            <option value="week">This Week</option>
+            <option value="lastweek">Last Week</option>
+            <option value="month">This Month</option>
+            <option value="lastmonth">Last Month</option>
+            <option value="year">This Year</option>
+            <option value="custom">Custom Range</option>
+          </select>
+          <input type="date" id="srFrom" style="padding:5px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.82rem;outline:none"/>
+          <input type="date" id="srTo" style="padding:5px 10px;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.82rem;outline:none"/>
+          <button class="btn btn-primary btn-sm" onclick="loadSummaryReport()">Apply</button>
+          <div style="position:relative;display:inline-block">
+            <button class="btn btn-purple btn-sm" onclick="toggleDownloadMenu()">⬇️ Download ▾</button>
+            <div id="downloadMenu" class="hidden" style="position:absolute;top:110%;right:0;background:#fff;border:1.5px solid #e2e8f0;border-radius:8px;box-shadow:0 4px 16px rgba(0,0,0,.12);z-index:200;min-width:140px;overflow:hidden">
+              <div onclick="downloadSR('csv')" style="padding:9px 16px;cursor:pointer;font-size:.83rem;border-bottom:1px solid #f1f5f9" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background=''">📄 CSV</div>
+              <div onclick="downloadSR('xlsx')" style="padding:9px 16px;cursor:pointer;font-size:.83rem;border-bottom:1px solid #f1f5f9" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background=''">📊 Excel (XLSX)</div>
+              <div onclick="downloadSR('pdf')" style="padding:9px 16px;cursor:pointer;font-size:.83rem" onmouseover="this.style.background='#f8fafc'" onmouseout="this.style.background=''">🖨️ PDF</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="srContent"><p style="color:var(--muted);text-align:center;padding:40px">Select filters and click Apply to generate report</p></div>
+    </div>
     <div id="secTeamLogs" class="section">
       <div class="action-bar">
         <h3>Team Daily Reports</h3>
@@ -485,19 +525,19 @@ async function sb(path,method='GET',body=null){
 function calcTaskRuns(task){
   if(task.status!=='Complete') return 0;
   const isSelf=task.created_by===task.assigned_to;
-  // Use time from created_at → completed_at (hours taken to complete)
-  if(!task.completed_at||!task.created_at) return isSelf?1:3;
+  // Self-assigned task = always flat 1 run, no timing bonus, no 4s/6s
+  if(isSelf) return 1;
+  // Assigned by someone else → timing based on created_at → completed_at
+  if(!task.completed_at||!task.created_at) return 1;
   const created=new Date(task.created_at);
   const done=new Date(task.completed_at);
-  const hoursToComplete=(done-created)/3600000; // hours elapsed
-  // Faster completion = more runs
-  if(hoursToComplete<=1)  return 6; // within 1 hour
-  if(hoursToComplete<=3)  return 5; // 1–3 hours
-  if(hoursToComplete<=5)  return 4; // 3–5 hours
-  if(hoursToComplete<=6)  return 3; // 5–6 hours
-  if(hoursToComplete<=7)  return 2; // 6–7 hours
-  if(hoursToComplete<=8)  return 1; // 7–8 hours
-  // After 8 hours: reduce by 1 per extra day, min 0
+  const hoursToComplete=(done-created)/3600000;
+  if(hoursToComplete<=1)  return 6;
+  if(hoursToComplete<=3)  return 5;
+  if(hoursToComplete<=5)  return 4;
+  if(hoursToComplete<=6)  return 3;
+  if(hoursToComplete<=7)  return 2;
+  if(hoursToComplete<=8)  return 1;
   const extraDays=Math.floor((hoursToComplete-8)/24);
   return Math.max(0,1-extraDays);
 }
@@ -505,8 +545,9 @@ function calcStats(tasks){
   const completed=tasks.filter(t=>t.status==='Complete');
   const runs=completed.reduce((s,t)=>s+calcTaskRuns(t),0);
   const balls=tasks.length;
-  const fours=completed.filter(t=>calcTaskRuns(t)===4).length;
-  const sixes=completed.filter(t=>calcTaskRuns(t)===6).length;
+  // 4s and 6s only count for assigned-by-others tasks
+  const fours=completed.filter(t=>t.created_by!==t.assigned_to&&calcTaskRuns(t)===4).length;
+  const sixes=completed.filter(t=>t.created_by!==t.assigned_to&&calcTaskRuns(t)===6).length;
   const sr=balls>0?((runs/balls)*100).toFixed(1):'0.0';
   return{runs,balls,fours,sixes,sr,completed:completed.length};
 }
@@ -855,7 +896,9 @@ function buildNav(){
   if(isAdmin){
     nav+=`<div class="nav-item" onclick="showSection('secTasks','All Tasks',this)"><span class="icon">📋</span>All Tasks</div>`;
     nav+=`<div class="nav-item" onclick="showSection('secUsers','Manage Users',this)"><span class="icon">👥</span>Users</div>`;
+    nav+=`<div class="nav-item" onclick="openMyPasswordModal()"><span class="icon">🔑</span>Change Password</div>`;
     nav+=`<div class="nav-item" onclick="showSection('secTeamLogs','Team Daily Reports',this)"><span class="icon">📅</span>Team Reports</div>`;
+    nav+=`<div class="nav-item" onclick="showSection('secSummaryReport','Summary Report',this)"><span class="icon">📊</span>Summary Report</div>`;
     nav+=`<div class="nav-item" onclick="showSection('secPerformance','Team Performance',this)"><span class="icon">🏆</span>Performance</div>`;
     nav+=`<div class="nav-item" onclick="showSection('secCricket','Performance Board',this)"><span class="icon">🏏</span>Performance Board</div>`;
   }
@@ -896,6 +939,7 @@ async function showSection(id,title,el){
   if(id==='secUsers') loadUsers();
   if(id==='secPerformance') loadPerformance();
   if(id==='secTeamLogs') loadTeamLogs();
+  if(id==='secSummaryReport') initSummaryReport();
   if(id==='secCricket') loadLeaderboard();
 }
 
@@ -940,14 +984,14 @@ function calculateRowMinutes(label,finished){
   const k=(label||'').trim().toLowerCase(),n=parseInt(finished)||0;
   if(n<=0) return 0;
   const rule=TIME_RULES[k];
-  if(!rule) return 10*n;
+  if(!rule) return 5*n; // any other/custom entry = flat 5 min/nos
   if(rule.threshold!==null&&n>rule.threshold) return rule.aboveMin*n;
   return rule.base*n;
 }
 function getTimeLabel(label,finished){
   const k=(label||'').trim().toLowerCase(),n=parseInt(finished)||0;
   const rule=TIME_RULES[k];
-  if(!rule) return`10/nos`;
+  if(!rule) return`5/nos (flat)`;
   if(rule.threshold!==null&&n>rule.threshold) return`${rule.aboveMin}/nos (>${rule.threshold})`;
   return`${rule.base}/nos`;
 }
@@ -976,19 +1020,18 @@ function updateTotals(){
   document.getElementById('totCalculatedTime').textContent=m+' min';
 }
 function renderTaskRows(){
-  document.getElementById('taskRowsBody').innerHTML=taskRows.map(r=>`<tr>
-    <td><input value="${r.task}" oninput="updateTR(${r.id},'task',this.value)" placeholder="Other work..." style="width:110px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
-    <td>${inp(r.total,`updateTR(${r.id},'total',this.value)`)}</td>
-    <td>${inp(r.received,`updateTR(${r.id},'received',this.value)`)}</td>
-    <td>${inp(r.pending,`updateTR(${r.id},'pending',this.value)`)}</td>
-    <td><input value="${r.status}" oninput="updateTR(${r.id},'status',this.value)" placeholder="Status" style="width:70px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
-    <td><input value="${r.remark||''}" oninput="updateTR(${r.id},'remark',this.value)" placeholder="Remark..." style="width:100px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+  document.getElementById('taskRowsBody').innerHTML=taskRows.map((r,i)=>`<tr>
+    <td style="text-align:center;font-weight:600;color:var(--muted);font-size:.8rem">${i+1}</td>
+    <td><input value="${r.task}" oninput="updateTR(${r.id},'task',this.value)" placeholder="Work description..." style="width:100%;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td>${inp(r.total,`updateTR(${r.id},'total',this.value)`,'65px','0')}</td>
+    <td><input value="${r.status}" oninput="updateTR(${r.id},'status',this.value)" placeholder="Status..." style="width:80px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td><input value="${r.remark||''}" oninput="updateTR(${r.id},'remark',this.value)" placeholder="Remark..." style="width:110px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
     <td><button onclick="removeTR(${r.id})" style="background:none;border:none;color:#ef4444;cursor:pointer">✕</button></td>
   </tr>`).join('');
 }
 function updateTR(id,f,v){const r=taskRows.find(x=>x.id===id);if(r)r[f]=v;}
 function removeTR(id){taskRows=taskRows.filter(x=>x.id!==id);renderTaskRows();}
-function addTaskRow(){taskRows.push({id:Date.now(),task:'',total:'',received:'',pending:'',status:'',remark:''});renderTaskRows();}
+function addTaskRow(){taskRows.push({id:Date.now(),task:'',total:'',status:'',remark:''});renderTaskRows();}
 
 async function shareReport(){
   const date=document.getElementById('reportDate').value;
@@ -1017,12 +1060,12 @@ async function shareReport(){
   document.getElementById('rcTotToday').textContent=sum('today')||0;
   document.getElementById('rcTotFinished').textContent=sum('finished')||0;
   document.getElementById('rcTotPending').textContent=sum('pending')||0;
-  document.getElementById('rcTaskBody').innerHTML=activeT.map(r=>`<tr>
+  document.getElementById('rcTaskBody').innerHTML=activeT.map((r,i)=>`<tr>
+    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${i+1}</td>
     <td style="border:1px solid #ddd;padding:5px 7px">${r.task}</td>
     <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.total||0}</td>
-    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.received||0}</td>
-    <td style="border:1px solid #ddd;padding:5px 7px;text-align:center">${r.pending||0}</td>
     <td style="border:1px solid #ddd;padding:5px 7px">${r.status||'-'}</td>
+    <td style="border:1px solid #ddd;padding:5px 7px">${r.remark||'-'}</td>
   </tr>`).join('');
   let totalMins=0;const wArr=[];
   activeW.forEach(r=>{const m=calculateRowMinutes(r.label,r.finished);totalMins+=m;wArr.push(`${r.label}:${r.finished} Nos=${m} min`);});
@@ -1046,17 +1089,271 @@ function downloadReport(){
 }
 function closeScreenshot(){document.getElementById('screenshotOverlay').classList.add('hidden');}
 
+// ===== SUMMARY REPORT =====
+let srData=[]; // holds current report data for export
+
+function initSummaryReport(){
+  const sel=document.getElementById('srUser');
+  sel.innerHTML='<option value="">All Users</option>'+allUsers.filter(u=>u.role!=='admin').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
+  srApplyPeriod();
+}
+
+function srApplyPeriod(){
+  const now=new Date();const fmt=d=>d.toISOString().slice(0,10);
+  const v=document.getElementById('srPeriod').value;
+  let from='',to='';
+  if(v==='week'){const s=new Date(now);s.setDate(now.getDate()-now.getDay()+1);from=fmt(s);to=fmt(now);}
+  else if(v==='lastweek'){const e=new Date(now);e.setDate(now.getDate()-now.getDay());const s=new Date(e);s.setDate(e.getDate()-6);from=fmt(s);to=fmt(e);}
+  else if(v==='month'){from=fmt(new Date(now.getFullYear(),now.getMonth(),1));to=fmt(now);}
+  else if(v==='lastmonth'){const s=new Date(now.getFullYear(),now.getMonth()-1,1);const e=new Date(now.getFullYear(),now.getMonth(),0);from=fmt(s);to=fmt(e);}
+  else if(v==='year'){from=`${now.getFullYear()}-01-01`;to=fmt(now);}
+  if(v!=='custom'){document.getElementById('srFrom').value=from;document.getElementById('srTo').value=to;}
+}
+
+function toggleDownloadMenu(){
+  document.getElementById('downloadMenu').classList.toggle('hidden');
+}
+document.addEventListener('click',function(e){
+  if(!e.target.closest('#downloadMenu')&&!e.target.closest('[onclick="toggleDownloadMenu()"]')){
+    const m=document.getElementById('downloadMenu');if(m)m.classList.add('hidden');
+  }
+});
+
+async function loadSummaryReport(){
+  const from=document.getElementById('srFrom').value;
+  const to=document.getElementById('srTo').value;
+  const uid=document.getElementById('srUser').value;
+  if(!from||!to){alert('Please select date range');return;}
+
+  const users=uid?allUsers.filter(u=>u.id===uid):allUsers.filter(u=>u.role!=='admin');
+
+  // Get all work logs in range
+  let logsUrl=`work_logs?select=*,user:user_id(name)&date=gte.${from}&date=lte.${to}&description=not.like.MATCH_REPORT%3A%25&order=user_id.asc,date.asc`;
+  const allLogs=await sb(logsUrl);
+
+  // Get latest log per user per date
+  const latestMap={};
+  allLogs.forEach(l=>{
+    const key=`${l.user_id}_${l.date}`;
+    if(!latestMap[key]||l.created_at>latestMap[key].created_at) latestMap[key]=l;
+  });
+  const logs=Object.values(latestMap);
+
+  // Build date range array
+  const dates=[];
+  let cur=new Date(from+'T12:00:00');
+  const end=new Date(to+'T12:00:00');
+  while(cur<=end){
+    const dow=cur.getDay();
+    if(dow>=1&&dow<=5) dates.push(cur.toISOString().slice(0,10)); // Mon-Fri only
+    cur.setDate(cur.getDate()+1);
+  }
+
+  // Build work item set across all logs
+  const workItems=new Set();
+  logs.forEach(l=>{
+    (l.description||'').split(' | ').forEach(c=>{
+      const m=c.match(/^(.*?):\d+\s*Nos=/);
+      if(m) workItems.add(m[1].trim());
+    });
+  });
+  const workList=[...workItems].sort();
+
+  // Build data: per user → per workItem → per date → count
+  srData=[];
+  users.forEach(u=>{
+    const userLogs=logs.filter(l=>l.user_id===u.id);
+    workList.forEach(work=>{
+      const row={user:u.name,work};
+      let rowTotal=0;
+      dates.forEach(d=>{
+        const log=userLogs.find(l=>l.date===d);
+        let count=0;
+        if(log){
+          (log.description||'').split(' | ').forEach(c=>{
+            const m=c.match(/^(.*?):\s*(\d+)\s*Nos=/);
+            if(m&&m[1].trim()===work) count+=parseInt(m[2])||0;
+          });
+        }
+        row[d]=count||0;
+        rowTotal+=count||0;
+      });
+      row['Total']=rowTotal;
+      if(rowTotal>0) srData.push(row); // only rows with data
+    });
+  });
+
+  // Render table
+  const colTotals={};
+  dates.forEach(d=>{colTotals[d]=srData.reduce((s,r)=>s+(r[d]||0),0);});
+  colTotals['Total']=srData.reduce((s,r)=>s+(r['Total']||0),0);
+
+  const fmtDate=d=>{const dt=new Date(d+'T12:00:00');return`${dt.getDate()}/${dt.getMonth()+1}`;};
+
+  let html=`<div style="overflow-x:auto">
+    <div style="font-size:.82rem;color:var(--muted);margin-bottom:10px">
+      📅 Period: <strong>${from}</strong> → <strong>${to}</strong> &nbsp;·&nbsp; 
+      👥 Users: <strong>${users.map(u=>u.name).join(', ')||'All'}</strong> &nbsp;·&nbsp;
+      📋 Rows: <strong>${srData.length}</strong>
+    </div>
+    <table style="font-size:.8rem;border-collapse:collapse;width:100%;min-width:600px">
+      <thead>
+        <tr style="background:#4f46e5;color:#fff">
+          <th style="padding:8px 10px;text-align:left;white-space:nowrap;position:sticky;left:0;background:#4f46e5">User</th>
+          <th style="padding:8px 10px;text-align:left;white-space:nowrap">Work</th>
+          ${dates.map(d=>`<th style="padding:8px 6px;text-align:center;white-space:nowrap">${fmtDate(d)}<br><span style="font-size:.65rem;opacity:.7">${['Sun','Mon','Tue','Wed','Thu','Fri','Sat'][new Date(d+'T12:00:00').getDay()]}</span></th>`).join('')}
+          <th style="padding:8px 10px;text-align:center;background:#3730a3">Total</th>
+        </tr>
+      </thead>
+      <tbody>`;
+
+  let prevUser='';
+  srData.forEach((row,i)=>{
+    const isNewUser=row.user!==prevUser;
+    if(isNewUser) prevUser=row.user;
+    html+=`<tr style="background:${i%2===0?'#fff':'#f8fafc'}">
+      <td style="padding:7px 10px;font-weight:${isNewUser?'700':'400'};color:${isNewUser?'var(--primary)':'var(--text)'};white-space:nowrap">${isNewUser?row.user:''}</td>
+      <td style="padding:7px 10px;white-space:nowrap">${row.work}</td>
+      ${dates.map(d=>`<td style="padding:7px 6px;text-align:center;color:${(row[d]||0)>0?'var(--text)':'#cbd5e1'}">${(row[d]||0)>0?row[d]:'-'}</td>`).join('')}
+      <td style="padding:7px 10px;text-align:center;font-weight:700;color:var(--primary)">${row['Total']}</td>
+    </tr>`;
+  });
+
+  html+=`<tr style="background:#f1f5f9;font-weight:700;border-top:2px solid #e2e8f0">
+    <td style="padding:8px 10px">Total</td><td></td>
+    ${dates.map(d=>`<td style="padding:8px 6px;text-align:center;color:var(--primary)">${colTotals[d]||'-'}</td>`).join('')}
+    <td style="padding:8px 10px;text-align:center;color:var(--primary);font-size:1rem">${colTotals['Total']}</td>
+  </tr>`;
+  html+=`</tbody></table></div>`;
+  document.getElementById('srContent').innerHTML=html;
+}
+
+function downloadSR(fmt){
+  document.getElementById('downloadMenu').classList.add('hidden');
+  if(!srData.length){alert('Generate the report first');return;}
+  const from=document.getElementById('srFrom').value;
+  const to=document.getElementById('srTo').value;
+  const dates=Object.keys(srData[0]).filter(k=>k.match(/^\d{4}-\d{2}-\d{2}$/));
+  const fmtDate=d=>{const dt=new Date(d+'T12:00:00');return`${dt.getDate()}-${(dt.getMonth()+1).toString().padStart(2,'0')}-${dt.getFullYear()}`;};
+
+  if(fmt==='csv'||fmt==='xlsx'){
+    // Build XML-based Excel file with borders and styling
+    const headers=['User','Work',...dates.map(fmtDate),'Total'];
+    const colTotals=[...dates.map(d=>srData.reduce((s,r)=>s+(r[d]||0),0)),srData.reduce((s,r)=>s+(r['Total']||0),0)];
+
+    // Use HTML table → Excel (works perfectly with borders)
+    let tbl=`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"/>
+<!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet>
+<x:Name>Summary Report</x:Name>
+<x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions>
+</x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]-->
+<style>
+td,th{border:1px solid #000;padding:5px 10px;font-family:Arial;font-size:11px}
+.hdr{background:#4f46e5;color:#fff;font-weight:bold;text-align:center}
+.hdr-left{background:#4f46e5;color:#fff;font-weight:bold}
+.tot-row{background:#f1f5f9;font-weight:bold}
+.user-cell{font-weight:bold;color:#4f46e5}
+.num{text-align:center}
+.grand{font-weight:bold;color:#4f46e5;text-align:center}
+</style></head><body>
+<table border="1" cellspacing="0" cellpadding="5">
+<tr>
+  <th class="hdr-left">User</th>
+  <th class="hdr-left">Work</th>
+  ${dates.map(d=>`<th class="hdr">${fmtDate(d)}</th>`).join('')}
+  <th class="hdr">Total</th>
+</tr>`;
+
+    let prevU='';
+    srData.forEach(r=>{
+      const isNew=r.user!==prevU;if(isNew)prevU=r.user;
+      tbl+=`<tr>
+        <td ${isNew?'class="user-cell"':''}>${isNew?r.user:''}</td>
+        <td>${r.work}</td>
+        ${dates.map(d=>`<td class="num">${r[d]||0}</td>`).join('')}
+        <td class="grand">${r.Total}</td>
+      </tr>`;
+    });
+
+    tbl+=`<tr class="tot-row">
+      <td><b>Total</b></td><td></td>
+      ${colTotals.slice(0,-1).map(v=>`<td class="grand">${v}</td>`).join('')}
+      <td class="grand">${colTotals[colTotals.length-1]}</td>
+    </tr>`;
+    tbl+=`</table></body></html>`;
+
+    dlFile(new Blob(['\ufeff'+tbl],{type:'application/vnd.ms-excel;charset=UTF-8'}),`Summary_Report_${from}_${to}.xls`);
+
+  } else if(fmt==='pdf'){
+    const fmtDate2=d=>{const dt=new Date(d+'T12:00:00');return`${dt.getDate()}/${dt.getMonth()+1}`;};
+    let html=`<html><head><title>Summary Report</title><style>
+      *{box-sizing:border-box}
+      body{font-family:Arial,sans-serif;font-size:11px;padding:24px;margin:0}
+      h2{color:#4f46e5;text-align:center;margin-bottom:4px;font-size:16px}
+      .sub{text-align:center;color:#64748b;margin-bottom:20px;font-size:11px}
+      table{width:100%;border-collapse:collapse;border:1px solid #000}
+      th{background:#4f46e5;color:#fff;padding:7px 8px;text-align:center;border:1px solid #3730a3;font-size:11px}
+      th.left{text-align:left}
+      td{padding:6px 8px;border:1px solid #ccc;font-size:11px}
+      td.num{text-align:center}
+      td.user{font-weight:700;color:#4f46e5}
+      tr:nth-child(even){background:#f9fafb}
+      .tot td{background:#f1f5f9;font-weight:700;border-top:2px solid #4f46e5}
+      .tot td.num{color:#4f46e5}
+    </style></head><body>
+    <h2>Summary Report</h2>
+    <p class="sub">Period: ${from} → ${to}</p>
+    <table><thead><tr>
+      <th class="left">User</th><th class="left">Work</th>
+      ${dates.map(d=>`<th>${fmtDate2(d)}</th>`).join('')}
+      <th>Total</th>
+    </tr></thead><tbody>`;
+    let prevU='';
+    srData.forEach(r=>{
+      const isNew=r.user!==prevU;if(isNew)prevU=r.user;
+      html+=`<tr>
+        <td class="${isNew?'user':''}">${isNew?r.user:''}</td>
+        <td>${r.work}</td>
+        ${dates.map(d=>`<td class="num">${(r[d]||0)>0?r[d]:'-'}</td>`).join('')}
+        <td class="num"><strong>${r.Total}</strong></td>
+      </tr>`;
+    });
+    const gt=srData.reduce((s,r)=>s+(r['Total']||0),0);
+    html+=`<tr class="tot"><td><b>Total</b></td><td></td>
+      ${dates.map(d=>`<td class="num">${srData.reduce((s,r)=>s+(r[d]||0),0)||'-'}</td>`).join('')}
+      <td class="num">${gt}</td></tr>`;
+    html+=`</tbody></table><br>
+    <button onclick="window.print()" style="display:block;margin:0 auto;padding:8px 24px;background:#4f46e5;color:#fff;border:none;border-radius:6px;cursor:pointer;font-size:12px">🖨️ Print / Save PDF</button>
+    </body></html>`;
+    const w=window.open('','_blank');w.document.write(html);w.document.close();
+  }
+}
+
+function dlFile(blob,name){
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;a.click();
+}
+
 // ===== TEAM LOGS =====
 async function loadTeamLogs(){
   const sel=document.getElementById('teamLogUser');
   sel.innerHTML='<option value="">All Users</option>'+allUsers.filter(u=>u.role!=='admin').map(u=>`<option value="${u.id}">${u.name}</option>`).join('');
   const uid=sel.value;
-  let url=`work_logs?select=*,user:user_id(name)&order=date.desc&description=not.like.MATCH_REPORT%3A%25`;
+  let url=`work_logs?select=*,user:user_id(name)&order=date.desc,created_at.desc&description=not.like.MATCH_REPORT%3A%25`;
   if(uid) url+=`&user_id=eq.${uid}`;
   const logs=await sb(url);
+
+  // Keep only the LATEST submission per user per date
+  const latestMap={};
+  logs.forEach(l=>{
+    const key=`${l.user_id}_${l.date}`;
+    if(!latestMap[key]) latestMap[key]=l; // first = latest due to order desc
+  });
+  const filtered=Object.values(latestMap).sort((a,b)=>b.date.localeCompare(a.date)||b.created_at?.localeCompare(a.created_at||'')||0);
+
   const tb=document.getElementById('teamLogsTable');
-  if(!logs.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No reports</td></tr>';return;}
-  tb.innerHTML=logs.map(l=>{
+  if(!filtered.length){tb.innerHTML='<tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px">No reports</td></tr>';return;}
+  tb.innerHTML=filtered.map(l=>{
     const chunks=(l.description||'').split(' | ').filter(Boolean);
     const rows=chunks.map(c=>{
       const m=c.match(/^(.*?):\s*(\d+)\s*Nos\s*=\s*(\d+)\s*min/);
@@ -1234,8 +1531,8 @@ function filterMyTasks(f,el){
 function fmtDT(iso){
   if(!iso) return'-';
   const d=new Date(iso);
-  const date=d.toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric'});
-  const time=d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true});
+  const date=d.toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric',timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone});
+  const time=d.toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',hour12:true,timeZone:Intl.DateTimeFormat().resolvedOptions().timeZone});
   return`<span style="font-size:.8rem">${date}</span><br><span style="font-size:.72rem;color:var(--muted)">${time}</span>`;
 }
 function renderMyTasks(tasks){
@@ -1270,7 +1567,10 @@ async function saveRemark(id,remark){
   await sb(`tasks?id=eq.${id}`,'PATCH',{remark});
 }
 async function updateTaskStatus(id,status){
-  const body={status};if(status==='Complete') body.completed_at=new Date().toISOString();
+  const body={status};if(status==='Complete'){
+    // Save in ISO format — Supabase stores UTC, but we display in local timezone
+    body.completed_at=new Date().toISOString();
+  }
   await sb(`tasks?id=eq.${id}`,'PATCH',body);
   allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');
   await loadCricketScore();loadMyTasks();
@@ -1332,7 +1632,6 @@ async function saveTask(id){
   const status=document.getElementById('mTaskStatus').value;
   const body={title,priority,assigned_to,status};
   if(status==='Complete') body.completed_at=new Date().toISOString();
-  await sb(`tasks?id=eq.${id}`,'PATCH',body);closeModal();
   allTasks=await sb('tasks?select=*,creator:created_by(name),assignee:assigned_to(name)&order=created_at.desc');loadTasks();
 }
 async function openEditTask(id){const task=allTasks.find(t=>t.id===id);if(task)openTaskModal(task);}
@@ -1375,6 +1674,37 @@ function openChangePass(uid,name){
       <button class="btn btn-primary" onclick="changePass('${uid}')">Update Password</button>
     </div>`;
   document.getElementById('modalOverlay').classList.remove('hidden');
+}
+function openMyPasswordModal(){
+  document.getElementById('modalBox').innerHTML=`
+    <h3>🔑 Change My Password</h3>
+    <div class="form-group"><label>Current Password</label><input id="mCurPass" type="password" placeholder="Enter current password"/></div>
+    <div class="form-group"><label>New Password</label><input id="mNewPass1" type="password" placeholder="Enter new password"/></div>
+    <div class="form-group"><label>Confirm New Password</label><input id="mNewPass2" type="password" placeholder="Confirm new password"/></div>
+    <div id="mPassAlert"></div>
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveMyPassword()">Update Password</button>
+    </div>`;
+  document.getElementById('modalOverlay').classList.remove('hidden');
+}
+
+async function saveMyPassword(){
+  const cur=document.getElementById('mCurPass').value.trim();
+  const np1=document.getElementById('mNewPass1').value.trim();
+  const np2=document.getElementById('mNewPass2').value.trim();
+  const alert=document.getElementById('mPassAlert');
+  if(!cur||!np1||!np2){alert.innerHTML='<div class="alert alert-error">Please fill all fields</div>';return;}
+  if(np1!==np2){alert.innerHTML='<div class="alert alert-error">New passwords do not match</div>';return;}
+  if(np1.length<4){alert.innerHTML='<div class="alert alert-error">Password must be at least 4 characters</div>';return;}
+  // Verify current password
+  const check=await sb(`users?id=eq.${currentUser.id}&password=eq.${encodeURIComponent(cur)}&select=id`);
+  if(!check.length){alert.innerHTML='<div class="alert alert-error">Current password is incorrect</div>';return;}
+  await sb(`users?id=eq.${currentUser.id}`,'PATCH',{password:np1});
+  closeModal();
+  currentUser.password=np1;
+  document.getElementById('mPassAlert') && (document.getElementById('mPassAlert').innerHTML='');
+  window.alert('✅ Password updated successfully!');
 }
 async function changePass(uid){
   const pass=document.getElementById('mNewPass').value.trim();
