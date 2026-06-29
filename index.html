@@ -179,10 +179,10 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
     <button class="logout-btn" onclick="doLogout()">🚪 Logout</button>
   </div>
   <div class="main">
-    <div class="topbar">
+    <div class="topbar" style="position:relative">
       <h1 id="pageTitle">Dashboard</h1>
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
-        <div id="cricketScoreboard" class="cricket-scoreboard hidden">
+        <div id="cricketScoreboard" class="cricket-scoreboard hidden" style="cursor:pointer" onclick="toggleDayBreakdown()" title="Click to see day-wise runs">
           <div style="display:flex;flex-direction:column;align-items:center">
             <div class="cs-runs" id="csRuns">0</div>
             <div class="cs-label">Runs</div>
@@ -194,6 +194,15 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
             <div class="cs-stat">SR: <span id="csSR">0.0</span> · Day <span id="csDay">1</span>/5</div>
             <div id="csMilestone" class="cs-milestone hidden"></div>
           </div>
+        </div>
+        <!-- Day breakdown popup -->
+        <div id="dayBreakdown" class="hidden" style="position:absolute;top:80px;right:10px;background:#1a1a2e;border:1.5px solid rgba(251,191,36,.3);border-radius:12px;padding:14px 18px;z-index:500;min-width:220px;box-shadow:0 8px 32px rgba(0,0,0,.4)">
+          <div style="font-size:.7rem;text-transform:uppercase;letter-spacing:1px;color:#94a3b8;margin-bottom:10px;font-weight:700">🏏 Day-wise Runs</div>
+          <div id="dayBreakdownRows"></div>
+          <div style="border-top:1px solid rgba(255,255,255,.1);margin-top:8px;padding-top:8px">
+            <div id="dayBreakdownTotal" style="font-size:.78rem;color:#fbbf24;font-weight:700"></div>
+          </div>
+          <div style="font-size:.65rem;color:#64748b;margin-top:4px">Includes task runs + daily report runs</div>
         </div>
         <div class="user-badge" id="userBadge">User</div>
       </div>
@@ -224,7 +233,7 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
         </div>
         <button class="btn btn-primary btn-sm" onclick="openTaskModal()">+ New Task</button>
       </div>
-      <div class="card"><table><thead><tr><th>Created</th><th>Task</th><th>Priority</th><th>Assigned By</th><th>Status</th><th>Completed</th><th>🏏 Runs</th><th>Update</th></tr></thead><tbody id="myTasksTable"></tbody></table></div>
+      <div class="card"><table><thead><tr><th>Created</th><th>Task</th><th>Priority</th><th>Assigned By</th><th>Status</th><th>Completed</th><th>🏏 Runs</th><th>Remark</th><th>Update</th></tr></thead><tbody id="myTasksTable"></tbody></table></div>
     </div>
 
     <div id="secSentTasks" class="section">
@@ -281,6 +290,7 @@ select.status-sel{padding:4px 8px;border-radius:6px;border:1.5px solid #e2e8f0;f
           <button class="btn btn-green btn-sm" onclick="shareReport()">📸 Share & Sync</button>
         </div>
       </div>
+      <div id="reportLimitBar" style="margin-bottom:12px"></div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px">
         <div class="card">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
@@ -890,9 +900,25 @@ async function showSection(id,title,el){
 }
 
 // ===== DAILY REPORT =====
-function initDailyReport(){
+async function initDailyReport(){
   const today=new Date().toISOString().slice(0,10);
-  document.getElementById('reportDate').value=today;
+  const dateInput=document.getElementById('reportDate');
+  dateInput.value=today;
+  dateInput.min=today;
+  dateInput.max=today;
+  dateInput.readOnly=true;
+  dateInput.style.background='#f1f5f9';
+  dateInput.style.cursor='not-allowed';
+
+  // Check how many times submitted today
+  const todayLogs=await sb(`work_logs?user_id=eq.${currentUser.id}&date=eq.${today}&description=not.like.MATCH_REPORT%3A%25&select=id&order=created_at.desc`);
+  const submissionsToday=todayLogs.length;
+  const limitBar=document.getElementById('reportLimitBar');
+  if(limitBar){
+    limitBar.innerHTML=`<div style="background:#f0fdf4;border:1.5px solid #10b981;border-radius:8px;padding:8px 14px;font-size:.82rem;color:#166534">
+      ✅ Submissions today: <strong>${submissionsToday}</strong> &nbsp;·&nbsp; Runs update based on <strong>latest submission</strong> only
+    </div>`;
+  }
   if(!workRows.length) workRows=[
     {id:1,label:'Credit Note',op:'',today:'',finished:'',pending:''},
     {id:2,label:'Debit Note',op:'',today:'',finished:'',pending:''},
@@ -967,6 +993,13 @@ function addTaskRow(){taskRows.push({id:Date.now(),task:'',total:'',received:'',
 async function shareReport(){
   const date=document.getElementById('reportDate').value;
   if(!date){alert('Please select a date');return;}
+  // Delete all previous submissions for today so only latest counts for runs
+  try{
+    const prev=await sb(`work_logs?user_id=eq.${currentUser.id}&date=eq.${date}&description=not.like.MATCH_REPORT%3A%25&select=id`);
+    for(const p of prev){
+      await sb(`work_logs?id=eq.${p.id}`,'DELETE');
+    }
+  }catch(e){console.log('cleanup err:',e);}
   const fmt=new Date(date+'T12:00:00').toLocaleDateString('en-IN',{day:'2-digit',month:'2-digit',year:'numeric'});
   document.getElementById('rcTitle').textContent=`${currentUser.name} | Daily Report (${fmt})`;
   document.getElementById('rcGenName').textContent=currentUser.name;
@@ -995,6 +1028,7 @@ async function shareReport(){
   activeW.forEach(r=>{const m=calculateRowMinutes(r.label,r.finished);totalMins+=m;wArr.push(`${r.label}:${r.finished} Nos=${m} min`);});
   document.getElementById('rcTotalPerformanceTime').textContent=`Total Performance Focus: ${totalMins} min (${(totalMins/60).toFixed(2)} hrs)`;
   try{await sb('work_logs','POST',{user_id:currentUser.id,date,hours:parseFloat((totalMins/60).toFixed(2)),description:wArr.join(' | ')||'No active entries'});}catch(e){console.log(e);}
+  await initDailyReport(); // refresh limit bar after save
   const wrapper=document.getElementById('reportCardWrapper');
   wrapper.style.cssText='position:fixed;left:0;top:0;z-index:-1;opacity:0';
   await new Promise(r=>setTimeout(r,200));
@@ -1218,6 +1252,10 @@ function renderMyTasks(tasks){
       <td>${t.completed_at?fmtDT(t.completed_at):'<span style="color:var(--muted);font-size:.75rem">-</span>'}</td>
       <td>${t.status==='Complete'?`<strong style="color:${rl.color}">${rl.emoji} ${r}</strong>`:`<span style="color:var(--muted);font-size:.75rem">-</span>`}</td>
       <td>${t.status==='Complete'
+        ?`<span style="font-size:.8rem;color:var(--muted)">${t.remark||'-'}</span>`
+        :`<input value="${t.remark||''}" onchange="saveRemark('${t.id}',this.value)" placeholder="Add remark..." style="width:120px;padding:4px 8px;border:1.5px solid #e2e8f0;border-radius:6px;font-size:.78rem;outline:none"/>`}
+      </td>
+      <td>${t.status==='Complete'
         ?'<span class="badge badge-complete">✅ Complete</span>'
         :`<select class="status-sel" onchange="updateTaskStatus('${t.id}',this.value)">
           <option ${t.status==='Pending'?'selected':''}>Pending</option>
@@ -1227,6 +1265,9 @@ function renderMyTasks(tasks){
       </td>
     </tr>`;
   }).join('');
+}
+async function saveRemark(id,remark){
+  await sb(`tasks?id=eq.${id}`,'PATCH',{remark});
 }
 async function updateTaskStatus(id,status){
   const body={status};if(status==='Complete') body.completed_at=new Date().toISOString();
