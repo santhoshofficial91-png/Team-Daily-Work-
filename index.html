@@ -1022,7 +1022,7 @@ function updateTotals(){
 function renderTaskRows(){
   document.getElementById('taskRowsBody').innerHTML=taskRows.map((r,i)=>`<tr>
     <td style="text-align:center;font-weight:600;color:var(--muted);font-size:.8rem">${i+1}</td>
-    <td><input value="${r.task}" oninput="updateTR(${r.id},'task',this.value)" placeholder="Work description..." style="width:100%;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
+    <td><input value="${r.task}" oninput="updateTR(${r.id},'task',this.value)" placeholder="Work description..." style="width:100%;min-width:180px;padding:6px 8px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.82rem;outline:none"/></td>
     <td>${inp(r.total,`updateTR(${r.id},'total',this.value)`,'65px','0')}</td>
     <td><input value="${r.status}" oninput="updateTR(${r.id},'status',this.value)" placeholder="Status..." style="width:80px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
     <td><input value="${r.remark||''}" oninput="updateTR(${r.id},'remark',this.value)" placeholder="Remark..." style="width:110px;padding:4px 6px;border:1.5px solid #e2e8f0;border-radius:5px;font-size:.8rem;outline:none"/></td>
